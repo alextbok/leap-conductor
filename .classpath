@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/Sawyer/Desktop/LeapDeveloperKit/LeapSDK/lib/LeapJava.jar">
+	<classpathentry kind="lib" path="/Users/Sawyer/Documents/cs/cs032/leap/lib/LeapJava.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/Sawyer/Desktop/LeapDeveloperKit/LeapSDK/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/Sawyer/Documents/cs/cs032/leap/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
