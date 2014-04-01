@@ -42,7 +42,7 @@ public class LeapListener extends Listener {
         for (int i = 0; i < hands.count(); i++) {
           if (hands.get(i).isValid() && i < handArray.length) {
             Vector intersect = screen.intersect(hands.get(i).palmPosition(), hands.get(i).direction(), true);
-            handArray[i] = new Point2D(screen.widthPixels() * Math.min(1d, Math.max(0d,intersect.getX())), screen.heightPixels() * Math.min(1d, Math.max(0d, (1d - intersect.getY()))));
+            handArray[i] = new Point2D(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY()));
           }
         }
 
@@ -60,7 +60,7 @@ public class LeapListener extends Listener {
         for (int i = 0; i < fingers.count(); i++) {
           if (fingers.get(i).isValid() && i < fingerArray.length) {
             Vector intersect = screen.intersect(fingers.get(i).stabilizedTipPosition(), fingers.get(i).direction(), true);
-            fingerArray[i] = new Point2D(screen.widthPixels() * Math.min(1d, Math.max(0d,intersect.getX())), screen.heightPixels() * Math.min(1d, Math.max(0d, (1d - intersect.getY()))));
+            fingerArray[i] = new Point2D(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY()));
           }
         }
 

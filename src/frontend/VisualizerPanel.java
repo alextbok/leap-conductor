@@ -13,12 +13,11 @@ import javafx.scene.layout.*;
 import javafx.scene.canvas.*;
 import javafx.beans.value.*;
 import javafx.geometry.*;
-import javafx.scene.paint.Color;
-
-import java.awt.*;
+import javafx.scene.paint.*;
 
 public class VisualizerPanel extends Pane {
   private LeapListener leapListener;
+  private ConnectListener connectListener;
   private Controller leapController;
   private AnchorPane root;
   private Canvas canvas;
@@ -31,6 +30,7 @@ public class VisualizerPanel extends Pane {
     // set up controller and listener
     leapController = new Controller();
     leapListener = new LeapListener();
+    connectListener = new ConnectListener();
     leapController.addListener(leapListener);
 
     // set up canvas, add to panel
@@ -39,6 +39,8 @@ public class VisualizerPanel extends Pane {
     g = canvas.getGraphicsContext2D();
     root.getChildren().add(canvas);
     getChildren().add(root);
+
+    leapController.addListener(connectListener);
 
     leapListener.getFingerLocs().addListener(new ChangeListener<Point2D[]>() {
       @Override
@@ -55,7 +57,7 @@ public class VisualizerPanel extends Pane {
               if (points2[i] == null)
                 break;
 
-              g.fillOval(points2[i].getX(), points2[i].getY(), 30, 50);
+              g.fillOval(points2[i].getX(), points2[i].getY(), 30, 30);
             }
 
             // draw hands
@@ -73,5 +75,24 @@ public class VisualizerPanel extends Pane {
         });
       }
     });
+  }
+
+  /**
+   * ConnectListener
+   */
+  public class ConnectListener extends Listener {
+    @Override
+    public void onConnect(Controller controller) {
+      g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+      g.setFill(Color.BROWN);
+      g.fillText("Device connected", 30, 30);
+    }
+
+    @Override
+    public void onDisconnect(Controller controller) {
+      g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+      g.setFill(Color.BROWN);
+      g.fillText("Please connect a device", 30, 30);
+    }
   }
 }
