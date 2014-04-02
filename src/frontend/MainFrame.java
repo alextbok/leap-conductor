@@ -75,6 +75,7 @@ public class MainFrame extends Application {
     root.setCenter(visualizer);
     root.setRight(controlPanel);
     root.setBottom(buttonBox);
+    root.setStyle("-fx-background: rgb(200,80,80);");
     primaryStage.setScene(new Scene(root, 1200, 800));
     primaryStage.show();
   }

@@ -42,7 +42,7 @@ public class VisualizerPanel extends Pane {
 
     leapController.addListener(connectListener);
 
-    leapListener.getFingerLocs().addListener(new ChangeListener<Point2D[]>() {
+    leapListener.getHandLocs().addListener(new ChangeListener<Point2D[]>() {
       @Override
       public void changed(ObservableValue observableValue, Point2D[] points1, final Point2D[] points2) {
         Platform.runLater(new Runnable() {
@@ -52,23 +52,23 @@ public class VisualizerPanel extends Pane {
             g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
             // draw fingers
-            g.setFill(Color.DEEPSKYBLUE);
+            g.setFill(Color.AQUAMARINE);
             for (int i = 0; i < points2.length; i++) {
               if (points2[i] == null)
                 break;
 
-              g.fillOval(points2[i].getX(), points2[i].getY(), 30, 30);
+              g.fillOval(points2[i].getX(), points2[i].getY(), 70, 70);
             }
 
             // draw hands
-            Point2D[] handLocs = leapListener.getHandLocs().getValue();
-            g.setFill(Color.AQUAMARINE);
-            if (handLocs != null) {
-              for (int i = 0; i < handLocs.length; i++) {
-                if (handLocs[i] == null)
+            Point2D[] fingerLocs = leapListener.getFingerLocs().getValue();
+            g.setFill(Color.DEEPSKYBLUE);
+            if (fingerLocs != null) {
+              for (int i = 0; i < fingerLocs.length; i++) {
+                if (fingerLocs[i] == null)
                   break;
 
-                g.fillOval(handLocs[i].getX(), handLocs[i].getY(), 70, 70);
+                g.fillOval(fingerLocs[i].getX(), fingerLocs[i].getY(), 30, 30);
               }
             }
           }
