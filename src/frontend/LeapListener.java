@@ -6,10 +6,18 @@ package frontend;
  * @author Arun Varma
  */
 
-import com.leapmotion.leap.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.*;
+import javafx.geometry.Point2D;
+import backend.motion.HandsUpGesture;
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.FingerList;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.HandList;
+import com.leapmotion.leap.Listener;
+import com.leapmotion.leap.Screen;
+import com.leapmotion.leap.Vector;
 
 public class LeapListener extends Listener {
   private ObjectProperty<Point2D[]> handLocs;
@@ -31,6 +39,10 @@ public class LeapListener extends Listener {
   @Override
   public void onFrame(Controller controller) {
     Frame frame = controller.frame();
+    
+    if(HandsUpGesture.isDetected(controller)) {
+    	System.out.println("Hands up!");
+    }
 
     if (!frame.hands().isEmpty()) {
       Screen screen = controller.locatedScreens().get(0);
