@@ -6,14 +6,19 @@ package frontend;
  * @auther Arun Varma
  */
 
-import com.leapmotion.leap.*;
-import javafx.application.*;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.*;
-import javafx.scene.canvas.*;
-import javafx.beans.value.*;
-import javafx.geometry.*;
-import javafx.scene.paint.*;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Gesture;
+import com.leapmotion.leap.Listener;
 
 public class VisualizerPanel extends Pane {
   private LeapListener leapListener;
@@ -53,22 +58,22 @@ public class VisualizerPanel extends Pane {
 
             // draw fingers
             g.setFill(Color.AQUAMARINE);
-            for (int i = 0; i < points2.length; i++) {
-              if (points2[i] == null)
+            for (Point2D element : points2) {
+              if (element == null)
                 break;
 
-              g.fillOval(points2[i].getX(), points2[i].getY(), 70, 70);
+              g.fillOval(element.getX(), element.getY(), 70, 70);
             }
 
             // draw hands
             Point2D[] fingerLocs = leapListener.getFingerLocs().getValue();
             g.setFill(Color.DEEPSKYBLUE);
             if (fingerLocs != null) {
-              for (int i = 0; i < fingerLocs.length; i++) {
-                if (fingerLocs[i] == null)
+              for (Point2D fingerLoc : fingerLocs) {
+                if (fingerLoc == null)
                   break;
 
-                g.fillOval(fingerLocs[i].getX(), fingerLocs[i].getY(), 30, 30);
+                g.fillOval(fingerLoc.getX(), fingerLoc.getY(), 30, 30);
               }
             }
           }
@@ -86,6 +91,9 @@ public class VisualizerPanel extends Pane {
       g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
       g.setFill(Color.BROWN);
       g.fillText("Device connected", 30, 30);
+      
+      // added by ben temproarily
+      controller.enableGesture(Gesture.Type.TYPE_SWIPE);
     }
 
     @Override

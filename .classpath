@@ -8,5 +8,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/joal.jar" sourcepath="lib/joal.jar"/>
+	<classpathentry kind="lib" path="lib/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/joal-natives-macosx-universal.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
