@@ -6,24 +6,20 @@ package frontend;
  * @auther Arun Varma
  */
 
+import frontend.audiovisualizer.ParticleField;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.value.*;
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.canvas.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
-import com.leapmotion.leap.Controller;
-import com.leapmotion.leap.Gesture;
-import com.leapmotion.leap.Listener;
+import com.leapmotion.leap.*;
 
 public class VisualizerPanel extends Pane {
   private LeapListener leapListener;
   private ConnectListener connectListener;
   private Controller leapController;
+  private ParticleField;
   private AnchorPane root;
   private Canvas canvas;
   private GraphicsContext g;
