@@ -21,7 +21,7 @@ public class VisualizerPanel extends JPanel {
   private List<Color> colors;
   private ParticleField particleField;
   private int trailSize, newRadius;
-  private boolean sizeChange;
+  private boolean sizeChange, smaller;
 
   /**
    * VisualizerPanel
@@ -61,13 +61,19 @@ public class VisualizerPanel extends JPanel {
     ParticleCircle circle = particleField.getCircle();
     if (sizeChange) {
       newRadius = circle.randomRadius();
+
+      if (newRadius > circle.getRadius())
+        smaller = true;
+      else
+        smaller = false;
+
       sizeChange = false;
     }
     else {
-      if (circle.getRadius() < newRadius)
-        circle.setRadius(circle.getRadius() + 1);
-      else if (circle.getRadius() > newRadius)
-        circle.setRadius(circle.getRadius() - 1);
+      if (circle.getRadius() < newRadius && smaller)
+        circle.setRadius(circle.getRadius() + 20);
+      else if (circle.getRadius() > newRadius && (!smaller))
+        circle.setRadius(circle.getRadius() - 20);
       else
         sizeChange = true;
     }
