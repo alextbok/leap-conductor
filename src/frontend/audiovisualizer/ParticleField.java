@@ -88,13 +88,13 @@ public class ParticleField {
         int quadrant = quadrant(point);
 
         if (quadrant == 1)
-          return new Point2D.Double(point.getX() + 0.1, point.getY() + slope);
+          return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
         else if (quadrant == 2)
-          return new Point2D.Double(point.getX() - 0.1, point.getY() + slope);
+          return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
         else if (quadrant == 3)
-          return new Point2D.Double(point.getX() - 0.1, point.getY() + slope);
+          return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
         else
-          return new Point2D.Double(point.getX() + 0.1, point.getY() + slope);
+          return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
       }
     }
 
@@ -106,17 +106,17 @@ public class ParticleField {
       else if (preset == 2) {
         int slopeX = (int) point.getX() - (width / 2);
         int slopeY = (height / 2) - (int) point.getY();
-        slope = (slopeX * slopeY) / 50000;
+        slope = (slopeX * slopeY) / 20000;
         int quadrant = quadrant(point);
 
         if (quadrant == 1)
-          return new Point2D.Double(point.getX() + 1, point.getY() + slope);
+          return new Point2D.Double(point.getX() + 0.5, point.getY() - slope);
         else if (quadrant == 2)
-          return new Point2D.Double(point.getX() - 1, point.getY() + slope);
+          return new Point2D.Double(point.getX() - 0.5, point.getY() + slope);
         else if (quadrant == 3)
-          return new Point2D.Double(point.getX() - 1, point.getY() + slope);
+          return new Point2D.Double(point.getX() - 0.5, point.getY() + slope);
         else
-          return new Point2D.Double(point.getX() + 1, point.getY() + slope);
+          return new Point2D.Double(point.getX() + 0.5, point.getY() - slope);
       }
     }
 
