@@ -20,7 +20,7 @@ public class VisualizerPanel extends JPanel {
   private Controller leapController;
   private List<Color> colors;
   private ParticleField particleField;
-  private int trailSize, preset;
+  private int trailSize, newRadius;
   private boolean sizeChange;
 
   /**
@@ -35,7 +35,6 @@ public class VisualizerPanel extends JPanel {
     leapController.addListener(leapListener);
 
     this.trailSize = trailSize;
-    this.preset = preset;
 
     // add particle field to panel
     colors = Collections.synchronizedList(new ArrayList<Color>());
@@ -43,7 +42,7 @@ public class VisualizerPanel extends JPanel {
     colors.add(Color.WHITE);
     particleField = new ParticleField(colors, preset, particles, trailSize, (int) width, (int) height);
 
-    sizeChange = false;
+    sizeChange = true;
   }
 
   /**
@@ -59,13 +58,19 @@ public class VisualizerPanel extends JPanel {
     particleField.move();
 
     // circle size
-    /*if (sizeChange) {
-      particleField.getCircle().randomRadius();
+    ParticleCircle circle = particleField.getCircle();
+    if (sizeChange) {
+      newRadius = circle.randomRadius();
       sizeChange = false;
     }
     else {
-      if (particleField.getCircle().getRadius() < )
-    }*/
+      if (circle.getRadius() < newRadius)
+        circle.setRadius(circle.getRadius() + 1);
+      else if (circle.getRadius() > newRadius)
+        circle.setRadius(circle.getRadius() - 1);
+      else
+        sizeChange = true;
+    }
 
     // paint hands
     List<Point2D> hands = leapListener.getHandLocs();
@@ -103,7 +108,10 @@ public class VisualizerPanel extends JPanel {
           break;
         }
 
-        g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
+        if (particleField.isInCircle(p1))
+          g2.fillOval((int) p1.getX(), (int) p1.getY(), 1, 1);
+        else
+          g2.fillOval((int) p1.getX(), (int) p1.getY(), 2, 2);
       }
     }
 

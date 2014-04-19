@@ -12,25 +12,21 @@ public class ParticleCircle {
 
   /**
    * ParticleCircle
-   * @param initRadius
+   * @param panelWidth
+   * @param panelHeight
    */
-  public ParticleCircle(int initRadius) {
-    radius = initRadius;
-    lowerBound = initRadius / 4;
-    upperBound = initRadius * 2;
+  public ParticleCircle(int panelWidth, int panelHeight) {
+    radius = Math.min(panelWidth, panelHeight) / 4;
+    lowerBound = Math.min(panelWidth, panelHeight) / 6;
+    upperBound = Math.min(panelWidth, panelHeight) / 3;
   }
 
   /**
    * randomRadius
    * generates a random radius for the circle
    */
-  public void randomRadius() {
-    int newRadius;
-    do {
-      newRadius = (int) (Math.random() * upperBound);
-    } while (lowerBound <= newRadius && newRadius <= upperBound);
-
-    radius = newRadius;
+  public int randomRadius() {
+    return (int) (Math.random() * upperBound) + 50;
   }
 
   /**

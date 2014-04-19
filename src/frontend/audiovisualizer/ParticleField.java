@@ -31,7 +31,7 @@ public class ParticleField {
     this.width = width;
     this.height = height;
     this.preset = preset;
-    circle = new ParticleCircle(width / 10);
+    circle = new ParticleCircle(width, height);
 
     generateParticles(initParticles, initTrailSize);
   }
@@ -88,13 +88,16 @@ public class ParticleField {
         int quadrant = quadrant(point);
 
         if (quadrant == 1)
-          return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
+          return new Point2D.Double(point.getX() + 0.03, point.getY() - slope);
         else if (quadrant == 2)
-          return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
+          return new Point2D.Double(point.getX() - 0.03, point.getY() + slope);
         else if (quadrant == 3)
-          return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
+          return new Point2D.Double(point.getX() - 0.03, point.getY() + slope);
         else
-          return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
+          return new Point2D.Double(point.getX() + 0.03, point.getY() - slope);
+      }
+      else if (preset == 3) {
+        ;
       }
     }
 
@@ -117,6 +120,9 @@ public class ParticleField {
           return new Point2D.Double(point.getX() - 0.5, point.getY() + slope);
         else
           return new Point2D.Double(point.getX() + 0.5, point.getY() - slope);
+      }
+      else if (preset == 3) {
+        ;
       }
     }
 
