@@ -14,6 +14,7 @@ public class ParticleField {
   private List<Particle> particles;
   private List<Color> colors;
   private int width, height;
+  private int preset;
   private ParticleCircle circle;
 
   /**
@@ -24,12 +25,13 @@ public class ParticleField {
    * @param width
    * @param height
    */
-  public ParticleField(List<Color> colors, int initParticles, int initTrailSize, int width, int height) {
+  public ParticleField(List<Color> colors, int preset, int initParticles, int initTrailSize, int width, int height) {
     particles = new ArrayList<>();
     this.colors = colors;
     this.width = width;
     this.height = height;
-    circle = new ParticleCircle(width / 5);
+    this.preset = preset;
+    circle = new ParticleCircle(width / 10);
 
     generateParticles(initParticles, initTrailSize);
   }
@@ -60,16 +62,33 @@ public class ParticleField {
    * @return a randomly generated color
    */
   public Color randomColor() {
-    int rand = (int) (Math.random() * (colors.size() - 1));
+    int rand = (int) (Math.random() * colors.size());
     return colors.get(rand);
   }
-
   /**
    * velocityVector
    * @return the given point's new position, according to the velocity vector
    */
   public Point2D velocityVector(Point2D point) {
-    return new Point2D.Double(point.getX() + 5, point.getY() - 10);
+    int centerX = width / 2;
+    int centerY = height / 2;
+    int slope = (int) ((point.getY() - centerY) / (point.getX() - centerX));
+
+    // define different velocities for particles contained within and outside circle
+    if (isInCircle(point)) {
+      if (preset == 1)
+        return new Point2D.Double(point.getX() + 1, point.getY() + slope);
+      else if (preset == 2)
+        return new Point2D.Double(point.getX() + 1, Math.pow(point.getX(), 2));
+    }
+
+    else {
+      if (preset == 1)
+        return new Point2D.Double(point.getX() + 1, point.getY() + (slope * 5));
+      else if (preset == 2)
+        return new Point2D.Double(point.getX() + 1, Math.pow(point.getX(), 2));
+    }
+    return null;
   }
 
   /**
@@ -84,10 +103,32 @@ public class ParticleField {
   }
 
   /**
+   * isInCircle
+   * @return true if the given particle is in circle, false otherwise
+   */
+  public boolean isInCircle(Point2D point) {
+    double centerX = width / 2;
+    double centerY = height / 2;
+
+    if (Point2D.distance(centerX, centerY, point.getX(), point.getY()) < circle.getRadius())
+      return true;
+    else
+      return false;
+  }
+
+  /**
    * getParticles
    * @return particles
    */
   public List<Particle> getParticles() {
     return particles;
+  }
+
+  /**
+   * getCircle
+   * @return circle
+   */
+  public ParticleCircle getCircle() {
+    return circle;
   }
 }

@@ -54,4 +54,12 @@ public class Particle {
   public List<Point2D> getTrail() {
     return trail;
   }
+
+  /**
+   * getColor
+   * @return
+   */
+  public Color getColor() {
+    return color;
+  }
 }

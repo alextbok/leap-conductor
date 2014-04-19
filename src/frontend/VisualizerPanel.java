@@ -6,89 +6,122 @@ package frontend;
  * @auther Arun Varma
  */
 
-import frontend.audiovisualizer.ParticleField;
-import javafx.application.Platform;
-import javafx.beans.value.*;
-import javafx.geometry.Point2D;
-import javafx.scene.canvas.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import frontend.audiovisualizer.*;
 import com.leapmotion.leap.*;
+import javax.swing.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.geom.*;
+import java.util.*;
 
-public class VisualizerPanel extends Pane {
+public class VisualizerPanel extends JPanel {
   private LeapListener leapListener;
-  private ConnectListener connectListener;
   private Controller leapController;
-  private ParticleField;
-  private AnchorPane root;
-  private Canvas canvas;
-  private GraphicsContext g;
+  private List<Color> colors;
+  private ParticleField particleField;
+  private int trailSize, preset;
+  private boolean sizeChange;
 
   /**
    * VisualizerPanel
    */
-  public VisualizerPanel(double width, double height) {
+  public VisualizerPanel(int particles, int trailSize, int preset, double width, double height) {
+    setBackground(Color.DARK_GRAY);
+
     // set up controller and listener
     leapController = new Controller();
     leapListener = new LeapListener();
-    connectListener = new ConnectListener();
     leapController.addListener(leapListener);
 
-    // set up canvas, add to panel
-    root = new AnchorPane();
-    canvas = new Canvas(width, height);
-    g = canvas.getGraphicsContext2D();
-    root.getChildren().add(canvas);
-    getChildren().add(root);
+    this.trailSize = trailSize;
+    this.preset = preset;
 
-    leapController.addListener(connectListener);
+    // add particle field to panel
+    colors = Collections.synchronizedList(new ArrayList<Color>());
+    colors.add(Color.RED);
+    colors.add(Color.WHITE);
+    particleField = new ParticleField(colors, preset, particles, trailSize, (int) width, (int) height);
 
-    leapListener.getHandLocs().addListener(new ChangeListener<Point2D[]>() {
-      @Override
-      public void changed(ObservableValue observableValue, Point2D[] points1, final Point2D[] points2) {
-        Platform.runLater(new Runnable() {
-          @Override
-          public void run() {
-            // reset canvas
-            g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    sizeChange = false;
+  }
 
-            // draw fingers
-            g.setFill(Color.AQUAMARINE);
-            for (Point2D element : points2) {
-              if (element == null)
-                break;
+  /**
+   * paintComponent
+   * @param g
+   */
+  @Override
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2 = (Graphics2D) g;
 
-              g.fillOval(element.getX(), element.getY(), 70, 70);
-            }
+    // update particle positions
+    particleField.move();
 
-            // draw hands
-            Point2D[] fingerLocs = leapListener.getFingerLocs().getValue();
-            g.setFill(Color.DEEPSKYBLUE);
-            if (fingerLocs != null) {
-              for (Point2D fingerLoc : fingerLocs) {
-                if (fingerLoc == null)
-                  break;
+    // circle size
+    /*if (sizeChange) {
+      particleField.getCircle().randomRadius();
+      sizeChange = false;
+    }
+    else {
+      if (particleField.getCircle().getRadius() < )
+    }*/
 
-                g.fillOval(fingerLoc.getX(), fingerLoc.getY(), 30, 30);
-              }
-            }
-          }
-        });
+    // paint hands
+    List<Point2D> hands = leapListener.getHandLocs();
+    if (hands != null) {
+      for (Point2D hand : hands) {
+        g2.setColor(new Color(127, 255, 212));
+        g2.fillOval((int) hand.getX(), (int) hand.getY(), 70, 70);
       }
-    });
+    }
+
+    // paint fingers
+    List<Point2D> fingers = leapListener.getFingerLocs();
+    if (fingers != null) {
+      for (Point2D finger : fingers) {
+        g2.setColor(new Color(0, 104, 139));
+        g2.fillOval((int) finger.getX(), (int) finger.getY(), 30, 30);
+      }
+    }
+
+    // paint particles for audio visualizer
+    List<Particle> particles = particleField.getParticles();
+    int num = 0;
+    for (int i = 0; i < particles.size(); i++) {
+      Particle particle = particles.get(i);
+      g2.setColor(particle.getColor());
+
+      List<Point2D> points = particle.getTrail();
+      for (int j = 0; j < points.size() - 1; j++) {
+        Point2D p1 = points.get(j);
+        Point2D p2 = points.get(j + 1);
+
+        if (p1.getX() < 0 || p1.getX() > getWidth() || p1.getY() < 0 || p1.getY() > getHeight()) {
+          particles.remove(i);
+          num++;
+          break;
+        }
+
+        g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
+      }
+    }
+
+    particleField.generateParticles(num, trailSize);
+    repaint();
   }
 
   /**
    * ConnectListener
    */
-  public class ConnectListener extends Listener {
+  /*public class ConnectListener extends Listener {
     @Override
     public void onConnect(Controller controller) {
       g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
       g.setFill(Color.BROWN);
       g.fillText("Device connected", 30, 30);
-      
-      // added by ben temproarily
+
+      // added by ben temporarily
       controller.enableGesture(Gesture.Type.TYPE_SWIPE);
     }
 
@@ -98,5 +131,5 @@ public class VisualizerPanel extends Pane {
       g.setFill(Color.BROWN);
       g.fillText("Please connect a device", 30, 30);
     }
-  }
+  }*/
 }
