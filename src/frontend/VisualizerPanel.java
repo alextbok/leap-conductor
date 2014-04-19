@@ -98,20 +98,17 @@ public class VisualizerPanel extends JPanel {
       g2.setColor(particle.getColor());
 
       List<Point2D> points = particle.getTrail();
-      for (int j = 0; j < points.size() - 1; j++) {
-        Point2D p1 = points.get(j);
-        Point2D p2 = points.get(j + 1);
-
-        if (p1.getX() < 0 || p1.getX() > getWidth() || p1.getY() < 0 || p1.getY() > getHeight()) {
+      for (Point2D point : points) {
+        if (point.getX() < 0 || point.getX() > getWidth() || point.getY() < 0 || point.getY() > getHeight()) {
           particles.remove(i);
           num++;
           break;
         }
 
-        if (particleField.isInCircle(p1))
-          g2.fillOval((int) p1.getX(), (int) p1.getY(), 1, 1);
+        if (particleField.isInCircle(point))
+          g2.fillOval((int) point.getX(), (int) point.getY(), 1, 1);
         else
-          g2.fillOval((int) p1.getX(), (int) p1.getY(), 2, 2);
+          g2.fillOval((int) point.getX(), (int) point.getY(), 2, 2);
       }
     }
 

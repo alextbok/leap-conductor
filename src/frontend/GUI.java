@@ -23,7 +23,7 @@ public class GUI {
     gui.setSize(new Dimension(1200, 700));
 
     // set up panels
-    visualizerPanel = new VisualizerPanel(5000, 3, 2, gui.getWidth(), gui.getHeight());
+    visualizerPanel = new VisualizerPanel(5000, 2, 2, gui.getWidth(), gui.getHeight());
 
     // add components
     gui.add(visualizerPanel, BorderLayout.CENTER);
