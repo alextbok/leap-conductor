@@ -1,40 +1,29 @@
 package backend.motion;
 
 import com.leapmotion.leap.Controller;
-import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.HandList;
 
 public class HandsUpGesture {
 
 	public static boolean isDetected(Controller controller) {
-		//System.out.println(controller.frame());
-		HandList hands = controller.frame().hands();
+		controller.frame().gestures();
 		
-		if (!hands.isEmpty()){
+		HandList hands = controller.frame().hands();
+		HandList prevHands = controller.frame(1).hands();
+		
+		if (!hands.isEmpty() && !prevHands.isEmpty()){
 			Hand rightHand = hands.rightmost();
+			Hand prevRight = prevHands.rightmost();
 			
-			//System.out.println("Y of palm is : " + rightHand.palmPosition().getY());
+			float dif = rightHand.stabilizedPalmPosition().getY() - prevRight.stabilizedPalmPosition().getY();
 			
-			
-			
-			float dif = rightHand.sphereCenter().getY() - rightHand.stabilizedPalmPosition().getY();
-			
-			//System.out.println("Difference is : " + dif);
-			//System.out.println("Number of fingers detected is " + rightHand.fingers().count());
+			System.out.println("Difference is : " + dif);
 			
 			int numFingers = rightHand.fingers().count();
-			
-			if (rightHand.sphereCenter().getY() > rightHand.stabilizedPalmPosition().getY() && numFingers > 2){
-				//System.out.println("Hand facing up!");
-				Frame toCompareTo = controller.frame(50);
-				
-				if (rightHand.stabilizedPalmPosition().getY() - toCompareTo.hands().rightmost().stabilizedPalmPosition().getY() > 115){
-					if (toCompareTo.timestamp() - controller.frame().timestamp() < 1000){
-					return true;
-					}
-				}
-				
+			System.out.println(numFingers);
+			if(dif >= 3 && numFingers >= 3) {
+				return true;
 			}
 		}
 		return false;
