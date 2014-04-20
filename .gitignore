@@ -3,3 +3,8 @@
 *.idea
 out/*
 *.DS_STORE
+.classpath
+.project
+.classpath
+
+.project
