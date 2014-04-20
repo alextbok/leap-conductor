@@ -1,35 +1,43 @@
 package frontend;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+
+import backend.audio.SongApp;
+
 /**
  * GUI
- * @author Arun Varma
- * a graphical user interface for the leap conductor
+ * Top level JFrame
  */
 
-import java.awt.*;
-import javax.swing.*;
 
-public class GUI {
-  private JFrame gui;
-  private VisualizerPanel visualizerPanel;
+public class GUI extends JFrame{
+	
+  private VisualizerPanel _visualizerPanel;
+  private SongPanel _songPanel;
+  
+  public static final int WIDTH = 1300;
+  public static final int HEIGHT = 700;
+  
+  public GUI(SongApp songApp) {
+	  
+	    // set up frame
+	    super("Leap Conductor");
+	    this.setSize(new Dimension(WIDTH, HEIGHT));
 
-  /*
-   * run
-   * runs the graphical user interface
-   */
-  public void run() {
-    // set up frame
-    gui = new JFrame("Leap Conductor");
-    gui.setSize(new Dimension(1200, 700));
-
-    // set up panels
-    visualizerPanel = new VisualizerPanel(5000, 3, 2, gui.getWidth(), gui.getHeight());
-
-    // add components
-    gui.add(visualizerPanel, BorderLayout.CENTER);
-
-    gui.setResizable(false);
-    gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    gui.setVisible(true);
+	    // set up panels
+	    _visualizerPanel = new VisualizerPanel(5000, 3, 2);
+	    _songPanel = new SongPanel(songApp);
+	    
+	    // add components
+	    this.add(_visualizerPanel, BorderLayout.CENTER);
+	    this.add(_songPanel, BorderLayout.NORTH);
+	    
+	    this.setResizable(false);
+	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    this.setVisible(true);
   }
+  
 }

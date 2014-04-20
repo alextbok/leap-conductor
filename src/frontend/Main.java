@@ -1,5 +1,7 @@
 package frontend;
 
+import backend.audio.SongApp;
+
 /**
  * Main
  * main class for running leap conductor
@@ -8,7 +10,6 @@ package frontend;
 
 public class Main {
   public static void main(String[] args) {
-    GUI gui = new GUI();
-    gui.run();
+    new GUI(new SongApp(args[0]));
   }
 }

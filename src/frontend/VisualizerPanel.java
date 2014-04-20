@@ -26,7 +26,7 @@ public class VisualizerPanel extends JPanel {
   /**
    * VisualizerPanel
    */
-  public VisualizerPanel(int particles, int trailSize, int preset, double width, double height) {
+  public VisualizerPanel(int particles, int trailSize, int preset) {
     setBackground(Color.DARK_GRAY);
 
     // set up controller and listener
@@ -40,7 +40,7 @@ public class VisualizerPanel extends JPanel {
     colors = Collections.synchronizedList(new ArrayList<Color>());
     colors.add(Color.RED);
     colors.add(Color.WHITE);
-    particleField = new ParticleField(colors, preset, particles, trailSize, (int) width, (int) height);
+    particleField = new ParticleField(colors, preset, particles, trailSize, GUI.WIDTH, GUI.HEIGHT - 100);
 
     sizeChange = true;
   }
