@@ -7,12 +7,6 @@ import javax.swing.JFrame;
 
 import backend.audio.SongApp;
 
-/**
- * GUI
- * Top level JFrame
- */
-
-
 public class GUI extends JFrame{
 	
   private VisualizerPanel _visualizerPanel;
