@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import backend.audio.SongApp;
+import backend.motion.HandsDownGesture;
 import backend.motion.HandsUpGesture;
 
 import com.leapmotion.leap.Controller;
@@ -42,7 +43,11 @@ public class LeapListener extends Listener {
     Frame frame = controller.frame();
     
     if(HandsUpGesture.isDetected(controller)) {
-    	SongApp.speedUpSong();
+    	SongApp.volumeUp();
+    }
+    
+    if(HandsDownGesture.isDetected(controller)) {
+    	SongApp.volumeDown();
     }
     
     // ADDED BY BEN TEMPROARILY
