@@ -10,6 +10,8 @@ import backend.audio.SongApp;
 
 public class Main {
   public static void main(String[] args) {
-    new GUI(new SongApp(args[0]));
+    new GUI();
+    new SongApp(args[0]);
+    SongApp.playSong();
   }
 }

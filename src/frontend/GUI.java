@@ -15,7 +15,7 @@ public class GUI extends JFrame{
   public static final int WIDTH = 1300;
   public static final int HEIGHT = 700;
   
-  public GUI(SongApp songApp) {
+  public GUI() {
 	  
 	    // set up frame
 	    super("Leap Conductor");
@@ -23,7 +23,7 @@ public class GUI extends JFrame{
 
 	    // set up panels
 	    _visualizerPanel = new VisualizerPanel(5000, 3, 2);
-	    _songPanel = new SongPanel(songApp);
+	    _songPanel = new SongPanel();
 	    
 	    // add components
 	    this.add(_visualizerPanel, BorderLayout.CENTER);
