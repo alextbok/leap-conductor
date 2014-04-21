@@ -58,11 +58,12 @@ public class VisualizerPanel extends JPanel {
     particleField.move();
 
     // circle size
-    ParticleCircle circle = particleField.getCircle();
-    if (sizeChange) {
-      newRadius = circle.randomRadius();
+    ParticleCircle leftCircle = particleField.getLeftCircle();
+    ParticleCircle rightCircle = particleField.getRightCircle();
+    /*if (sizeChange) {
+      newRadius = leftCircle.randomRadius();
 
-      if (newRadius > circle.getRadius())
+      if (newRadius > leftCircle.getRadius())
         smaller = true;
       else
         smaller = false;
@@ -70,20 +71,34 @@ public class VisualizerPanel extends JPanel {
       sizeChange = false;
     }
     else {
-      if (circle.getRadius() < newRadius && smaller)
-        circle.setRadius(circle.getRadius() + 20);
-      else if (circle.getRadius() > newRadius && (!smaller))
-        circle.setRadius(circle.getRadius() - 20);
+      if (leftCircle.getRadius() < newRadius && smaller) {
+        leftCircle.setRadius(leftCircle.getRadius() + 10);
+        rightCircle.setRadius(rightCircle.getRadius() + 10);
+      }
+      else if (leftCircle.getRadius() > newRadius && (!smaller)) {
+        leftCircle.setRadius(leftCircle.getRadius() - 10);
+        rightCircle.setRadius(rightCircle.getRadius() - 10);
+      }
       else
         sizeChange = true;
-    }
+    }*/
 
     // paint hands
     List<Point2D> hands = leapListener.getHandLocs();
     if (hands != null) {
-      for (Point2D hand : hands) {
-        g2.setColor(new Color(127, 255, 212));
-        g2.fillOval((int) hand.getX(), (int) hand.getY(), 70, 70);
+      if (hands.size() == 0) {
+        leftCircle.setPos(getWidth() / 2, getHeight() / 2);
+        rightCircle.setPos(getWidth() / 2, getHeight() / 2);
+      }
+      else if (hands.size() == 1) {
+        Point2D pt = hands.get(0);
+        leftCircle.setPos(pt.getX(), pt.getY());
+      }
+      else {
+        Point2D pt1 = hands.get(0);
+        Point2D pt2 = hands.get(1);
+        leftCircle.setPos(pt1.getX(), pt1.getY());
+        rightCircle.setPos(pt2.getX(), pt2.getY());
       }
     }
 
@@ -111,7 +126,7 @@ public class VisualizerPanel extends JPanel {
           break;
         }
 
-        if (particleField.isInCircle(point))
+        if (particleField.getLeftCircle().isInCircle(point) || particleField.getRightCircle().isInCircle(point))
           g2.fillOval((int) point.getX(), (int) point.getY(), 1, 1);
         else
           g2.fillOval((int) point.getX(), (int) point.getY(), 2, 2);

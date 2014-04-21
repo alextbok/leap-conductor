@@ -61,7 +61,7 @@ public class LeapListener extends Listener {
         HandList hands = frame.hands();
         ArrayList<Point2D> handList = new ArrayList<>();
 
-        for (int i = 0; i < hands.count(); i++) {
+        for (int i = 0; i < hands.count() && i < 2; i++) {
           if (hands.get(i).isValid()) {
             Vector intersect = screen.intersect(hands.get(i).palmPosition(), hands.get(i).direction(), true);
             handList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
@@ -79,7 +79,7 @@ public class LeapListener extends Listener {
         FingerList fingers = frame.fingers();
         ArrayList<Point2D> fingerList = new ArrayList<>();
 
-        for (int i = 0; i < fingers.count(); i++) {
+        for (int i = 0; i < fingers.count() && i < 10; i++) {
           if (fingers.get(i).isValid()) {
             Vector intersect = screen.intersect(fingers.get(i).stabilizedTipPosition(), fingers.get(i).direction(), true);
             fingerList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));

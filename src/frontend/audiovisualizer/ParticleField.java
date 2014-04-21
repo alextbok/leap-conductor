@@ -15,7 +15,7 @@ public class ParticleField {
   private List<Color> colors;
   private int width, height;
   private int preset;
-  private ParticleCircle circle;
+  private ParticleCircle leftCircle, rightCircle;
 
   /**
    * ParticleField
@@ -31,7 +31,8 @@ public class ParticleField {
     this.width = width;
     this.height = height;
     this.preset = preset;
-    circle = new ParticleCircle(width, height);
+    leftCircle = new ParticleCircle(width, height);
+    rightCircle = new ParticleCircle(width, height);
 
     generateParticles(initParticles, initTrailSize);
   }
@@ -76,7 +77,7 @@ public class ParticleField {
     int slope;
 
     // define different velocities for particles contained within and outside circle
-    if (isInCircle(point)) {
+    if (leftCircle.isInCircle(point) || rightCircle.isInCircle(point)) {
       if (preset == 1) {
         slope = (int) ((point.getY() - centerY) / (point.getX() - centerX));
         return new Point2D.Double(point.getX() + 1, point.getY() + slope);
@@ -95,9 +96,6 @@ public class ParticleField {
           return new Point2D.Double(point.getX() - 0.03, point.getY() + slope);
         else
           return new Point2D.Double(point.getX() + 0.03, point.getY() - slope);
-      }
-      else if (preset == 3) {
-        ;
       }
     }
 
@@ -120,9 +118,6 @@ public class ParticleField {
           return new Point2D.Double(point.getX() - 0.5, point.getY() + slope);
         else
           return new Point2D.Double(point.getX() + 0.5, point.getY() - slope);
-      }
-      else if (preset == 3) {
-        ;
       }
     }
 
@@ -156,20 +151,6 @@ public class ParticleField {
   }
 
   /**
-   * isInCircle
-   * @return true if the given particle is in circle, false otherwise
-   */
-  public boolean isInCircle(Point2D point) {
-    double centerX = width / 2;
-    double centerY = height / 2;
-
-    if (Point2D.distance(centerX, centerY, point.getX(), point.getY()) < circle.getRadius())
-      return true;
-    else
-      return false;
-  }
-
-  /**
    * setPreset
    * @param newPreset
    */
@@ -186,10 +167,18 @@ public class ParticleField {
   }
 
   /**
-   * getCircle
-   * @return circle
+   * getLeftCircle
+   * @return leftCircle
    */
-  public ParticleCircle getCircle() {
-    return circle;
+  public ParticleCircle getLeftCircle() {
+    return leftCircle;
+  }
+
+  /**
+   * getRightCircle
+   * @return rightCircle
+   */
+  public ParticleCircle getRightCircle() {
+    return rightCircle;
   }
 }
