@@ -19,7 +19,7 @@ public class ParticleCircle {
    * @param panelHeight
    */
   public ParticleCircle(int panelWidth, int panelHeight) {
-    radius = Math.min(panelWidth, panelHeight) / 4;
+    radius = Math.min(panelWidth, panelHeight) / 7;
     lowerBound = Math.min(panelWidth, panelHeight) / 6;
     upperBound = Math.min(panelWidth, panelHeight) / 3;
     x = panelWidth / 2;

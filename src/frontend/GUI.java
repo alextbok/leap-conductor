@@ -1,28 +1,32 @@
 package frontend;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+/**
+ * GUI
+ * a graphical user interface for the leap conductor
+ * @author Alex Bok
+ */
 
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
+import backend.audio.*;
 
-import backend.audio.SongApp;
-
-public class GUI extends JFrame{
+public class GUI extends JFrame {
 	
   private VisualizerPanel _visualizerPanel;
   private SongPanel _songPanel;
-  
   public static final int WIDTH = 1300;
   public static final int HEIGHT = 700;
   
-  public GUI() {
-	  
+  public GUI(SongApp songApp) {
 	    // set up frame
 	    super("Leap Conductor");
 	    this.setSize(new Dimension(WIDTH, HEIGHT));
 
+        // play song
+        songApp.playSong();
+
 	    // set up panels
-	    _visualizerPanel = new VisualizerPanel(5000, 3, 2);
+	    _visualizerPanel = new VisualizerPanel(songApp, 5000, 3, 2);
 	    _songPanel = new SongPanel();
 	    
 	    // add components
@@ -33,5 +37,4 @@ public class GUI extends JFrame{
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setVisible(true);
   }
-  
 }

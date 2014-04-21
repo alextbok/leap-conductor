@@ -44,7 +44,7 @@ public class SongPanel extends JPanel {
 		this.addKnobs();
 		
 		//get our JPanel to show the way we want
-		this.setPreferredSize(new Dimension(GUI.WIDTH,100));
+		this.setPreferredSize(new Dimension(GUI.WIDTH, 100));
 		this.setBackground(BACKGROUND_COLOR);
 		this.setVisible(true);
 		
@@ -95,11 +95,11 @@ public class SongPanel extends JPanel {
 	private class KnobMouseListener implements MouseListener {
 
 		private Knob _knob;
-		
+
 		public KnobMouseListener(Knob knob) {
 			_knob = knob;
 		}
-		
+
 		@Override
 		public void mouseClicked(MouseEvent e) {}
 
@@ -119,26 +119,27 @@ public class SongPanel extends JPanel {
 	}
 	
 	private class KnobMouseMotionListener implements MouseMotionListener {
-		
+
 		private Knob _knob;
-		
+
 		public KnobMouseMotionListener(Knob knob) {
 			_knob = knob;
 		}
-		
+
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			double rotation = .5*( _mouseDownCoordinates.get(_knob.getText()) - e.getY() );
+			double rotation = 0.5 * (_mouseDownCoordinates.get(_knob.getText()) - e.getY());
 			_knob.rotateImage(rotation);
-			if (_knob.getText().equals("Volume")){
-				System.out.println(rotation/2);
-				SongApp.changeVolume(rotation/2);}
+
+			if (_knob.getText().equals("Volume"))
+				SongApp.changeVolume(rotation / 50);
 			else if (_knob.getText().equals("Speed"))
-				SongApp.changeSpeed(rotation*.001);
+				SongApp.changeSpeed(rotation * 0.001);
+
 			_mouseDownCoordinates.put(_knob.getText(), e.getY());
 			SongPanel.this.repaint();
 		}
-		
+
 		@Override
 		public void mouseMoved(MouseEvent e) {}
 	}

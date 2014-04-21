@@ -6,9 +6,11 @@ package frontend;
  * @auther Arun Varma
  */
 
+import backend.audio.*;
 import frontend.audiovisualizer.*;
 import com.leapmotion.leap.*;
 import javax.swing.*;
+import javafx.scene.media.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -16,6 +18,7 @@ import java.awt.geom.*;
 import java.util.*;
 
 public class VisualizerPanel extends JPanel {
+  private AudioSpectrumListener songListener;
   private LeapListener leapListener;
   private Controller leapController;
   private List<Color> colors;
@@ -26,8 +29,10 @@ public class VisualizerPanel extends JPanel {
   /**
    * VisualizerPanel
    */
-  public VisualizerPanel(int particles, int trailSize, int preset) {
+  public VisualizerPanel(SongApp songApp, int particles, int trailSize, int preset) {
     setBackground(Color.DARK_GRAY);
+
+    songListener = songApp.getMediaPlayer().getAudioSpectrumListener();
 
     // set up controller and listener
     leapController = new Controller();
@@ -43,6 +48,15 @@ public class VisualizerPanel extends JPanel {
     particleField = new ParticleField(colors, preset, particles, trailSize, GUI.WIDTH, GUI.HEIGHT - 100);
 
     sizeChange = true;
+
+    AudioSpectrumListener audioSpectrumListener = new AudioSpectrumListener() {
+      @Override
+      public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
+        if (sizeChange)
+          newRadius = 2 * (50 - (int) magnitudes[4]);
+      }
+    };
+    songApp.getMediaPlayer().setAudioSpectrumListener(audioSpectrumListener);
   }
 
   /**
@@ -58,12 +72,9 @@ public class VisualizerPanel extends JPanel {
     particleField.move();
 
     // circle size
-    ParticleCircle leftCircle = particleField.getLeftCircle();
-    ParticleCircle rightCircle = particleField.getRightCircle();
-    /*if (sizeChange) {
-      newRadius = leftCircle.randomRadius();
-
-      if (newRadius > leftCircle.getRadius())
+    ParticleCircle circle = particleField.getCircle();
+    if (sizeChange) {
+      if (newRadius > circle.getRadius())
         smaller = true;
       else
         smaller = false;
@@ -71,19 +82,17 @@ public class VisualizerPanel extends JPanel {
       sizeChange = false;
     }
     else {
-      if (leftCircle.getRadius() < newRadius && smaller) {
-        leftCircle.setRadius(leftCircle.getRadius() + 10);
-        rightCircle.setRadius(rightCircle.getRadius() + 10);
-      }
-      else if (leftCircle.getRadius() > newRadius && (!smaller)) {
-        leftCircle.setRadius(leftCircle.getRadius() - 10);
-        rightCircle.setRadius(rightCircle.getRadius() - 10);
-      }
+      if (circle.getRadius() < newRadius && smaller)
+        circle.setRadius(circle.getRadius() + 10);
+      else if (circle.getRadius() > newRadius && (!smaller))
+        circle.setRadius(circle.getRadius() - 10);
       else
         sizeChange = true;
-    }*/
+    }
 
     // paint hands
+    ParticleCircle leftCircle = particleField.getLeftCircle();
+    ParticleCircle rightCircle = particleField.getRightCircle();
     List<Point2D> hands = leapListener.getHandLocs();
     if (hands != null) {
       if (hands.size() == 0) {
@@ -106,7 +115,7 @@ public class VisualizerPanel extends JPanel {
     List<Point2D> fingers = leapListener.getFingerLocs();
     if (fingers != null) {
       for (Point2D finger : fingers) {
-        g2.setColor(new Color(0, 104, 139));
+        g2.setColor(new Color(135, 206, 235));
         g2.fillOval((int) finger.getX(), (int) finger.getY(), 30, 30);
       }
     }
@@ -126,7 +135,7 @@ public class VisualizerPanel extends JPanel {
           break;
         }
 
-        if (particleField.getLeftCircle().isInCircle(point) || particleField.getRightCircle().isInCircle(point))
+        if (circle.isInCircle(point) || leftCircle.isInCircle(point) || rightCircle.isInCircle(point))
           g2.fillOval((int) point.getX(), (int) point.getY(), 1, 1);
         else
           g2.fillOval((int) point.getX(), (int) point.getY(), 2, 2);

@@ -1,27 +1,24 @@
 package backend.audio;
 
-import java.io.File;
+/**
+ * SongApp
+ */
 
+import java.io.File;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.*;
 
 public class SongApp {
-
 	private static Media _media;
 	private static MediaPlayer _mediaPlayer;
 	private static String _url;
 	
 	public SongApp(String url) {
-		
 		new JFXPanel();
-		
 		_url = url;
 		_media = new Media(new File(_url).toURI().toString());
 		_mediaPlayer = new MediaPlayer(_media);
 	}
-	
-	/*SONG EFFECTS*/
 	
 	/**
 	 * plays the song
@@ -91,13 +88,12 @@ public class SongApp {
 		if (_mediaPlayer != null)
 			_mediaPlayer.setRate(_mediaPlayer.getRate() + d);
 	}
-	
-	
-	
-	/*public static void main(String[] args) throws MalformedURLException{
-		new SongApp(args[0]);
-		SongApp.playSong();
-	}*/
-	
-	
+
+    /**
+     * getMedia
+     * @return media
+     */
+    public MediaPlayer getMediaPlayer() {
+        return _mediaPlayer;
+    }
 }

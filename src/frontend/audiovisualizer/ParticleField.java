@@ -15,7 +15,7 @@ public class ParticleField {
   private List<Color> colors;
   private int width, height;
   private int preset;
-  private ParticleCircle leftCircle, rightCircle;
+  private ParticleCircle circle, leftCircle, rightCircle;
 
   /**
    * ParticleField
@@ -31,6 +31,7 @@ public class ParticleField {
     this.width = width;
     this.height = height;
     this.preset = preset;
+    circle = new ParticleCircle(width, height);
     leftCircle = new ParticleCircle(width, height);
     rightCircle = new ParticleCircle(width, height);
 
@@ -77,7 +78,7 @@ public class ParticleField {
     int slope;
 
     // define different velocities for particles contained within and outside circle
-    if (leftCircle.isInCircle(point) || rightCircle.isInCircle(point)) {
+    if (circle.isInCircle(point) || leftCircle.isInCircle(point) || rightCircle.isInCircle(point)) {
       if (preset == 1) {
         slope = (int) ((point.getY() - centerY) / (point.getX() - centerX));
         return new Point2D.Double(point.getX() + 1, point.getY() + slope);
@@ -180,5 +181,13 @@ public class ParticleField {
    */
   public ParticleCircle getRightCircle() {
     return rightCircle;
+  }
+
+  /**
+   * getRightCircle
+   * @return rightCircle
+   */
+  public ParticleCircle getCircle() {
+    return circle;
   }
 }
