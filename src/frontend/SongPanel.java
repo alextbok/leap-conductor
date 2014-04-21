@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
+
 import javax.swing.JPanel;
 
 import backend.audio.SongApp;
@@ -129,8 +130,9 @@ public class SongPanel extends JPanel {
 		public void mouseDragged(MouseEvent e) {
 			double rotation = .5*( _mouseDownCoordinates.get(_knob.getText()) - e.getY() );
 			_knob.rotateImage(rotation);
-			if (_knob.getText().equals("Volume"))
-				SongApp.changeVolume(rotation/2);
+			if (_knob.getText().equals("Volume")){
+				System.out.println(rotation/2);
+				SongApp.changeVolume(rotation/2);}
 			else if (_knob.getText().equals("Speed"))
 				SongApp.changeSpeed(rotation*.001);
 			_mouseDownCoordinates.put(_knob.getText(), e.getY());

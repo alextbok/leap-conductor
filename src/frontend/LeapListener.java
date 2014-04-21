@@ -6,16 +6,33 @@ package frontend;
  * @author Arun Varma
  */
 
-import java.awt.geom.*;
-import java.util.List;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.leapmotion.leap.*;
+import backend.audio.SongApp;
+import backend.motion.HandsDownGesture;
+import backend.motion.HandsUpGesture;
+
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.FingerList;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Gesture;
+import com.leapmotion.leap.HandList;
+import com.leapmotion.leap.Listener;
+import com.leapmotion.leap.Screen;
+import com.leapmotion.leap.Vector;
 
 public class LeapListener extends Listener {
   private List<Point2D> handLocs;
   private List<Point2D> fingerLocs;
 
+  @Override
+  public void onConnect(Controller controller) {
+	  System.out.println("connected");
+	  controller.enableGesture(Gesture.Type.TYPE_SWIPE);
+  }
+  
   /**
    * onFrame
    * get location of hands and fingers (if available) and set their values correspondingly
@@ -24,33 +41,45 @@ public class LeapListener extends Listener {
   @Override
   public void onFrame(Controller controller) {
     Frame frame = controller.frame();
-
+    
+    if(HandsUpGesture.isDetected(controller)) {
+    	SongApp.volumeUp();
+    }
+    
+    if(HandsDownGesture.isDetected(controller)) {
+    	SongApp.volumeDown();
+    }
+    
     // ADDED BY BEN TEMPROARILY
-    GestureList gestures = controller.frame().gestures();
-	for (int i = 0; i < gestures.count(); i++) {
-	    Gesture gesture = gestures.get(i);
-	    if(gesture.type().equals(Gesture.Type.TYPE_SWIPE)) {
-
-	    	if (gesture.state().equals(Gesture.State.STATE_STOP)){
-	    		SwipeGesture s = new SwipeGesture(gesture);
-	    		Vector v = s.startPosition().minus(s.position());
-	    		if (Math.abs(v.getX()) > Math.abs(v.getY())){
-	    			if (s.startPosition().getX() > s.position().getX()){
-	    				System.out.println("going left");
-	    			}else {
-	    				System.out.println("going right");
-	    			}
-	    		}else{
-	    			if (s.startPosition().getY() > s.position().getY()){
-	    				System.out.println("going down");
-	    			}else {
-	    				System.out.println("going up");
-	    			}
-	    		}
-	    	}
-
-	    }
-	}
+//    GestureList gestures = controller.frame().gestures();
+//	for (int i = 0; i < gestures.count(); i++) {
+//	    Gesture gesture = gestures.get(i);
+//	    if(gesture.type().equals(Gesture.Type.TYPE_SWIPE)) {
+//
+//	    	if (gesture.state().equals(Gesture.State.STATE_STOP)){
+//	    		SwipeGesture s = new SwipeGesture(gesture);
+//	    		Vector v = s.startPosition().minus(s.position());
+//	    		if (Math.abs(v.getX()) > Math.abs(v.getY())){
+//	    			if (s.startPosition().getX() > s.position().getX()){
+//	    				SongApp.slowDownSong();
+//	    				System.out.println("going left");
+//	    			}else {
+//	    				SongApp.speedUpSong();
+//	    				System.out.println("going right");
+//	    			}
+//	    		}else{
+//	    			if (s.startPosition().getY() > s.position().getY()){
+//	    				SongApp.volumeDown();
+//	    				System.out.println("down");
+//	    			}else {
+//	    				SongApp.volumeUp();
+//	    				System.out.println("up");
+//	    			}
+//	    		}
+//	    	}
+//
+//	    }
+//	}
     // END OF BENS ADDITIONS
 
 

@@ -1,11 +1,7 @@
 package backend.audio;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
-import javax.swing.JFrame;
-
-import frontend.SongPanel;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -48,31 +44,36 @@ public class SongApp {
 	 */
 	public static void speedUpSong() {
 		if (_mediaPlayer != null)
-			_mediaPlayer.setRate(_mediaPlayer.getRate() + .5);
+			_mediaPlayer.setRate(_mediaPlayer.getRate() + 0.01);
 	}
 	
 	/**
 	 * slows down the song
 	 */
 	public static void slowDownSong() {
-		if (_mediaPlayer != null)
-			_mediaPlayer.setRate(_mediaPlayer.getRate() - .5);
+		if (_mediaPlayer != null) {
+			_mediaPlayer.setRate(_mediaPlayer.getRate() - 0.01);
+		}
 	}
 
 	/**
 	 * increases the volume
 	 */
 	public static void volumeUp() {
-		if (_mediaPlayer != null)
-			_mediaPlayer.setVolume(_mediaPlayer.getVolume() + 0.1);
+		if (_mediaPlayer != null) {
+			_mediaPlayer.setVolume(_mediaPlayer.getVolume() + 0.01);
+			if(_mediaPlayer.getVolume() > 1.0) _mediaPlayer.setVolume(1.0);
+		}
 	}
 	
 	/**
 	 * decreases the volume
 	 */
 	public static void volumeDown() {
-		if (_mediaPlayer != null)
-			_mediaPlayer.setVolume(_mediaPlayer.getVolume() - 0.1);
+		if (_mediaPlayer != null) {
+			_mediaPlayer.setVolume(_mediaPlayer.getVolume() - 0.01);
+			if(_mediaPlayer.getVolume() < 0.0) _mediaPlayer.setVolume(0.0);
+		}
 	}
 	
 	/**
@@ -93,10 +94,10 @@ public class SongApp {
 	
 	
 	
-	public static void main(String[] args) throws MalformedURLException{
+	/*public static void main(String[] args) throws MalformedURLException{
 		new SongApp(args[0]);
 		SongApp.playSong();
-	}
+	}*/
 	
 	
 }
