@@ -26,7 +26,7 @@ public class GUI extends JFrame {
         SongApp.playSong();
 
 	    // set up panels
-	    _visualizerPanel = new VisualizerPanel(songApp, 5000, 3, 2);
+	    _visualizerPanel = new VisualizerPanel(songApp, 5000, 3);
 	    _songPanel = new SongPanel();
 	    
 	    // add components

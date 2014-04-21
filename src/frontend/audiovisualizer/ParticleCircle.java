@@ -1,17 +1,17 @@
 package frontend.audiovisualizer;
 
-import java.awt.geom.Point2D;
-
 /**
  * ParticleCircle
  * defines a circle in the particle field for the audio visualizer
  * @author Arun Varma
  */
 
+import java.awt.geom.Point2D;
+
 public class ParticleCircle {
   private double x, y;
   private int radius;
-  private int lowerBound, upperBound;
+  private int upperBound;
 
   /**
    * ParticleCircle
@@ -20,7 +20,6 @@ public class ParticleCircle {
    */
   public ParticleCircle(int panelWidth, int panelHeight) {
     radius = Math.min(panelWidth, panelHeight) / 10;
-    lowerBound = Math.min(panelWidth, panelHeight) / 6;
     upperBound = Math.min(panelWidth, panelHeight) / 3;
     x = panelWidth / 2;
     y = panelHeight / 2;
