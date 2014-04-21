@@ -17,7 +17,7 @@ public class MovementListener extends Listener {
 		System.out.println("connected");
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
 	}
-	
+
 	@Override
 	public void onFrame(Controller controller) {
 		GestureList gestures = controller.frame().gestures();

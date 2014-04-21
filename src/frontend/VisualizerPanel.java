@@ -53,7 +53,7 @@ public class VisualizerPanel extends JPanel {
       @Override
       public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         if (sizeChange)
-          newRadius = 2 * (50 - (int) magnitudes[4]);
+          newRadius = 2 * (40 - (int) magnitudes[0]);
       }
     };
     songApp.getMediaPlayer().setAudioSpectrumListener(audioSpectrumListener);
@@ -115,8 +115,13 @@ public class VisualizerPanel extends JPanel {
     List<Point2D> fingers = leapListener.getFingerLocs();
     if (fingers != null) {
       for (Point2D finger : fingers) {
-        g2.setColor(new Color(135, 206, 235));
-        g2.fillOval((int) finger.getX(), (int) finger.getY(), 30, 30);
+        int x = (int) finger.getX();
+        int y = (int) finger.getY();
+
+        if (x > 0 && y > 0) {
+          g2.setColor(new Color(135, 206, 235));
+          g2.fillOval((int) finger.getX(), (int) finger.getY(), 30, 30);
+        }
       }
     }
 
