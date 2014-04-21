@@ -21,13 +21,13 @@ import backend.audio.SongApp;
 public class SongPanel extends JPanel {
 
 	/*Store this in a variable so our Knobs can access same color*/
-	public static final Color BACKGROUND_COLOR = new Color(0,128,135);
+	public static final Color BACKGROUND_COLOR = new Color(214,212,210);
 	
 	/*Volume control knob*/
-	public static final Knob knobVolume = new Knob("Volume",560,5);
+	public static final Knob knobVolume = new Knob("Volume",560,30);
 	
 	/*Speed control knob*/
-	public static final Knob knobSpeed = new Knob("Speed",640,5);
+	public static final Knob knobSpeed = new Knob("Speed",640,30);
 	
 	/*Keeps track of mouse-down y-coordinates for the MouseDraggedEvent*/
 	private HashMap<String, Integer> _mouseDownCoordinates;
@@ -41,7 +41,7 @@ public class SongPanel extends JPanel {
 		
 		//add our knobs and make their map
 		_mouseDownCoordinates = new HashMap<String, Integer>();
-		this.addKnobs();
+	this.addKnobs();
 		
 		//get our JPanel to show the way we want
 		this.setPreferredSize(new Dimension(GUI.WIDTH, 100));
@@ -57,15 +57,15 @@ public class SongPanel extends JPanel {
         
         //rotate brush around volume knob by its current angle before painting it
         double angleVol = Math.toRadians(knobVolume.getAngle());
-        brush.rotate(angleVol, Knob.WIDTH/2 + knobVolume.getX(), Knob.HEIGHT/2 + knobVolume.getY());
-        brush.drawImage(Knob.getImage(), knobVolume.getX(), 5, null);
-        brush.rotate(-angleVol, Knob.WIDTH/2 + knobVolume.getX() , Knob.HEIGHT/2 + knobVolume.getY());
+        brush.rotate(angleVol, Knob.WIDTH/2 + knobVolume.getX() + 7, Knob.HEIGHT/2 + knobVolume.getY() + 10);
+        brush.drawImage(Knob.getImage(), knobVolume.getX() + 7, knobVolume.getY() + 10, null);
+        brush.rotate(-angleVol, Knob.WIDTH/2 + knobVolume.getX() + 7, Knob.HEIGHT/2 + knobVolume.getY() + 10);
     
         //rotate brush around speed knob by its current angle before painting it        
         double angleSpeed = Math.toRadians(knobSpeed.getAngle());
-        brush.rotate(angleSpeed, Knob.WIDTH/2 + knobSpeed.getX(), Knob.HEIGHT/2 + knobSpeed.getY());
-        brush.drawImage(Knob.getImage(), knobSpeed.getX(), 5, null);
-        brush.rotate(-angleSpeed, Knob.WIDTH/2 + knobSpeed.getX(), Knob.HEIGHT/2 + knobSpeed.getY());
+        brush.rotate(angleSpeed, Knob.WIDTH/2 + knobSpeed.getX() + 7, Knob.HEIGHT/2 + knobSpeed.getY() + 10);
+        brush.drawImage(Knob.getImage(), knobSpeed.getX() + 7, knobSpeed.getY() + 10, null);
+        brush.rotate(-angleSpeed, Knob.WIDTH/2 + knobSpeed.getX() + 7, Knob.HEIGHT/2 + knobSpeed.getY() + 10);
     }
 
     /**

@@ -3,15 +3,15 @@ package frontend;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.Font;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 /**
  * Knob class
@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Knob extends JPanel {
 
-	/*Dimension of picture (hard-coded because we cropped the picture file to 75x75 pixels)*/
+	/*Dimension of picture - not equal to dimension of panel (hard-coded because we cropped the picture file to 75x75 pixels)*/
 	public static final int WIDTH = 75;
 	public static final int HEIGHT = 75;
 	
@@ -33,11 +33,8 @@ public class Knob extends JPanel {
 	/*Current angle of image in degrees*/
 	private double _angle;
 	
-	/*Label text associated with this knob*/
+	/*Title text (indicative of instance's function) associated with this knob*/
 	private String _text;
-	
-	/*Position of object - used for rotation*/
-	private int _x, _y;
 	
 	/**
 	 * Constructor
@@ -45,12 +42,17 @@ public class Knob extends JPanel {
 	public Knob(String s, int x, int y) {
 		_angle = 0.0;
 		_text = s;
-		_x = x;
-	   	_y = y;
+	   	
+		//create border and its title font
+		TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(192,193,194), 2, true), _text);
+		border.setTitleFont(new Font("Courier", Font.BOLD, 12));
+		border.setTitleColor(new Color(135,136,138));
+	   	this.setBorder(border);
+	   	
+	   	//tweak size and look of panel
 		this.setLayout(new BorderLayout());
-		this.add(new JLabel(_text), BorderLayout.SOUTH);
-		this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
-		this.setMaximumSize(new Dimension(WIDTH,HEIGHT));
+		this.setPreferredSize(new Dimension(WIDTH + 15,HEIGHT + 15));
+		this.setMaximumSize(new Dimension(WIDTH + 15,HEIGHT + 15));
 		this.setBackground(new Color(0f,0f,0f,0f)); //transparent color
 		this.setVisible(true);
 	}
@@ -104,25 +106,11 @@ public class Knob extends JPanel {
 	}
 	
 	/**
-	 * Provides access to JLabel text
+	 * Provides access to panel title text
 	 * Used for hashing in SongPanel
 	 */
 	public String getText() {
 		return _text;
-	}
-	
-	/**
-	 * Provides access to x coordinate
-	 */
-	public int getPanelX() {
-		return _x;
-	}
-
-	/**
-	 * Provides access to y coordinate
-	 */
-	public int getPanelY() {
-		return _y;
 	}
 
 	

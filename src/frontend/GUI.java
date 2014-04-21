@@ -23,7 +23,7 @@ public class GUI extends JFrame {
 	    this.setSize(new Dimension(WIDTH, HEIGHT));
 
         // play song
-        songApp.playSong();
+        SongApp.playSong();
 
 	    // set up panels
 	    _visualizerPanel = new VisualizerPanel(songApp, 5000, 3, 2);
