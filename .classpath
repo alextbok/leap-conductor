@@ -4,7 +4,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/LeapJava.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/mlbok/GitHub/leap-conductor/lib"/>
+
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="leap-conductor/lib"/>
+
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jid3lib-0.5.4.jar"/>

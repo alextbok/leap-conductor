@@ -118,7 +118,7 @@ public class SongApp {
 	 */
 	public static void speedUpSong() {
 		if (_mediaPlayer != null)
-			_mediaPlayer.setRate(_mediaPlayer.getRate() + 0.01);
+			_mediaPlayer.setRate(_mediaPlayer.getRate() + 0.003);
 	}
 	
 	/**
@@ -126,7 +126,7 @@ public class SongApp {
 	 */
 	public static void slowDownSong() {
 		if (_mediaPlayer != null) {
-			_mediaPlayer.setRate(_mediaPlayer.getRate() - 0.01);
+			_mediaPlayer.setRate(_mediaPlayer.getRate() - 0.003);
 		}
 	}
 
