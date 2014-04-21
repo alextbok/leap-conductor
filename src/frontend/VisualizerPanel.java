@@ -11,11 +11,11 @@ import frontend.audiovisualizer.*;
 import com.leapmotion.leap.*;
 import javax.swing.*;
 import javafx.scene.media.*;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Color;
+
+import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
+import java.util.List;
 
 public class VisualizerPanel extends JPanel {
   private AudioSpectrumListener songListener;
@@ -102,12 +102,17 @@ public class VisualizerPanel extends JPanel {
       else if (hands.size() == 1) {
         Point2D pt = hands.get(0);
         leftCircle.setPos(pt.getX(), pt.getY());
+        g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
+        g2.fillOval((int) pt.getX() - leftCircle.getRadius(), (int) pt.getY() - leftCircle.getRadius(), leftCircle.getRadius() * 2, leftCircle.getRadius() * 2);
       }
       else {
         Point2D pt1 = hands.get(0);
         Point2D pt2 = hands.get(1);
         leftCircle.setPos(pt1.getX(), pt1.getY());
         rightCircle.setPos(pt2.getX(), pt2.getY());
+        g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
+        g2.fillOval((int) pt1.getX() - leftCircle.getRadius(), (int) pt1.getY() - leftCircle.getRadius(), leftCircle.getRadius() * 2, leftCircle.getRadius() * 2);
+        g2.fillOval((int) pt2.getX() - rightCircle.getRadius(), (int) pt2.getY() - rightCircle.getRadius(), rightCircle.getRadius() * 2, rightCircle.getRadius() * 2);
       }
     }
 
@@ -119,7 +124,7 @@ public class VisualizerPanel extends JPanel {
         int y = (int) finger.getY();
 
         if (x > 0 && y > 0) {
-          g2.setColor(new Color(135, 206, 235));
+          g2.setColor(new Color(76, 81, 109));
           g2.fillOval((int) finger.getX(), (int) finger.getY(), 30, 30);
         }
       }

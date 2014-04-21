@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
+/*import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 
 import org.farng.mp3.MP3File;
@@ -17,7 +17,7 @@ import org.farng.mp3.id3.ID3v1;
 import org.farng.mp3.id3.ID3v1_1;
 import org.farng.mp3.id3.ID3v2_2;
 import org.farng.mp3.id3.ID3v2_3;
-import org.farng.mp3.id3.ID3v2_4;
+import org.farng.mp3.id3.ID3v2_4;*/
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
