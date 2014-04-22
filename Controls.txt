@@ -1,0 +1,35 @@
+===Controls===
+
+
+==Song Choice==
+
+--Initial Song Choice--
+	- All .mp3 files in the leap-conductor/../sounds/ folder are automatically loaded into Leap Conductor -
+
+--Adding Songs--
+	- Add songs (must be .mp3 format) by clicking the (+) button and choosing from your file system - 
+
+--Removing Songs--
+	- Remove a song by selecting it in the list and pressing the (-) button -
+
+
+==Controlling Songs==
+
+--Playing Songs--
+	- Double click any song in the list to play it -
+	- Select a song from the list by clicking and then press the play button to play it -
+
+--Pausing Songs--
+	- Select a song from the list by clicking and then press the pause button to pause it - 
+
+--Controlling Volume--
+	- Click on the volume knob and pull mouse up to turn volume up -
+	- Click on the volume knob and pull down to turn volume down -
+	- Raise your hands up to turn the volume up -
+	- Lower your hands to turn the volume down -
+
+--Controlling Speed--
+	- Click on the speed knob and pull mouse up to increase speed -
+	- Click on the speed knob and pull down to decrease speed -
+	- Swipe your hand left to right to turn increase speed -
+	- Swipe your hand right to left to lower speed -

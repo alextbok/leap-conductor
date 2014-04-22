@@ -1,20 +1,29 @@
 package frontend;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import backend.audio.SongApp;
 
 /**
- * JPanel that 
+ * JPanel with sound controls and controls to choose song
  * @author abok
  */
 @SuppressWarnings("serial")
@@ -24,48 +33,80 @@ public class SongPanel extends JPanel {
 	public static final Color BACKGROUND_COLOR = new Color(214,212,210);
 	
 	/*Volume control knob*/
-	public static final Knob knobVolume = new Knob("Volume",560,30);
+	public static final Knob knobVolume = new Knob("Volume",565,30);
 	
 	/*Speed control knob*/
-	public static final Knob knobSpeed = new Knob("Speed",640,30);
+	public static final Knob knobSpeed = new Knob("Speed",645,30);
 	
 	/*Keeps track of mouse-down y-coordinates for the MouseDraggedEvent*/
 	private HashMap<String, Integer> _mouseDownCoordinates;
+	
+	
+	/*Constants that help keep track of where to paint things*/
+	private static final int KNOB_X_OFFSET = 7;
+	private static final int KNOB_Y_OFFSET = 10;
+	private static final int BTN_SIZE = 40;
+	private static final int PLAY_X = 850;
+	private static final int PLAY_Y = 10;
+	private static final int PAUSE_X = 850;
+	private static final int PAUSE_Y = 55;
+	private static final int ADD_X = 410;
+	private static final int ADD_Y = 10;
+	private static final int REMOVE_X = 410;
+	private static final int REMOVE_Y = 55;
+	
+	/*The song currently being played*/
+	private File _currentSong;
 	
 	/**
 	 * Constructor - provides initial setup
 	 */
 	public SongPanel() {
 
-		SongApp.playSong();
-		
 		//add our knobs and make their map
 		_mouseDownCoordinates = new HashMap<String, Integer>();
-	this.addKnobs();
+		
+		this.add(SongList.getScrollableList());
+		
+		//this.add(SongList.getListContainer());
+		this.addKnobs();
+		
+		//add our button mouse listener
+		this.addMouseListener(new SoundPanelMouseListener());
 		
 		//get our JPanel to show the way we want
 		this.setPreferredSize(new Dimension(GUI.WIDTH, 100));
 		this.setBackground(BACKGROUND_COLOR);
 		this.setVisible(true);
-		
 	}
 
+	/**
+	 * Paints button images and rotates as necessary
+	 */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D brush = (Graphics2D) g;
         
+        //draw buttons
+        brush.drawImage(getIcon("play"), PLAY_X, PLAY_Y, null);
+        brush.drawImage(getIcon("pause"), PAUSE_X, PAUSE_Y, null);
+        brush.drawImage(getIcon("add"), ADD_X, ADD_Y, null);
+        brush.drawImage(getIcon("remove"), REMOVE_X, REMOVE_Y, null);
+        
         //rotate brush around volume knob by its current angle before painting it
         double angleVol = Math.toRadians(knobVolume.getAngle());
-        brush.rotate(angleVol, Knob.WIDTH/2 + knobVolume.getX() + 7, Knob.HEIGHT/2 + knobVolume.getY() + 10);
-        brush.drawImage(Knob.getImage(), knobVolume.getX() + 7, knobVolume.getY() + 10, null);
-        brush.rotate(-angleVol, Knob.WIDTH/2 + knobVolume.getX() + 7, Knob.HEIGHT/2 + knobVolume.getY() + 10);
+        brush.rotate(angleVol, Knob.WIDTH/2 + knobVolume.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobVolume.getY() + KNOB_Y_OFFSET);
+        brush.drawImage(Knob.getImage(), knobVolume.getX() + KNOB_X_OFFSET, knobVolume.getY() + KNOB_Y_OFFSET, null);
+        //rotate brush back
+        brush.rotate(-angleVol, Knob.WIDTH/2 + knobVolume.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobVolume.getY() + KNOB_Y_OFFSET);
     
         //rotate brush around speed knob by its current angle before painting it        
         double angleSpeed = Math.toRadians(knobSpeed.getAngle());
-        brush.rotate(angleSpeed, Knob.WIDTH/2 + knobSpeed.getX() + 7, Knob.HEIGHT/2 + knobSpeed.getY() + 10);
-        brush.drawImage(Knob.getImage(), knobSpeed.getX() + 7, knobSpeed.getY() + 10, null);
-        brush.rotate(-angleSpeed, Knob.WIDTH/2 + knobSpeed.getX() + 7, Knob.HEIGHT/2 + knobSpeed.getY() + 10);
+        brush.rotate(angleSpeed, Knob.WIDTH/2 + knobSpeed.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobSpeed.getY() + KNOB_Y_OFFSET);
+        brush.drawImage(Knob.getImage(), knobSpeed.getX() + KNOB_X_OFFSET, knobSpeed.getY() + KNOB_Y_OFFSET, null);
+        //rotate brush back
+        brush.rotate(-angleSpeed, Knob.WIDTH/2 + knobSpeed.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobSpeed.getY() + KNOB_Y_OFFSET);
     }
 
     /**
@@ -84,6 +125,24 @@ public class SongPanel extends JPanel {
 		knobSpeed.addMouseListener(new KnobMouseListener(knobSpeed));
 		knobSpeed.addMouseMotionListener(new KnobMouseMotionListener(knobSpeed));
     }
+    
+    
+    
+	/**
+	 * Generates and returns the icon with the input string file name
+	 * Returns null and prints an error if there is an IOException
+	 * @return Image knob icon
+	 */
+	public static Image getIcon(String name) {
+		try {
+			String dir = System.getProperty("user.dir") + "/src/icons/";
+			return ImageIO.read(new File(dir + name + ".png"));
+		} catch (IOException e) {
+			System.out.println("ERROR: IOException when trying to load image in SingPanel.getPlayIcon()");
+			return null;
+		}
+	}
+    
     
     /**
      * 
@@ -118,6 +177,12 @@ public class SongPanel extends JPanel {
 		public void mouseExited(MouseEvent e) {}
 	}
 	
+	
+	/**
+	 * Private class that listens for MouseDragged events, which turn the knobs
+	 * @author abok
+	 *
+	 */
 	private class KnobMouseMotionListener implements MouseMotionListener {
 
 		private Knob _knob;
@@ -143,5 +208,79 @@ public class SongPanel extends JPanel {
 		@Override
 		public void mouseMoved(MouseEvent e) {}
 	}
+	
+	/**
+	 * Private class that listens for Mouse click events on the play/pause button
+	 * @author abok
+	 *
+	 */
+	private class SoundPanelMouseListener implements MouseListener {
+
+		public SoundPanelMouseListener() {
+
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int x = e.getX();
+			int y = e.getY();
+			//if the click is on the play button
+			if (isWithinRadius(x,y,(PLAY_X + BTN_SIZE/2), (PLAY_Y + BTN_SIZE/2), BTN_SIZE/2 )) {
+				File selectedSong = SongList.getCurrentlySelectedSong();
+				//if a song is currently being played and it is not the currently selected song, stop and play new song
+				if (_currentSong != null && _currentSong != selectedSong) {
+					SongApp.stopSong();
+					SongApp.setSong(selectedSong);
+					_currentSong = selectedSong;
+				}
+				else {
+					_currentSong = selectedSong;
+				}
+				SongApp.playSong();
+			}
+			//if the click is on the pause button, pause the song currently playing
+			else if (isWithinRadius(x,y,(PAUSE_X + BTN_SIZE/2), (PAUSE_Y + BTN_SIZE/2), BTN_SIZE/2 )){
+				SongApp.stopSong();
+			}
+			//if the click is on the add button, bring up file chooser and add chosen songs
+			else if (isWithinRadius(x,y,(ADD_X + BTN_SIZE/2), (ADD_Y + BTN_SIZE/2), BTN_SIZE/2 )){
+				File[] files = FileChooser.getSongsFromUser();
+				for (File file: files)
+					SongList.addSong(file);	
+			}
+			//if the click is on the remove button, remove the currently selected song
+			else if (isWithinRadius(x,y,(REMOVE_X + BTN_SIZE/2), (REMOVE_Y + BTN_SIZE/2), BTN_SIZE/2 )){
+				SongList.removeSelectedSong();
+			}
+				
+		}
+			
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {}
+		
+		/**
+		 * Returns true if (x,y) is within or on radius of (c_x,c_y)
+		 * @param x, int, x-coordinate of point
+		 * @param y, int, y-coordinate of point
+		 * @param c_x,int, x-coordinate of center
+		 * @param c_y,int y-coordinate of center
+		 * @param radius
+		 * @return
+		 */
+		private boolean isWithinRadius(int x, int y, int c_x, int c_y, int radius) {
+			if (Point2D.distance(x,y,c_x,c_y) <= radius)
+				return true;
+			return false;
+		}
+	}//end SoundPanelMouseListener
     
 }
