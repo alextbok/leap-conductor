@@ -15,6 +15,7 @@ public class ParticleField {
   private List<Color> colors;
   private int width, height;
   private int preset;
+  private double particleSpeed;
   private ParticleCircle circle, leftCircle, rightCircle;
 
   /**
@@ -25,15 +26,15 @@ public class ParticleField {
    * @param width
    * @param height
    */
-  public ParticleField(List<Color> colors, int preset, int initParticles, int initTrailSize, int width, int height) {
+  public ParticleField(List<Color> colors, int initParticles, int initTrailSize, int width, int height) {
     particles = new ArrayList<>();
     this.colors = colors;
     this.width = width;
     this.height = height;
-    this.preset = preset;
     circle = new ParticleCircle(width, height);
     leftCircle = new ParticleCircle(width, height);
     rightCircle = new ParticleCircle(width, height);
+    particleSpeed = 0.05;
 
     generateParticles(initParticles, initTrailSize);
   }
@@ -73,56 +74,43 @@ public class ParticleField {
    * @return the given point's new position, according to the velocity vector
    */
   public Point2D velocityVector(Point2D point) {
-    int centerX = width / 2;
-    int centerY = height / 2;
-    int slope;
+    double slope;
 
     // define different velocities for particles contained within and outside circle
     if (circle.isInCircle(point) || leftCircle.isInCircle(point) || rightCircle.isInCircle(point)) {
-      if (preset == 1) {
-        slope = (int) ((point.getY() - centerY) / (point.getX() - centerX));
-        return new Point2D.Double(point.getX() + 1, point.getY() + slope);
-      }
-      else if (preset == 2) {
-        int slopeX = (int) point.getX() - (width / 2);
-        int slopeY = (height / 2) - (int) point.getY();
-        slope = (slopeX * slopeY) / 50000;
-        int quadrant = quadrant(point);
+      double slopeX = (int) point.getX() - (width / 2);
+      double slopeY = (height / 2) - (int) point.getY();
+      slope = (slopeX * slopeY) / 50000;
 
-        if (quadrant == 1)
-          return new Point2D.Double(point.getX() + 0.03, point.getY() - slope);
-        else if (quadrant == 2)
-          return new Point2D.Double(point.getX() - 0.03, point.getY() + slope);
-        else if (quadrant == 3)
-          return new Point2D.Double(point.getX() - 0.03, point.getY() + slope);
-        else
-          return new Point2D.Double(point.getX() + 0.03, point.getY() - slope);
-      }
+      int quadrant = quadrant(point);
+      if (quadrant == 1)
+        return new Point2D.Double(point.getX() + 0.03, point.getY() - slope);
+      else if (quadrant == 2)
+        return new Point2D.Double(point.getX() - 0.03, point.getY() + slope);
+      else if (quadrant == 3)
+        return new Point2D.Double(point.getX() - 0.03, point.getY() + slope);
+      else
+        return new Point2D.Double(point.getX() + 0.03, point.getY() - slope);
     }
 
     else {
-      if (preset == 1) {
-        slope = (int) ((point.getY() - centerY) / (point.getX() - centerX));
-        return new Point2D.Double(point.getX() + 1, point.getY() + (slope * 2));
-      }
-      else if (preset == 2) {
-        int slopeX = (int) point.getX() - (width / 2);
-        int slopeY = (height / 2) - (int) point.getY();
+      double slopeX = point.getX() - (width / 2);
+      double slopeY = (height / 2) - point.getY();
+      if (slopeX == 0)
+        slope = 1;
+      else
         slope = (slopeX * slopeY) / 20000;
-        int quadrant = quadrant(point);
 
-        if (quadrant == 1)
-          return new Point2D.Double(point.getX() + 0.5, point.getY() - slope);
-        else if (quadrant == 2)
-          return new Point2D.Double(point.getX() - 0.5, point.getY() + slope);
-        else if (quadrant == 3)
-          return new Point2D.Double(point.getX() - 0.5, point.getY() + slope);
-        else
-          return new Point2D.Double(point.getX() + 0.5, point.getY() - slope);
-      }
+      int quadrant = quadrant(point);
+      if (quadrant == 1)
+        return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
+      else if (quadrant == 2)
+        return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
+      else if (quadrant == 3)
+        return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
+      else
+        return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
     }
-
-    return null;
   }
 
   /**
@@ -157,6 +145,14 @@ public class ParticleField {
    */
   public void setPreset(int newPreset) {
     preset = newPreset;
+  }
+
+  /**
+   * setSpeed
+   * @param newSpeed
+   */
+  public void setSpeed(double newSpeed) {
+    particleSpeed = newSpeed;
   }
 
   /**
