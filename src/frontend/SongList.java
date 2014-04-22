@@ -84,7 +84,7 @@ public class SongList {
 		
 		//make our scroll pane and its border
 		JScrollPane scrollPane = new JScrollPane(list,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setPreferredSize(new Dimension(200,80));
+		scrollPane.setPreferredSize(new Dimension(200,90));
 		TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(192,193,194), 2, true), "Songs");
 		border.setTitleFont(new Font("Courier", Font.BOLD, 12));
 		border.setTitleColor(new Color(135,136,138));
