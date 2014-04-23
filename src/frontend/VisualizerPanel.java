@@ -69,6 +69,7 @@ public class VisualizerPanel extends JPanel {
 
     // update particle positions
     particleField.setSpeed(songApp.getMediaPlayer().getRate());
+    System.out.print("");
     particleField.move();
 
     // change circle size according to audio

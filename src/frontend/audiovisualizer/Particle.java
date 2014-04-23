@@ -43,7 +43,7 @@ public class Particle {
    * getHead
    * @return the head of the particle trail
    */
-  public Point2D getHead() {
+  public Point2D head() {
     return trail.get(0);
   }
 

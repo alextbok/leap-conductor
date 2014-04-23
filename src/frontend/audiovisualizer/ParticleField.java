@@ -14,7 +14,6 @@ public class ParticleField {
   private List<Particle> particles;
   private List<Color> colors;
   private int width, height;
-  private int preset;
   private double particleSpeed;
   private ParticleCircle circle, leftCircle, rightCircle;
 
@@ -99,17 +98,17 @@ public class ParticleField {
       if (slopeX == 0)
         slope = 1;
       else
-        slope = (slopeX * slopeY) / 20000;
+        slope = (slopeX * slopeY) / 40000;
 
       int quadrant = quadrant(point);
       if (quadrant == 1)
-        return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
+        return new Point2D.Double(point.getX() + Math.pow(particleSpeed * 1.2, 4), point.getY() - slope);
       else if (quadrant == 2)
-        return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
+        return new Point2D.Double(point.getX() - Math.pow(particleSpeed * 1.2, 4), point.getY() + slope);
       else if (quadrant == 3)
-        return new Point2D.Double(point.getX() - 0.05, point.getY() + slope);
+        return new Point2D.Double(point.getX() - Math.pow(particleSpeed * 1.2, 4), point.getY() + slope);
       else
-        return new Point2D.Double(point.getX() + 0.05, point.getY() - slope);
+        return new Point2D.Double(point.getX() + Math.pow(particleSpeed * 1.2, 4), point.getY() - slope);
     }
   }
 
@@ -119,7 +118,7 @@ public class ParticleField {
    */
   public void move() {
     for (Particle particle : particles) {
-      Point2D newPos = velocityVector(particle.getHead());
+      Point2D newPos = velocityVector(particle.head());
       particle.move(newPos);
     }
   }
@@ -137,14 +136,6 @@ public class ParticleField {
       return 3;
     else
       return 4;
-  }
-
-  /**
-   * setPreset
-   * @param newPreset
-   */
-  public void setPreset(int newPreset) {
-    preset = newPreset;
   }
 
   /**
