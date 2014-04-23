@@ -8,7 +8,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.AudioEqualizer;
+import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -22,6 +26,7 @@ public class SongApp {
 		_url = url;
 		_media = new Media(new File(_url).toURI().toString());
 		_mediaPlayer = new MediaPlayer(_media);
+		
 	}
 	
 	/**
@@ -92,6 +97,100 @@ public class SongApp {
 		if (_mediaPlayer != null)
 			_mediaPlayer.setRate(_mediaPlayer.getRate() + d);
 	}
+	
+	/**
+	 * raises gain on bass frequencies
+	 */
+	public static void raiseBass() {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 0; i < 3; i ++){
+				if (bands.get(i).getGain() < EqualizerBand.MAX_GAIN){
+					bands.get(i).setGain(bands.get(i).getGain() + .5);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * lowers gain on bass frequencies
+	 */
+	public static void lowerBass() {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 0; i < 3; i ++){
+				if (bands.get(i).getGain() > EqualizerBand.MIN_GAIN){
+					bands.get(i).setGain(bands.get(i).getGain() - 0.5);
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * raises gain on mid frequencies
+	 */
+	public static void raiseMid() {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 3; i < 7; i ++){
+				if (bands.get(i).getGain() < EqualizerBand.MAX_GAIN){
+					bands.get(i).setGain(bands.get(i).getGain() + 0.5);
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * lowers gain on mid frequencies
+	 */
+	public static void lowerMid() {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 3; i < 7; i ++){
+				if (bands.get(i).getGain() > EqualizerBand.MIN_GAIN){
+					bands.get(i).setGain(bands.get(i).getGain() - 0.5);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * raises gain on high frequencies
+	 */
+	public static void raiseHigh() {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 7; i < 10; i ++){
+				if (bands.get(i).getGain() < EqualizerBand.MAX_GAIN){
+					bands.get(i).setGain(bands.get(i).getGain() + 0.5);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * lowers gain on high frequencies
+	 */
+	public static void lowerHigh() {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 7; i < 10; i ++){
+				if (bands.get(i).getGain() > EqualizerBand.MIN_GAIN){
+					bands.get(i).setGain(bands.get(i).getGain() - 0.5);
+					}
+			}
+		}
+	}
+	
+	
 
     /**
      * getMedia
@@ -106,6 +205,6 @@ public class SongApp {
      */
     public static void setSong(File file) {
 		_media = new Media(file.toURI().toString());
-		_mediaPlayer = new MediaPlayer(_media);
+		_mediaPlayer = new MediaPlayer(_media);	
     }
 }
