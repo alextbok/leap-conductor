@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -54,11 +55,22 @@ public class SongList {
 	}
 	
 	/**
-	 * Removes the selected song from the list
+	 * Removes the selected songs from the list
 	 */
-	public static void removeSelectedSong() {
+	public static void removeSelectedSongs() {
+		
+		//if there is a song(s) selected
 		if (list.getSelectedValue() != null) {
-			listModel.removeElement(list.getSelectedValue());
+			
+			//get all selected songs
+			List<String> selectedSongs = list.getSelectedValuesList();
+			
+			//remove all selected songs
+			for (int i = 0; i < selectedSongs.size(); i++) {
+				listModel.removeElement(selectedSongs.get(i));
+			}
+			
+			//reset the list model and set the selected index to 0
 			list.setModel(listModel);
 			list.setSelectedIndex(0);
 		}

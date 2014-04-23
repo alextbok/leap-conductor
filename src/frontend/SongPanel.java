@@ -244,13 +244,22 @@ public class SongPanel extends JPanel {
 			}
 			//if the click is on the add button, bring up file chooser and add chosen songs
 			else if (isWithinRadius(x,y,(ADD_X + BTN_SIZE/2), (ADD_Y + BTN_SIZE/2), BTN_SIZE/2 )){
-				File[] files = FileChooser.getSongsFromUser();
-				for (File file: files)
-					SongList.addSong(file);	
+				
+				//do this in another thread so we don't lag up the visualizer
+				new Thread() {
+					
+					public void run() {
+						File[] files = FileChooser.getSongsFromUser();
+						for (File file: files)
+							SongList.addSong(file);	
+					}
+		
+				}.start();			
+
 			}
 			//if the click is on the remove button, remove the currently selected song
 			else if (isWithinRadius(x,y,(REMOVE_X + BTN_SIZE/2), (REMOVE_Y + BTN_SIZE/2), BTN_SIZE/2 )){
-				SongList.removeSelectedSong();
+				SongList.removeSelectedSongs();
 			}
 				
 		}
