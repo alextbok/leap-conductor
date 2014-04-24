@@ -61,7 +61,7 @@ public class GUI extends JFrame {
 	    //add menu bar
 	    this.setJMenuBar(new LeapConductorMenuBar());
 	    
-	    this.setResizable(false);
+	    //this.setResizable(false);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setVisible(true);
 	    
