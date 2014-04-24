@@ -9,7 +9,7 @@ import backend.audio.SongApp;
 
 
 /**
- * Panel that contains our song progress bar
+ * Panel that contains our song progress bar (in an inner class)
  * @author abok
  *
  */
@@ -35,7 +35,12 @@ public class ProgressBarPanel extends JPanel {
 		this.setPreferredSize(new Dimension(GUI.WIDTH, PANEL_HEIGHT));
 	}
 
-	public class LeapConductorProgressBar extends JProgressBar implements Runnable {
+	/**
+	 * Private custom JProgressBar that updates in its own thread
+	 * It constantly queries the current song time and the song duration from the SongApp class
+	 * @author abok
+	 */
+	private class LeapConductorProgressBar extends JProgressBar implements Runnable {
 		
 		public LeapConductorProgressBar() {
 			this.setPreferredSize(new Dimension(PROGRESS_BAR_WIDTH,PROGRESS_BAR_HEIGHT));
