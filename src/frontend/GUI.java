@@ -17,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
 import backend.FileProcessor;
@@ -29,10 +28,12 @@ public class GUI extends JFrame {
   /*Our JPanels*/
   private VisualizerPanel _visualizerPanel;
   private SongPanel _songPanel;
+  private ProgressBarPanel _progressPanel;
+	
   
   /*Public access to our non-resizable frame so children panels can set relative sizes*/
   public static final int WIDTH = 1300;
-  public static final int HEIGHT = 700;
+  public static final int HEIGHT = 720;
   
   /**
    * Constructor 
@@ -45,10 +46,12 @@ public class GUI extends JFrame {
 	    // set up panels
 	    _visualizerPanel = new VisualizerPanel(songApp, 5000, 3);
 	    _songPanel = new SongPanel();
+	    _progressPanel = new ProgressBarPanel();
 	    
 	    // add components
 	    this.add(_visualizerPanel, BorderLayout.CENTER);
 	    this.add(_songPanel, BorderLayout.NORTH);
+	    this.add(_progressPanel, BorderLayout.SOUTH);
 	    
 	    //add menu bar
 	    this.setJMenuBar(new LeapConductorMenuBar());
@@ -63,7 +66,7 @@ public class GUI extends JFrame {
 	    	SongList.addSong(song);
 	    }
   }
-
+  
   	/**
   	 * A menu bar with one menu with two options (to view readme and controls)
   	 * @author abok

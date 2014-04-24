@@ -41,7 +41,6 @@ public class SongPanel extends JPanel {
 	/*Keeps track of mouse-down y-coordinates for the MouseDraggedEvent*/
 	private HashMap<String, Integer> _mouseDownCoordinates;
 	
-	
 	/*Constants that help keep track of where to paint things*/
 	private static final int KNOB_X_OFFSET = 7;
 	private static final int KNOB_Y_OFFSET = 10;
@@ -67,9 +66,8 @@ public class SongPanel extends JPanel {
 		_mouseDownCoordinates = new HashMap<String, Integer>();
 		
 		this.add(SongList.getScrollableList());
-		
-		//this.add(SongList.getListContainer());
 		this.addKnobs();
+		
 		
 		//add our button mouse listener
 		this.addMouseListener(new SoundPanelMouseListener());

@@ -1,10 +1,6 @@
 package frontend;
 
-import java.awt.Component;
-
-import javax.swing.Icon;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 

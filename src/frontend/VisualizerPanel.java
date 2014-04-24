@@ -44,7 +44,7 @@ public class VisualizerPanel extends JPanel {
     colors = Collections.synchronizedList(new ArrayList<Color>());
     colors.add(Color.RED);
     colors.add(Color.WHITE);
-    particleField = new ParticleField(colors, particles, trailSize, GUI.WIDTH, GUI.HEIGHT - 100);
+    particleField = new ParticleField(colors, particles, trailSize, GUI.WIDTH, GUI.HEIGHT - 120);
 
     sizeChange = true;
 

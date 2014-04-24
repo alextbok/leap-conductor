@@ -12,7 +12,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
@@ -81,7 +80,6 @@ public class SongList {
 	 * @return 
 	 */
 	public static JList<String> getListContainer() {
-		customizeList();
 		return list;
 	}
 	
@@ -104,15 +102,8 @@ public class SongList {
 		scrollPane.setBackground(SongPanel.BACKGROUND_COLOR);
 
 		return scrollPane;
-		//return new JScrollPane(list,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
-	
-	/**
-	 * Factors out code that customizes our JTextField
-	 */
-	private static void customizeList() {
 
-	}
 	
 	/**
 	 * Returns the currently selected song, returns first song in list if no song is selected
@@ -126,6 +117,8 @@ public class SongList {
 		}
 		return mp3Files.get(list.getSelectedValue());
 	}
+	
+	
 	
 	/**
 	 * Adds mouse listener to list that listens for double clicks

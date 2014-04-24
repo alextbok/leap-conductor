@@ -5,10 +5,6 @@ package backend.audio;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.AudioEqualizer;
@@ -30,7 +26,7 @@ public class SongApp {
 	}
 	
 	/**
-	 * plays the song
+	 * plays the song and creates a new progress bar that runs in its own thread
 	 */
 	public static void playSong() {
 		if (_mediaPlayer != null)
@@ -190,8 +186,23 @@ public class SongApp {
 		}
 	}
 	
-	
+	/**
+	 * Returns the total time of the current song as the number of milliseconds
+	 * @return
+	 */
+	public static int getTotalDuration() {
+		return (int) _mediaPlayer.getTotalDuration().toMillis();
+	}
 
+	/**
+	 * Returns the current time of the current song in milliseconds
+	 * @return
+	 */
+	public static int getCurrentTime() {
+		return (int) _mediaPlayer.getCurrentTime().toMillis();
+	}
+	
+	
     /**
      * getMedia
      * @return media
