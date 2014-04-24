@@ -11,7 +11,6 @@ import frontend.audiovisualizer.*;
 import com.leapmotion.leap.*;
 import javax.swing.*;
 import javafx.scene.media.*;
-
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
@@ -102,7 +101,8 @@ public class VisualizerPanel extends JPanel {
         if (pt.getX() > 0 && pt.getY() > 0) {
           leftCircle.setPos(pt.getX(), pt.getY());
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
-          g2.fillOval((int) pt.getX() - leftCircle.getRadius(), (int) pt.getY() - leftCircle.getRadius(), leftCircle.getRadius() * 2, leftCircle.getRadius() * 2);
+          double radius = leftCircle.getRadius();
+          g2.fillOval((int) (pt.getX() - radius), (int) (pt.getY() - radius), (int) radius * 2, (int) radius * 2);
         }
       }
       else if (hands.size() == 2) {
@@ -112,12 +112,14 @@ public class VisualizerPanel extends JPanel {
         if (pt1.getX() > 0 && pt1.getY() > 0) {
           leftCircle.setPos(pt1.getX(), pt1.getY());
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
-          g2.fillOval((int) pt1.getX() - leftCircle.getRadius(), (int) pt1.getY() - leftCircle.getRadius(), leftCircle.getRadius() * 2, leftCircle.getRadius() * 2);
+          double radius = leftCircle.getRadius() + 10;
+          g2.fillOval((int) (pt1.getX() - radius), (int) (pt1.getY() - radius), (int) radius * 2, (int) radius * 2);
         }
         if (pt2.getX() > 0 && pt2.getY() > 0) {
           rightCircle.setPos(pt2.getX(), pt2.getY());
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
-          g2.fillOval((int) pt2.getX() - rightCircle.getRadius(), (int) pt2.getY() - rightCircle.getRadius(), rightCircle.getRadius() * 2, rightCircle.getRadius() * 2);
+          double radius = rightCircle.getRadius();
+          g2.fillOval((int) (pt2.getX() - radius), (int) (pt2.getY() - radius), (int) radius * 2, (int) radius * 2);
         }
       }
     }

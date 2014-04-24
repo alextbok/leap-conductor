@@ -26,14 +26,6 @@ public class ParticleCircle {
   }
 
   /**
-   * randomRadius
-   * generates a random radius for the circle
-   */
-  public int randomRadius() {
-    return (int) (Math.random() * upperBound) + 50;
-  }
-
-  /**
    * isInCircle
    * @return true if the point is within the circle, false otherwise
    */
@@ -42,6 +34,21 @@ public class ParticleCircle {
       return true;
     else
       return false;
+  }
+
+  /**
+   * quadrant
+   * @param point
+   */
+  public int quadrant(Point2D point) {
+    if (point.getX() > x && point.getY() <= y)
+      return 1;
+    else if (point.getX() <= x && point.getY() <= y)
+      return 2;
+    else if (point.getX() <= x && point.getY() > y)
+      return 3;
+    else
+      return 4;
   }
 
   /**
