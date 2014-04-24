@@ -8,14 +8,20 @@ package frontend;
 
 import backend.audio.*;
 import frontend.audiovisualizer.*;
+import frontend.soundpanel.LeapListener;
+
 import com.leapmotion.leap.*;
+
 import javax.swing.*;
+
 import javafx.scene.media.*;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class VisualizerPanel extends JPanel {
   private SongApp songApp;
   private LeapListener leapListener;

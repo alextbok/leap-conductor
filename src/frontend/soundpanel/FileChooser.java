@@ -1,13 +1,10 @@
-package frontend;
+package frontend.soundpanel;
 
 import java.io.File;
 import java.util.ArrayList;
-
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import backend.FileProcessor;
-import backend.audio.SongApp;
 
 /**
  * An JFileChooser wrapper with leap-conductor specific functionality

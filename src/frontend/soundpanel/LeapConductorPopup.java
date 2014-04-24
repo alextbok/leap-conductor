@@ -1,4 +1,4 @@
-package frontend;
+package frontend.soundpanel;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;

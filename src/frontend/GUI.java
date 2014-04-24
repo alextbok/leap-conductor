@@ -12,15 +12,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+
+import frontend.soundpanel.FileChooser;
+import frontend.soundpanel.LeapConductorPopup;
+import frontend.soundpanel.ProgressBarPanel;
+import frontend.soundpanel.SongList;
+import frontend.soundpanel.SongPanel;
 import backend.FileProcessor;
 import backend.audio.SongApp;
 
 
+@SuppressWarnings("serial")
 public class GUI extends JFrame {
 
   /*Our JPanels*/
@@ -70,7 +78,6 @@ public class GUI extends JFrame {
   	 * @author abok
   	 *
   	 */
-  	@SuppressWarnings("serial")
 	private class LeapConductorMenuBar extends JMenuBar {
 	  
 	  LeapConductorMenuBar() {

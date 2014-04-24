@@ -1,0 +1,95 @@
+package frontend.soundpanel;
+
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
+import frontend.GUI;
+import backend.audio.SongApp;
+
+
+/**
+ * Panel that contains our song progress bar (in an inner class)
+ * @author abok
+ *
+ */
+@SuppressWarnings("serial")
+public class ProgressBarPanel extends JPanel {
+
+	/*Progress bar*/
+	private LeapConductorProgressBar _progressBar;
+	
+	/*Dimensions*/
+	public final static int PROGRESS_BAR_HEIGHT = 10;
+	public final static int PROGRESS_BAR_WIDTH = GUI.WIDTH - 130;
+	public final static int PANEL_HEIGHT = 20;
+	
+	/*Label that shows our progress as a fraction*/
+	private JLabel _progressLabel;
+	
+	/**
+	 * Constructor
+	 */
+	public ProgressBarPanel() { 
+		_progressBar = new LeapConductorProgressBar();
+		new Thread(_progressBar).start();
+		this.add(_progressBar);
+		
+		_progressLabel = new JLabel();
+		_progressLabel.setFont(new Font("Courier", Font.BOLD, 12));
+		this.add(_progressLabel);
+		
+		this.setBackground(SongPanel.BACKGROUND_COLOR);
+		this.setPreferredSize(new Dimension(GUI.WIDTH, PANEL_HEIGHT));
+	}
+
+	/**
+	 * Converts input millisecond to number of minutes and seconds
+	 * @return String milliseconds in "mm:ss" time
+	 */
+	private String millisecondsToStr(int ms) {
+		double minutes = ms/60000.0;
+		double seconds = ( ( minutes - Math.floor(minutes) ) * 60);
+		
+		String strMin = Integer.toString( (int) Math.floor(minutes) );
+		String strSec = Integer.toString((int) seconds);
+		
+		if (seconds < 10)
+			strSec = "0" + strSec;
+		
+		return strMin + ":" + strSec;
+	}
+	
+	/**
+	 * Private custom JProgressBar that updates in its own thread
+	 * It constantly queries the current song time and the song duration from the SongApp class
+	 * @author abok
+	 */
+	private class LeapConductorProgressBar extends JProgressBar implements Runnable {
+		
+		public LeapConductorProgressBar() {
+			this.setPreferredSize(new Dimension(PROGRESS_BAR_WIDTH,PROGRESS_BAR_HEIGHT));
+		}
+		
+		/**
+		 * Repaints the progress bar with the new progress (as well as the label)
+		 */
+		@Override
+		public void run() {
+			while (true) {
+				int totalTime = SongApp.getTotalDuration();
+				int currentTime = SongApp.getCurrentTime();
+						
+				this.setMinimum(0);
+				this.setMaximum(totalTime);
+				this.setValue(currentTime);
+				_progressLabel.setText(millisecondsToStr(currentTime) + " / " + millisecondsToStr(totalTime));
+			}		
+		}
+
+	}
+	
+}
