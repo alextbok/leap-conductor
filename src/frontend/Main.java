@@ -11,6 +11,7 @@ import backend.audio.SongApp;
 
 public class Main {
   public static void main(String[] args) {
+	System.setProperty("sun.java2d.opengl", "true"); //set the computer to use opengl (should speed things up on linux machines)
 	//create a FileProcessor and start looking for folder with most mp3 files
 	FileProcessor fp = new FileProcessor();
 	fp.start();
