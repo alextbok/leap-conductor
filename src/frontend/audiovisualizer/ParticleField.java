@@ -98,13 +98,31 @@ public class ParticleField {
       // repel points from hands
       if (leftCircle.isInCircle(point)) {
         slopeX = point.getX() - leftCircle.getX();
-        slopeY = point.getY() - leftCircle.getY();
-        return new Point2D.Double(point.getX() + slopeX, point.getY() + slopeY);
+        slopeY = leftCircle.getY() - point.getY();
+        slope = (slopeX * slopeY) / 400;
+        int quadrant = leftCircle.quadrant(point);
+        if (quadrant == 1)
+          return new Point2D.Double(point.getX() + 2, point.getY() - slope);
+        else if (quadrant == 2)
+          return new Point2D.Double(point.getX() - 2, point.getY() + slope);
+        else if (quadrant == 3)
+          return new Point2D.Double(point.getX() - 2, point.getY() + slope);
+        else
+          return new Point2D.Double(point.getX() + 2, point.getY() - slope);
       }
       else if (rightCircle.isInCircle(point)) {
         slopeX = point.getX() - rightCircle.getX();
-        slopeY = point.getY() - rightCircle.getY();
-        return new Point2D.Double(point.getX() + slopeX, point.getY() + slopeY);
+        slopeY = rightCircle.getY() - point.getY();
+        slope = (slopeX * slopeY) / 400;
+        int quadrant = rightCircle.quadrant(point);
+        if (quadrant == 1)
+          return new Point2D.Double(point.getX() + 2, point.getY() - slope);
+        else if (quadrant == 2)
+          return new Point2D.Double(point.getX() - 2, point.getY() + slope);
+        else if (quadrant == 3)
+          return new Point2D.Double(point.getX() - 2, point.getY() + slope);
+        else
+          return new Point2D.Double(point.getX() + 2, point.getY() - slope);
       }
 
       // else, point's movement is proportional to function x*y
