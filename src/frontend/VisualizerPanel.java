@@ -11,7 +11,6 @@ import frontend.audiovisualizer.*;
 import com.leapmotion.leap.*;
 import javax.swing.*;
 import javafx.scene.media.*;
-
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;

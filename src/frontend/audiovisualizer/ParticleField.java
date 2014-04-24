@@ -32,7 +32,9 @@ public class ParticleField {
     this.height = height;
     circle = new ParticleCircle(width, height);
     leftCircle = new ParticleCircle(width, height);
+    leftCircle.setPos(width * 2, height * 2);
     rightCircle = new ParticleCircle(width, height);
+    rightCircle.setPos(width * 2, height * 2);
     particleSpeed = 0.05;
 
     generateParticles(initParticles, initTrailSize);
@@ -73,12 +75,12 @@ public class ParticleField {
    * @return the given point's new position, according to the velocity vector
    */
   public Point2D velocityVector(Point2D point) {
-    double slope;
+    double slope, slopeX, slopeY;
 
     // define different velocities for particles contained within and outside circle
-    if (circle.isInCircle(point) || leftCircle.isInCircle(point) || rightCircle.isInCircle(point)) {
-      double slopeX = (int) point.getX() - (width / 2);
-      double slopeY = (height / 2) - (int) point.getY();
+    if (circle.isInCircle(point)) {
+      slopeX = (int) point.getX() - (width / 2);
+      slopeY = (height / 2) - (int) point.getY();
       slope = (slopeX * slopeY) / 50000;
 
       int quadrant = quadrant(point);
@@ -93,13 +95,25 @@ public class ParticleField {
     }
 
     else {
-      double slopeX = point.getX() - (width / 2);
-      double slopeY = (height / 2) - point.getY();
+      // repel points from hands
+      if (leftCircle.isInCircle(point)) {
+        slopeX = point.getX() - leftCircle.getX();
+        slopeY = point.getY() - leftCircle.getY();
+        return new Point2D.Double(point.getX() + slopeX, point.getY() + slopeY);
+      }
+      else if (rightCircle.isInCircle(point)) {
+        slopeX = point.getX() - rightCircle.getX();
+        slopeY = point.getY() - rightCircle.getY();
+        return new Point2D.Double(point.getX() + slopeX, point.getY() + slopeY);
+      }
+
+      // else, point's movement is proportional to function x*y
+      slopeX = point.getX() - (width / 2);
+      slopeY = (height / 2) - point.getY();
       if (slopeX == 0)
         slope = 1;
       else
         slope = (slopeX * slopeY) / 40000;
-
       int quadrant = quadrant(point);
       if (quadrant == 1)
         return new Point2D.Double(point.getX() + Math.pow(particleSpeed * 1.2, 4), point.getY() - slope);
