@@ -14,7 +14,9 @@ public class Main {
 	//create a FileProcessor and start looking for folder with most mp3 files
 	FileProcessor fp = new FileProcessor();
 	fp.start();
+	//instantiate our SongApp
+	new SongApp(args[0]);
 	//instantiate our GUI
-    new GUI(new SongApp(args[0]));
+    new GUI();
   }
 }

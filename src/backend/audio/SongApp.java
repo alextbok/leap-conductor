@@ -5,9 +5,11 @@ package backend.audio;
  */
 
 import java.io.File;
+
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.AudioEqualizer;
+import javafx.scene.media.AudioSpectrumListener;
 import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -204,11 +206,21 @@ public class SongApp {
 	
 	
     /**
-     * getMedia
+     * Wrapper for mediaplayer
+     * Provides public access to the rate of the song
      * @return media
      */
-    public MediaPlayer getMediaPlayer() {
-        return _mediaPlayer;
+    public static double getRate() {
+        return _mediaPlayer.getRate();
+    }
+    
+    /**
+     * Wrapper for mediaplayer
+     * Sets the audio spectrum listener
+     * @param asl
+     */
+    public static void setAudioSpectrumListener(AudioSpectrumListener asl) {
+    	_mediaPlayer.setAudioSpectrumListener(asl);
     }
     
     /**

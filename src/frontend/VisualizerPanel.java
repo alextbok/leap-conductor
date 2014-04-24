@@ -23,7 +23,6 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 public class VisualizerPanel extends JPanel {
-  private SongApp songApp;
   private LeapListener leapListener;
   private Controller leapController;
   private List<Color> colors;
@@ -34,9 +33,8 @@ public class VisualizerPanel extends JPanel {
   /**
    * VisualizerPanel
    */
-  public VisualizerPanel(SongApp songApp, int particles, int trailSize) {
+  public VisualizerPanel(int particles, int trailSize) {
     setBackground(Color.DARK_GRAY);
-    this.songApp = songApp;
 
     // set up controller and listener
     leapController = new Controller();
@@ -60,7 +58,7 @@ public class VisualizerPanel extends JPanel {
           newRadius = 2 * (40 - (int) magnitudes[0]);
       }
     };
-    songApp.getMediaPlayer().setAudioSpectrumListener(audioSpectrumListener);
+    SongApp.setAudioSpectrumListener(audioSpectrumListener);
   }
 
   /**
@@ -73,7 +71,7 @@ public class VisualizerPanel extends JPanel {
     Graphics2D g2 = (Graphics2D) g;
 
     // update particle positions
-    particleField.setSpeed(songApp.getMediaPlayer().getRate());
+    particleField.setSpeed(SongApp.getRate());
     System.out.print("");
     particleField.move();
 

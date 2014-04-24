@@ -25,7 +25,6 @@ import frontend.soundpanel.ProgressBarPanel;
 import frontend.soundpanel.SongList;
 import frontend.soundpanel.SongPanel;
 import backend.FileProcessor;
-import backend.audio.SongApp;
 
 
 @SuppressWarnings("serial")
@@ -44,13 +43,13 @@ public class GUI extends JFrame {
   /**
    * Constructor 
    */
-  public GUI(SongApp songApp) {
+  public GUI() {
 	    // set up frame
 	    super("Leap Conductor");
 	    this.setSize(new Dimension(WIDTH, HEIGHT));
 
 	    // set up panels
-	    _visualizerPanel = new VisualizerPanel(songApp, 5000, 3);
+	    _visualizerPanel = new VisualizerPanel(5000, 3);
 	    _songPanel = new SongPanel();
 	    _progressPanel = new ProgressBarPanel();
 	    
