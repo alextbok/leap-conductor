@@ -16,6 +16,9 @@ public class FileChooser {
 	/*Will have one file chooser associated with the program*/
 	private static final JFileChooser fc = new JFileChooser();
 	
+	/*The directory to start at. Will be set after the first song is added*/
+	private static File _currentDirectory;
+	
 	/**
 	 * Empty constructor
 	 */
@@ -29,8 +32,10 @@ public class FileChooser {
 	 */
 	public static File[] getSongsFromUser() {
 		
-		//set the current directory to the one with the most mp3 files
-	    fc.setCurrentDirectory(FileProcessor.getFolderWithMostMp3Files());
+		//if we haven't added a song yet, set the current directory to the one with the most music files
+	    fc.setCurrentDirectory(FileProcessor.getFolderWithMostMusicFiles());
+		if (_currentDirectory != null)
+			fc.setCurrentDirectory(_currentDirectory);
 	    
 	    //only accept files with .mp3 extension
 	    fc.setFileFilter(new FileNameExtensionFilter("*.mp3", "mp3"));
@@ -42,8 +47,11 @@ public class FileChooser {
 	    //gets the user's choice when dialog is closed (0 == Save == APPROVE_OPTION, 1 == cancel)
 		int choice = fc.showOpenDialog(fc.getParent());
 
-		if (choice == JFileChooser.APPROVE_OPTION)
+		//when the user adds a file, save the folder for next song addition
+		if (choice == JFileChooser.APPROVE_OPTION) {
+			_currentDirectory = fc.getCurrentDirectory();
 			return fc.getSelectedFiles();
+		}
 		return new File[0];
 	}
 	

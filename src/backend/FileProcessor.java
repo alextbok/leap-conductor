@@ -24,7 +24,7 @@ public class FileProcessor extends Thread {
 	/*Folder with most mp3's - default is /src/sounds*/
 	private static File _folder = new File(System.getProperty("user.dir") + "/src/sounds");
 	
-	private int _numMp3Files = numberOfMp3Files(_folder);
+	private int _numMp3Files = numberOfMusicFiles(_folder);
 	
 	/**
 	 * Empty constructor - needed so we can start thread
@@ -64,9 +64,9 @@ public class FileProcessor extends Thread {
 	}
 	
 	/**
-	 * Provides public access to folder with most .mp3 files
+	 * Provides public access to folder with most .mp3, .wav, .mp4, .m4a files
 	 */
-	public static File getFolderWithMostMp3Files() {
+	public static File getFolderWithMostMusicFiles() {
 		return _folder;
 	}
 	
@@ -75,15 +75,15 @@ public class FileProcessor extends Thread {
 	
 	/**
 	 * Recursively traverses file directory starting at file and finds the
-	 * folder with the most .mp3 files in it (ignores hidden files)
+	 * folder with the most .mp3, .m4a, .mp4, .wav files in it (ignores hidden files)
 	 * @param file
 	 */
-	private void findDirectoryWithMostMp3Files(File file) {
+	private void findDirectoryWithMostMusicFiles(File file) {
 		
 		if (file.isDirectory()) {
 			
 			//if the number of mp3 files it contains is greater than the current, update
-			int numMp3Files = numberOfMp3Files(file);
+			int numMp3Files = numberOfMusicFiles(file);
 			if (numMp3Files > _numMp3Files) {
 				_folder = file;
 				_numMp3Files = numMp3Files;
@@ -94,21 +94,27 @@ public class FileProcessor extends Thread {
 			for (File child : children) {
 				//ignore hidden files
 				if (!child.getName().startsWith("."))
-					findDirectoryWithMostMp3Files(child);
+					findDirectoryWithMostMusicFiles(child);
 			}
 		}
 	}
 	
 	/**
-	 * Determines the number of .mp3 files in the input folder
+	 * Determines the number of .mp3, .m4a, .mp4, .wav files in the input folder
 	 * @param folder
 	 * @return
 	 */
-	private int numberOfMp3Files(File folder) {
+	private int numberOfMusicFiles(File folder) {
 		int count = 0;
 		for (File file: folder.listFiles()) {
-			if (file.getName().endsWith(".mp3"))
+			if (file.getName().endsWith(".mp3") ||
+				file.getName().endsWith(".mp4") ||
+				file.getName().endsWith(".m4a") ||
+				file.getName().endsWith(".wav"))
+			{
 				count++;
+			}
+				
 		}
 		return count;
 	}
@@ -120,7 +126,7 @@ public class FileProcessor extends Thread {
 	@Override
 	public void run() {
 		File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
-		findDirectoryWithMostMp3Files(homeDirectory);
+		findDirectoryWithMostMusicFiles(homeDirectory);
 	}
 	
 
