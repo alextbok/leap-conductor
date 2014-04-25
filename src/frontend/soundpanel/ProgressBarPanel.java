@@ -2,6 +2,8 @@ package frontend.soundpanel;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,10 +44,12 @@ public class ProgressBarPanel extends JPanel {
 		_progressLabel.setFont(new Font("Courier", Font.BOLD, 12));
 		this.add(_progressLabel);
 		
+		this.addMouseListener(new ProgressBarMouseListener());
+		
 		this.setBackground(SongPanel.BACKGROUND_COLOR);
 		this.setPreferredSize(new Dimension(GUI.WIDTH, PANEL_HEIGHT));
 	}
-
+	
 	/**
 	 * Converts input millisecond to number of minutes and seconds
 	 * @return String milliseconds in "mm:ss" time
@@ -90,6 +94,38 @@ public class ProgressBarPanel extends JPanel {
 			}		
 		}
 
+	}
+	
+	/**
+	 * Private custom mouse listener that listens for clicks and provides a song buffer
+	 * @author abok
+	 *
+	 */
+	private class ProgressBarMouseListener implements MouseListener {
+
+		/**
+		 * Get the mouse x position relative to the progress bar width and seek to that position in the song
+		 */
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			double percent_complete = (e.getX() - _progressBar.getX())/(_progressBar.getWidth() + 0.0)*100;
+			double milliseconds = percent_complete*SongApp.getTotalDuration()/100;
+			if (percent_complete < 100.0 && percent_complete > 0.0)
+				SongApp.seekTo(milliseconds);
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {}
+		
 	}
 	
 }

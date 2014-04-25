@@ -37,9 +37,10 @@ public class FileChooser {
 		if (_currentDirectory != null)
 			fc.setCurrentDirectory(_currentDirectory);
 	    
-	    //only accept files with .mp3 extension
-	    fc.setFileFilter(new FileNameExtensionFilter("*.mp3", "mp3"));
+	    //only accept files with .mp3, .mp4, .m4a, .wav extensions
 	    fc.setAcceptAllFileFilterUsed(false);
+	    fc.setFileFilter(new FileNameExtensionFilter("Music files", "mp3", "m4a", "mp4", "wav"));
+
 	    
 	    //allow multiple files to be selected
 	    fc.setMultiSelectionEnabled(true);

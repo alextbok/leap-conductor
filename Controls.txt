@@ -33,3 +33,6 @@
 	- Click on the speed knob and pull down to decrease speed -
 	- Swipe your hand left to right to turn increase speed -
 	- Swipe your hand right to left to lower speed -
+	
+--Seeking in Songs--
+	- Click the progress bar to seek to a position in the song - 

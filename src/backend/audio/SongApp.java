@@ -13,6 +13,7 @@ import javafx.scene.media.AudioSpectrumListener;
 import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class SongApp {
 	private static Media _media;
@@ -204,6 +205,14 @@ public class SongApp {
 		return (int) _mediaPlayer.getCurrentTime().toMillis();
 	}
 	
+	/**
+	 * Wrapper for seek method. Seeks to input milliseconds (double)
+	 * @param ms
+	 */
+	public static void seekTo(double ms){
+		Duration duration = new Duration(ms);
+		_mediaPlayer.seek(duration);
+	}
 	
     /**
      * Wrapper for mediaplayer
