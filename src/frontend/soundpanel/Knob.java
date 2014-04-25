@@ -39,8 +39,8 @@ public class Knob extends JPanel {
 	/**
 	 * Constructor
 	 */
-	public Knob(String s, int x, int y) {
-		_angle = 0.0;
+	public Knob(String s) {
+		_angle = 112.0;
 		_text = s;
 	   	
 		//create border and its title font

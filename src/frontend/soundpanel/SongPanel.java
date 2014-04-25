@@ -30,10 +30,16 @@ public class SongPanel extends JPanel {
 	public static final Color BACKGROUND_COLOR = new Color(214,212,210);
 	
 	/*Volume control knob*/
-	public static final Knob knobVolume = new Knob("Volume",565,30);
+	public static final Knob knobVolume = new Knob("Volume");
 	
 	/*Speed control knob*/
-	public static final Knob knobSpeed = new Knob("Speed",645,30);
+	public static final Knob knobSpeed = new Knob("Speed");
+	
+	/*Frequency control knobs*/
+	public static final Knob knobLow = new Knob("Low");
+	public static final Knob knobMid = new Knob("Mid");
+	public static final Knob knobHigh = new Knob("High");
+	
 	
 	/*Keeps track of mouse-down y-coordinates for the MouseDraggedEvent*/
 	private HashMap<String, Integer> _mouseDownCoordinates;
@@ -42,13 +48,13 @@ public class SongPanel extends JPanel {
 	private static final int KNOB_X_OFFSET = 7;
 	private static final int KNOB_Y_OFFSET = 10;
 	private static final int BTN_SIZE = 40;
-	private static final int PLAY_X = 850;
+	private static final int PLAY_X = 990;
 	private static final int PLAY_Y = 10;
-	private static final int PAUSE_X = 850;
+	private static final int PAUSE_X = 990;
 	private static final int PAUSE_Y = 55;
-	private static final int ADD_X = 410;
+	private static final int ADD_X = 270;
 	private static final int ADD_Y = 10;
-	private static final int REMOVE_X = 410;
+	private static final int REMOVE_X = 270;
 	private static final int REMOVE_Y = 55;
 	
 	/*The song currently being played*/
@@ -102,7 +108,30 @@ public class SongPanel extends JPanel {
         brush.drawImage(Knob.getImage(), knobSpeed.getX() + KNOB_X_OFFSET, knobSpeed.getY() + KNOB_Y_OFFSET, null);
         //rotate brush back
         brush.rotate(-angleSpeed, Knob.WIDTH/2 + knobSpeed.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobSpeed.getY() + KNOB_Y_OFFSET);
+        
+        //rotate brush around low knob by its current angle before painting it        
+        double angleLow = Math.toRadians(knobLow.getAngle());
+        brush.rotate(angleLow, Knob.WIDTH/2 + knobLow.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobLow.getY() + KNOB_Y_OFFSET);
+        brush.drawImage(Knob.getImage(), knobLow.getX() + KNOB_X_OFFSET, knobLow.getY() + KNOB_Y_OFFSET, null);
+        //rotate brush back
+        brush.rotate(-angleLow, Knob.WIDTH/2 + knobLow.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobLow.getY() + KNOB_Y_OFFSET);
+    
+        //rotate brush around mid knob by its current angle before painting it        
+        double angleMid = Math.toRadians(knobMid.getAngle());
+        brush.rotate(angleMid, Knob.WIDTH/2 + knobMid.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobMid.getY() + KNOB_Y_OFFSET);
+        brush.drawImage(Knob.getImage(), knobMid.getX() + KNOB_X_OFFSET, knobMid.getY() + KNOB_Y_OFFSET, null);
+        //rotate brush back
+        brush.rotate(-angleMid, Knob.WIDTH/2 + knobMid.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobMid.getY() + KNOB_Y_OFFSET);
+    
+        //rotate brush around high knob by its current angle before painting it        
+        double angleHigh = Math.toRadians(knobHigh.getAngle());
+        brush.rotate(angleHigh, Knob.WIDTH/2 + knobHigh.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobHigh.getY() + KNOB_Y_OFFSET);
+        brush.drawImage(Knob.getImage(), knobHigh.getX() + KNOB_X_OFFSET, knobHigh.getY() + KNOB_Y_OFFSET, null);
+        //rotate brush back
+        brush.rotate(-angleHigh, Knob.WIDTH/2 + knobHigh.getX() + KNOB_X_OFFSET, Knob.HEIGHT/2 + knobHigh.getY() + KNOB_Y_OFFSET);
+        
     }
+    
 
     /**
      * Add our knobs and their respective mouse listeners
@@ -119,6 +148,21 @@ public class SongPanel extends JPanel {
 		_mouseDownCoordinates.put(knobSpeed.getText(), 0);
 		knobSpeed.addMouseListener(new KnobMouseListener(knobSpeed));
 		knobSpeed.addMouseMotionListener(new KnobMouseMotionListener(knobSpeed));
+		
+		this.add(knobLow);
+		_mouseDownCoordinates.put(knobLow.getText(), 0);
+		knobLow.addMouseListener(new KnobMouseListener(knobLow));
+		knobLow.addMouseMotionListener(new KnobMouseMotionListener(knobLow));
+		
+		this.add(knobMid);
+		_mouseDownCoordinates.put(knobMid.getText(), 0);
+		knobMid.addMouseListener(new KnobMouseListener(knobMid));
+		knobMid.addMouseMotionListener(new KnobMouseMotionListener(knobMid));
+		
+		this.add(knobHigh);
+		_mouseDownCoordinates.put(knobHigh.getText(), 0);
+		knobHigh.addMouseListener(new KnobMouseListener(knobHigh));
+		knobHigh.addMouseMotionListener(new KnobMouseMotionListener(knobHigh));
     }
     
     
