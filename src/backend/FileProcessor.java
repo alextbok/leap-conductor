@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * Class that 1) retrieves text from text documents and 2) finds the folder with the most mp3 files
+ * Class that 1) retrieves text from text documents 2) finds the folder with the most mp3 files
+ * and 3) retrieves song files from previous session
  * It implements runnable so we can start looking for the folder with most mp3's on startup
  * If the user tries to add a song before the traversal is finished, he/she will open up the
  * folder that is currently marked as having the most .mp3 files (defaulted to /src/sounds)
@@ -52,8 +54,8 @@ public class FileProcessor extends Thread {
 			BufferedReader in = new BufferedReader(new FileReader(new File(dir + "/" + fileName)));
 			String line = in.readLine();
 			while (line != null){
-			  sb.append(line + "\n");
-			  line = in.readLine();
+				sb.append(line + "\n");
+				line = in.readLine();
 			}
 			in.close();
 			return sb.toString();
@@ -70,6 +72,34 @@ public class FileProcessor extends Thread {
 		return _folder;
 	}
 	
+	/**
+	 * Retrieves song files from previous sessions and handles File exceptions
+	 */
+	public static File[] getSongsFromPreviousSession() {
+		
+		ArrayList<File> returnFiles = new ArrayList<File>();
+		String dir = System.getProperty("user.dir");
+		
+		try {
+			
+			BufferedReader in = new BufferedReader(new FileReader(new File(dir + "/song_files.txt")));
+			String line = in.readLine();
+			
+			while (line != null) {
+				
+				File song = new File(line);
+				
+				if (song.exists())
+					returnFiles.add(song);
+				
+				line = in.readLine();
+			}
+			in.close();
+		} catch (IOException e) {
+			System.out.println("ERROR: IOException while reading file " + dir + "/song_files.txt");
+		}
+		return returnFiles.toArray(new File[returnFiles.size()]);
+	}
 	
 	/*NON-STATIC METHODS*/
 	

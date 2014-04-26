@@ -12,6 +12,7 @@ import javafx.scene.media.AudioEqualizer;
 import javafx.scene.media.AudioSpectrumListener;
 import javafx.scene.media.EqualizerBand;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
@@ -23,9 +24,12 @@ public class SongApp {
 	public SongApp(String url) {
 		new JFXPanel();
 		_url = url;
-		_media = new Media(new File(_url).toURI().toString());
-		_mediaPlayer = new MediaPlayer(_media);
-		
+    	try {
+    		_media = new Media(new File(_url).toURI().toString());
+    		_mediaPlayer = new MediaPlayer(_media);
+    	} catch (MediaException e) {
+    		System.out.println("ERROR: No such file or directory " + url);
+    	}
 	}
 	
 	/**
@@ -236,7 +240,11 @@ public class SongApp {
      * Sets the song to be played
      */
     public static void setSong(File file) {
-		_media = new Media(file.toURI().toString());
-		_mediaPlayer = new MediaPlayer(_media);	
+    	try {
+    		_media = new Media(file.toURI().toString());
+    		_mediaPlayer = new MediaPlayer(_media);	
+    	} catch (MediaException e) {
+    		System.out.println("ERROR: No such file or directory " + file.getAbsolutePath());
+    	}
     }
 }

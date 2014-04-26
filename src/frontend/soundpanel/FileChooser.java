@@ -39,7 +39,7 @@ public class FileChooser {
 	    
 	    //only accept files with .mp3, .mp4, .m4a, .wav extensions
 	    fc.setAcceptAllFileFilterUsed(false);
-	    fc.setFileFilter(new FileNameExtensionFilter("Music files", "mp3", "m4a", "mp4", "wav"));
+	    fc.setFileFilter(new FileNameExtensionFilter("Music Files", "mp3", "m4a", "mp4", "wav"));
 
 	    
 	    //allow multiple files to be selected
@@ -58,9 +58,9 @@ public class FileChooser {
 	
 	/**
 	 * 
-	 * @return Array of all .mp3 files in the /sounds/directory
+	 * @return Array of all .music files in the /sounds/directory
 	 */
-	public static File[] getAllMp3Files() {
+	public static File[] getAllMusicFiles() {
 		
 		String dir = System.getProperty("user.dir") + "/src/sounds/";
 		File folder = new File(dir);
@@ -72,9 +72,14 @@ public class FileChooser {
 
 		for (int i = 0; i < files.length; i++) {
 			String name = files[i].getName();
-			//if the file name has a .mp3 extension, add it to the return array
-			if (name.length() >= 4 && name.substring(name.length() - 4, name.length()).equals(".mp3"))
+			//if the file name has one of the below extensions, add it to the return array
+			if (name.endsWith(".mp3") ||
+				name.endsWith(".mp4") ||
+				name.endsWith(".m4a") ||
+				name.endsWith(".wav"))
+			{
 				returnList.add(files[i]);
+			}
 		}
 		return returnList.toArray(new File[returnList.size()]);
 	}

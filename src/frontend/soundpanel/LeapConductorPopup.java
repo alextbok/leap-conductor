@@ -9,16 +9,15 @@ import backend.FileProcessor;
 @SuppressWarnings("serial")
 public class LeapConductorPopup extends JDialog {
 
-	public LeapConductorPopup(String fileName) {
-		showLeapConductorPopup(fileName);
+	public LeapConductorPopup(String fileName, String title) {
+		showLeapConductorPopup(fileName, title);
 	}
 	
 	/**
 	 * Displays our customized popup (JDialog) to the user
 	 * Contents shown taken from file with input file name
-	 * 
 	 */
-	public void showLeapConductorPopup(String fileName) {
+	public void showLeapConductorPopup(String fileName, String title) {
 		
 		PopupTextArea textArea = new PopupTextArea(10, 50);
 		
@@ -33,6 +32,7 @@ public class LeapConductorPopup extends JDialog {
 		JScrollPane scrollPane = new JScrollPane(textArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		//show the JDialog instance
+		this.setTitle(title);
 		this.setModal(true);
 		this.add(scrollPane);
 		this.setSize(800,500);

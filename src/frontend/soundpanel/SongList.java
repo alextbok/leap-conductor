@@ -6,7 +6,11 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -32,7 +36,7 @@ public class SongList {
 	private final static DefaultListModel<String> listModel = new DefaultListModel<String>();
 	
 	/*Keeps track of our files. Map : String (file name) -> File (associated file)*/
-	private final static HashMap<String, File> mp3Files = new HashMap<String, File>();
+	private final static HashMap<String, File> musicFiles = new HashMap<String, File>();
 	
 	/**
 	 * Constructor - does nothing. This class is intended to be used statically
@@ -47,7 +51,7 @@ public class SongList {
 	 */
 	public static void addSong(File song) {
 		if (!listModel.contains(song.getName())) {
-			mp3Files.put(song.getName(), song);
+			musicFiles.put(song.getName(), song);
 			listModel.addElement(song.getName());
 			list.setModel(listModel);
 		}
@@ -113,12 +117,25 @@ public class SongList {
 	public static File getCurrentlySelectedSong() {
 		if (list.getSelectedValue() == null) {
 			list.setSelectedIndex(0);
-			return mp3Files.get( listModel.get(0) );
+			return musicFiles.get( listModel.get(0) );
 		}
-		return mp3Files.get(list.getSelectedValue());
+		return musicFiles.get(list.getSelectedValue());
 	}
 	
-	
+	/**
+	 * Returns all songs in the list so we can save file paths when the GUI closes
+	 */
+	public static String[] getAllSongs() {
+		ArrayList<String> files = new ArrayList<String>();
+		HashSet<String> songNames = new HashSet<String>(Collections.list(listModel.elements()));
+		//if a song in our musicFiles (all added/deleted files) is currently in the song list, add it
+		for (String name: musicFiles.keySet()) {
+			if (songNames.contains(name)) {
+				files.add(musicFiles.get(name).getAbsolutePath());
+			}
+		}
+		return files.toArray(new String[files.size()]);
+	}
 	
 	/**
 	 * Adds mouse listener to list that listens for double clicks
@@ -131,7 +148,7 @@ public class SongList {
 				//if the user double clicks, set and play the song
 				if (e.getClickCount() == 2) {
 					SongApp.stopSong(); //stop what is currently playing
-					SongApp.setSong(mp3Files.get(list.getSelectedValue()));
+					SongApp.setSong(musicFiles.get(list.getSelectedValue()));
 					SongApp.playSong();
 				}
 			}
