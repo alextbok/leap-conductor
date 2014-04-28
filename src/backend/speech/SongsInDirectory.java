@@ -1,24 +1,25 @@
 package backend.speech;
 
 /**
- * SongsDirectory
+ * SongsInDirectory
  * @author Arun Varma
- *
+ * gets songs in user's library according to artist and/or title
  */
 
 import java.io.*;
 import java.util.*;
 import org.farng.mp3.*;
-import org.farng.mp3.id3.AbstractID3v2;
+import org.farng.mp3.id3.*;
 
-public class SongsDirectory {
+public class SongsInDirectory {
   private File dir;
   private File[] listFiles;
 
   /**
-   * SongsDirectory
+   * SongsInDirectory
+   * @param path
    */
-  public SongsDirectory(String path) {
+  public SongsInDirectory(String path) {
     dir = new File(path);
     listFiles = dir.listFiles();
   }
