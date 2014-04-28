@@ -41,10 +41,11 @@ public class LeapListener extends Listener {
 		/***********************
 		 * RECOGNIZING GESTURES
 		 **********************/
-		
+
 		// gesture to pause the song
 		if (cooldownComplete && HandsSeperateGesture.isDetected(controller)){
 			SongApp.stopSong();
+			/*
 			cooldownComplete = false;
 			new Timer(1000, new ActionListener() {
 				@Override
@@ -52,94 +53,94 @@ public class LeapListener extends Listener {
 					cooldownComplete = true;
 				}
 			}).start();
-		}else {
-
-			// gestures for raising high/mid/bass
-			if(HandsUpRightGesture.isDetected(controller)) {
-				SongApp.raiseHigh();
-			}
-			else if (HandsUpMiddleGesture.isDetected(controller)){
-				SongApp.raiseMid();
-			}
-			else if(HandsUpLeftGesture.isDetected(controller)) {
-				SongApp.raiseBass();
-			}
-			// gestures for lowering high/mid/bass
-			else if (HandsDownRightGesture.isDetected(controller)){
-				SongApp.lowerHigh();
-			}
-			else if (HandsDownMiddleGesture.isDetected(controller)){
-				SongApp.lowerMid();
-			}
-			else if (HandsDownMiddleGesture.isDetected(controller)){
-				SongApp.lowerBass();
-			}
-			// Gestures for speeding up and slowing down song
-			else if (HandsRightGesture.isDetected(controller)){
-				SongApp.speedUpSong();
-			}
-			else if (HandsLeftGesture.isDetected(controller)){
-				SongApp.slowDownSong();
-			}
-
+			 */
+		}
+		// gestures for raising high/mid/bass
+		else if(HandsUpRightGesture.isDetected(controller)) {
+			SongApp.raiseHigh();
+		}
+		else if (HandsUpMiddleGesture.isDetected(controller)){
+			SongApp.raiseMid();
+		}
+		else if(HandsUpLeftGesture.isDetected(controller)) {
+			SongApp.raiseBass();
+		}
+		// gestures for lowering high/mid/bass
+		else if (HandsDownRightGesture.isDetected(controller)){
+			SongApp.lowerHigh();
+		}
+		else if (HandsDownMiddleGesture.isDetected(controller)){
+			SongApp.lowerMid();
+		}
+		else if (HandsDownLeftGesture.isDetected(controller)){
+			SongApp.lowerBass();
+		}
+		// Gestures for speeding up and slowing down song
+		else if (HandsRightGesture.isDetected(controller)){
+			SongApp.speedUpSong();
+		}
+		else if (HandsLeftGesture.isDetected(controller)){
+			SongApp.slowDownSong();
 		}
 
+	
 
-		/****************
-		 * DRAWING HANDS
-		 ***************/
-		
-		if (!frame.hands().isEmpty()) {
-			Screen screen = controller.locatedScreens().get(0);
 
-			if (screen != null && screen.isValid()) {
-				HandList hands = frame.hands();
-				ArrayList<Point2D> handList = new ArrayList<>();
+	/****************
+	 * DRAWING HANDS
+	 ***************/
 
-				for (int i = 0; i < hands.count() && i < 2; i++) {
-					if (hands.get(i).isValid()) {
-						Vector intersect = screen.intersect(hands.get(i).palmPosition(), hands.get(i).direction(), true);
-						handList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
-					}
+	if (!frame.hands().isEmpty()) {
+		Screen screen = controller.locatedScreens().get(0);
+
+		if (screen != null && screen.isValid()) {
+			HandList hands = frame.hands();
+			ArrayList<Point2D> handList = new ArrayList<>();
+
+			for (int i = 0; i < hands.count() && i < 2; i++) {
+				if (hands.get(i).isValid()) {
+					Vector intersect = screen.intersect(hands.get(i).palmPosition(), hands.get(i).direction(), true);
+					handList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
 				}
-
-				handLocs = handList;
 			}
+
+			handLocs = handList;
 		}
+	}
 
-		if (!frame.fingers().isEmpty()) {
-			Screen screen = controller.locatedScreens().get(0);
+	if (!frame.fingers().isEmpty()) {
+		Screen screen = controller.locatedScreens().get(0);
 
-			if (screen != null && screen.isValid()) {
-				FingerList fingers = frame.fingers();
-				ArrayList<Point2D> fingerList = new ArrayList<>();
+		if (screen != null && screen.isValid()) {
+			FingerList fingers = frame.fingers();
+			ArrayList<Point2D> fingerList = new ArrayList<>();
 
-				for (int i = 0; i < fingers.count() && i < 10; i++) {
-					if (fingers.get(i).isValid()) {
-						Vector intersect = screen.intersect(fingers.get(i).stabilizedTipPosition(), fingers.get(i).direction(), true);
-						fingerList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
-					}
+			for (int i = 0; i < fingers.count() && i < 10; i++) {
+				if (fingers.get(i).isValid()) {
+					Vector intersect = screen.intersect(fingers.get(i).stabilizedTipPosition(), fingers.get(i).direction(), true);
+					fingerList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
 				}
-
-				fingerLocs = fingerList;
 			}
+
+			fingerLocs = fingerList;
 		}
 	}
+}
 
-	/**
-	 * getHandLocs
-	 * @return handLocs
-	 */
-	public List<Point2D> getHandLocs() {
-		return handLocs;
-	}
+/**
+ * getHandLocs
+ * @return handLocs
+ */
+public List<Point2D> getHandLocs() {
+	return handLocs;
+}
 
-	/**
-	 * getFingerLocs
-	 * @return fingerLocs
-	 */
-	public List<Point2D> getFingerLocs() {
-		return fingerLocs;
-	}
+/**
+ * getFingerLocs
+ * @return fingerLocs
+ */
+public List<Point2D> getFingerLocs() {
+	return fingerLocs;
+}
 
 }
