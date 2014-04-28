@@ -4,7 +4,7 @@ import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.HandList;
 
-public class HandsDownGesture {
+public class HandsUpMiddleGesture {
 
 	public static boolean isDetected(Controller controller) {
 		controller.frame().gestures();
@@ -17,11 +17,13 @@ public class HandsDownGesture {
 			Hand prevRight = prevHands.rightmost();
 			
 			float dif = rightHand.stabilizedPalmPosition().getY() - prevRight.stabilizedPalmPosition().getY();
-						
+			
 			int numFingers = rightHand.fingers().count();
 
-			if(dif <= -3 && numFingers >= 3) {
-				return true;
+			if(dif >= 3 && numFingers >= 3) {
+				if ( rightHand.stabilizedPalmPosition().getX() < 120.0 && rightHand.stabilizedPalmPosition().getX() > -100.0 ){
+					return true;
+				}
 			}
 		}
 		return false;

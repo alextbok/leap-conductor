@@ -38,6 +38,11 @@ public class LeapListener extends Listener {
 	public void onFrame(Controller controller) {
 		Frame frame = controller.frame();
 
+		/***********************
+		 * RECOGNIZING GESTURES
+		 **********************/
+		
+		// gesture to pause the song
 		if (cooldownComplete && HandsSeperateGesture.isDetected(controller)){
 			SongApp.stopSong();
 			cooldownComplete = false;
@@ -49,18 +54,30 @@ public class LeapListener extends Listener {
 			}).start();
 		}else {
 
-			if(HandsUpGesture.isDetected(controller)) {
-				SongApp.volumeUp();
+			// gestures for raising high/mid/bass
+			if(HandsUpRightGesture.isDetected(controller)) {
+				SongApp.raiseHigh();
 			}
-
-			else if(HandsDownGesture.isDetected(controller)) {
-				SongApp.volumeDown();
+			else if (HandsUpMiddleGesture.isDetected(controller)){
+				SongApp.raiseMid();
 			}
-
+			else if(HandsUpLeftGesture.isDetected(controller)) {
+				SongApp.raiseBass();
+			}
+			// gestures for lowering high/mid/bass
+			else if (HandsDownRightGesture.isDetected(controller)){
+				SongApp.lowerHigh();
+			}
+			else if (HandsDownMiddleGesture.isDetected(controller)){
+				SongApp.lowerMid();
+			}
+			else if (HandsDownMiddleGesture.isDetected(controller)){
+				SongApp.lowerBass();
+			}
+			// Gestures for speeding up and slowing down song
 			else if (HandsRightGesture.isDetected(controller)){
 				SongApp.speedUpSong();
 			}
-
 			else if (HandsLeftGesture.isDetected(controller)){
 				SongApp.slowDownSong();
 			}
@@ -68,6 +85,10 @@ public class LeapListener extends Listener {
 		}
 
 
+		/****************
+		 * DRAWING HANDS
+		 ***************/
+		
 		if (!frame.hands().isEmpty()) {
 			Screen screen = controller.locatedScreens().get(0);
 
