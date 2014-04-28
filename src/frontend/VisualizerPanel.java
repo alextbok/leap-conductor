@@ -27,7 +27,7 @@ public class VisualizerPanel extends JPanel {
   private Controller leapController;
   private List<Color> colors;
   private ParticleField particleField;
-  private int trailSize, newRadius;
+  private int trailSize, newRadius, curMin;
   private boolean sizeChange, smaller;
 
   /**
@@ -55,7 +55,7 @@ public class VisualizerPanel extends JPanel {
       @Override
       public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         if (sizeChange)
-          newRadius = 2 * (40 - (int) magnitudes[0]);
+          newRadius = 3 * (40 - (int) magnitudes[0]);
       }
     };
     SongApp.setAudioSpectrumListener(audioSpectrumListener);
