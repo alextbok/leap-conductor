@@ -126,7 +126,7 @@ public class SongPanel extends JPanel {
 	 */
 	public static Image getIcon(String name) {
 		try {
-			String dir = System.getProperty("user.dir") + "/src/icons/";
+			String dir = System.getProperty("user.dir") + "/src/data/icons/";
 			return ImageIO.read(new File(dir + name + ".png"));
 		} catch (IOException e) {
 			System.out.println("ERROR: IOException when trying to load image in SongPanel.getIcon()");

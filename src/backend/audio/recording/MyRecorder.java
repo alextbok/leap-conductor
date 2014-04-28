@@ -60,7 +60,7 @@ public class MyRecorder {
 				recording.start();
 				
 				AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
-				File file = new File("vocals.wav"); //we'll have to decide where to save the audio
+				File file = new File("src/data/vocals.wav"); //we'll have to decide where to save the audio
 				
 				AudioSystem.write(new AudioInputStream(recording), fileType, file);
 			}
