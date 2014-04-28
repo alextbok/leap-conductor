@@ -17,9 +17,12 @@ import backend.motion.HandsDownRightGesture;
 import backend.motion.HandsLeftGesture;
 import backend.motion.HandsRightGesture;
 import backend.motion.HandsSeperateGesture;
+import backend.motion.HandsTogetherGesture;
 import backend.motion.HandsUpLeftGesture;
 import backend.motion.HandsUpMiddleGesture;
 import backend.motion.HandsUpRightGesture;
+import backend.motion.TwoHandsDownGesture;
+import backend.motion.TwoHandsUpGesture;
 
 import com.leapmotion.leap.CircleGesture;
 import com.leapmotion.leap.Controller;
@@ -69,8 +72,8 @@ public class LeapListener extends Listener {
 			}
 		}
 
-		// gesture to pause the song
-		if (cooldownComplete && HandsSeperateGesture.isDetected(controller)){
+		// gestures to pause/play the song
+		if (HandsSeperateGesture.isDetected(controller)){
 			SongApp.stopSong();
 			/*
 			cooldownComplete = false;
@@ -81,6 +84,16 @@ public class LeapListener extends Listener {
 				}
 			}).start();
 			 */
+		}
+		else if (HandsTogetherGesture.isDetected(controller)){
+			SongApp.playSong();
+		}
+		// gestures for volume control
+		else if (TwoHandsUpGesture.isDetected(controller)){
+			SongApp.volumeUp();
+		}
+		else if (TwoHandsDownGesture.isDetected(controller)){
+			SongApp.volumeDown();
 		}
 		// gestures for raising high/mid/bass
 		else if(HandsUpRightGesture.isDetected(controller)) {
