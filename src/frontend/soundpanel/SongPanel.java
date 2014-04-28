@@ -48,6 +48,7 @@ public class SongPanel extends JPanel {
 	public static final int KNOB_Y_OFFSET = 10;
 	private static final int BTN_SIZE = 40;
 
+	//coordinates of icons (set relative in repaint method)
 	private static int PLAY_X = 990;
 	private static int PLAY_Y = 10;
 	private static int PAUSE_X = 990;
@@ -85,8 +86,18 @@ public class SongPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D brush = (Graphics2D) g;
         
-        //draw buttons
+        //set positions relative to volume knob so they are painted
+        //correctly when the frame is resized
+        PLAY_X = knobVolume.getX() + 475;
+        PLAY_Y = knobVolume.getY();
+        PAUSE_X = knobVolume.getX() + 475;
+        PAUSE_Y = knobVolume.getY() + 45;
+        ADD_X = knobVolume.getX() - 250;
+        ADD_Y = knobVolume.getY();
+        REMOVE_X = knobVolume.getX() - 250;
+        REMOVE_Y = knobVolume.getY() + 45;
         
+        //draw buttons
         brush.drawImage(playIcon, PLAY_X, PLAY_Y, null);
         brush.drawImage(pauseIcon, PAUSE_X, PAUSE_Y, null);
         brush.drawImage(addIcon, ADD_X, ADD_Y, null);
