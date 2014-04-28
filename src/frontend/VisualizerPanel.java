@@ -69,19 +69,16 @@ public class VisualizerPanel extends JPanel {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
-    
-    //g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
 
     // update particle positions
     particleField.setSpeed(SongApp.getRate());
-    System.out.print("");
     particleField.move();
 
     // change circle size according to audio, draw circle
     ParticleCircle circle = particleField.getCircle();
     int centerRadius = circle.getRadius();
     if (sizeChange) {
-      if (newRadius > centerRadius)
+      if (newRadius > centerRadius + 50)
         smaller = true;
       else
         smaller = false;
@@ -89,9 +86,9 @@ public class VisualizerPanel extends JPanel {
       sizeChange = false;
     }
     else {
-      if (centerRadius < newRadius && smaller)
+      if (centerRadius + 50 < newRadius && smaller)
         circle.setRadius(centerRadius + 15);
-      else if (circle.getRadius() > newRadius && (!smaller))
+      else if (centerRadius + 50 > newRadius && (!smaller))
         circle.setRadius(centerRadius - 15);
       else
         sizeChange = true;
