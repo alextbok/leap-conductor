@@ -62,9 +62,8 @@ public class FileChooser {
 	 */
 	public static File[] getAllMusicFiles() {
 		
-		String dir = System.getProperty("user.dir") + "/src/sounds/";
+		String dir = System.getProperty("user.dir") + "/src/data/sounds/";
 		File folder = new File(dir);
-		
 		//get all of the files in the src/sounds/ folder
 		File[] files = folder.listFiles();
 		

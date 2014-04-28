@@ -147,7 +147,7 @@ public class GUI extends JFrame {
 	    	String[] filepaths = SongList.getAllSongs();
 			try {
 				String dir = System.getProperty("user.dir");
-	    		PrintWriter writer = new PrintWriter(dir + "/song_files.txt", "UTF-8");
+	    		PrintWriter writer = new PrintWriter(dir + "/src/data/song_files.txt", "UTF-8");
 	    		for (String path: filepaths) {
 	    			writer.println(path);
 	    		}

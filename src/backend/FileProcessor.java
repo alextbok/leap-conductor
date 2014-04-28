@@ -24,7 +24,7 @@ public class FileProcessor extends Thread {
 	public static final String CONTROLS_FILENAME = "Controls.txt";
 	
 	/*Folder with most mp3's - default is /src/sounds*/
-	private static File _folder = new File(System.getProperty("user.dir") + "/src/sounds");
+	private static File _folder = new File(System.getProperty("user.dir") + "/src/data/sounds");
 	
 	private int _numMp3Files = numberOfMusicFiles(_folder);
 	
@@ -51,7 +51,7 @@ public class FileProcessor extends Thread {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File(dir + "/" + fileName)));
+			BufferedReader in = new BufferedReader(new FileReader(new File(dir + "/src/data/" + fileName)));
 			String line = in.readLine();
 			while (line != null){
 				sb.append(line + "\n");
@@ -60,7 +60,7 @@ public class FileProcessor extends Thread {
 			in.close();
 			return sb.toString();
 		} catch (IOException e) {
-			System.out.println("ERROR: IOException while reading file " + dir + "/" + fileName);
+			System.out.println("ERROR: IOException while reading file " + dir + "/src/data/" + fileName);
 		}
 		return null;
 	}
@@ -82,7 +82,7 @@ public class FileProcessor extends Thread {
 		
 		try {
 			
-			BufferedReader in = new BufferedReader(new FileReader(new File(dir + "/song_files.txt")));
+			BufferedReader in = new BufferedReader(new FileReader(new File(dir + "/src/data/song_files.txt")));
 			String line = in.readLine();
 			
 			while (line != null) {
@@ -96,7 +96,7 @@ public class FileProcessor extends Thread {
 			}
 			in.close();
 		} catch (IOException e) {
-			System.out.println("ERROR: IOException while reading file " + dir + "/song_files.txt");
+			System.out.println("ERROR: IOException while reading file " + dir + "/src/data/song_files.txt");
 		}
 		return returnFiles.toArray(new File[returnFiles.size()]);
 	}

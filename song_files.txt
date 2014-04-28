@@ -1,6 +1,0 @@
-/Users/mlbok/GitHub/leap-conductor/src/sounds/Murakami.mp3
-/Users/mlbok/Library/Containers/com.apple.AddressBook/Data/Music/iTunes/iTunes Media/Music/Band of Horses/Unknown Album/The Funeral.mp3
-/Users/mlbok/GitHub/leap-conductor/src/sounds/How_Did_I_Get_Here.mp3
-/Users/mlbok/Library/Containers/com.apple.AddressBook/Data/Music/iTunes/iTunes Media/Music/Band of Horses/Unknown Album/Is There a Ghost.mp3
-/Users/mlbok/GitHub/leap-conductor/src/sounds/Atlas_Hands.mp3
-/Users/mlbok/GitHub/leap-conductor/src/sounds/Make_Your_Way.mp3
