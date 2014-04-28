@@ -2,6 +2,8 @@ package frontend.soundpanel;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -76,6 +78,15 @@ public class ProgressBarPanel extends JPanel {
 		
 		public LeapConductorProgressBar() {
 			this.setPreferredSize(new Dimension(PROGRESS_BAR_WIDTH,PROGRESS_BAR_HEIGHT));
+		}
+		
+		/**
+		 * Helps the progress bar resize with the frame
+		 */
+		@Override
+		protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        this.setPreferredSize(new Dimension(ProgressBarPanel.this.getWidth() - 130,PROGRESS_BAR_HEIGHT));
 		}
 		
 		/**
