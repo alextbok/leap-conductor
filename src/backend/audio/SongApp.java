@@ -17,8 +17,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class SongApp {
-	private static Media _media;
-	private static MediaPlayer _mediaPlayer;
+	private  Media _media;
+	private  MediaPlayer _mediaPlayer;
 	private static String _url;
 	
 	public SongApp(String url) {
@@ -36,7 +36,7 @@ public class SongApp {
 	/**
 	 * resets the speed/volume/band gains 
 	 */
-	public static void resetValues() {
+	public void resetValues() {
 		if (_mediaPlayer != null){
 			_mediaPlayer.setRate(1.0);
 			_mediaPlayer.setVolume(1.0); // this is full volumes, the default of MediaPlayer
@@ -53,7 +53,7 @@ public class SongApp {
 	/**
 	 * plays the song and creates a new progress bar that runs in its own thread
 	 */
-	public static void playSong() {
+	public void playSong() {
 		if (_mediaPlayer != null)
 			_mediaPlayer.play();
 	}
@@ -61,7 +61,7 @@ public class SongApp {
 	/**
 	 * stops the song
 	 */
-	public static void stopSong() {
+	public void stopSong() {
 		if (_mediaPlayer != null)
 			_mediaPlayer.pause();
 	}
@@ -69,7 +69,7 @@ public class SongApp {
 	/**
 	 * speeds up the song
 	 */
-	public static void speedUpSong() {
+	public void speedUpSong() {
 		if (_mediaPlayer != null)
 			_mediaPlayer.setRate(_mediaPlayer.getRate() + 0.003);
 	}
@@ -77,7 +77,7 @@ public class SongApp {
 	/**
 	 * slows down the song
 	 */
-	public static void slowDownSong() {
+	public void slowDownSong() {
 		if (_mediaPlayer != null) {
 			_mediaPlayer.setRate(_mediaPlayer.getRate() - 0.003);
 		}
@@ -86,7 +86,7 @@ public class SongApp {
 	/**
 	 * increases the volume
 	 */
-	public static void volumeUp() {
+	public void volumeUp() {
 		if (_mediaPlayer != null) {
 			_mediaPlayer.setVolume(_mediaPlayer.getVolume() + 0.01);
 			if(_mediaPlayer.getVolume() > 1.0) _mediaPlayer.setVolume(1.0);
@@ -96,7 +96,7 @@ public class SongApp {
 	/**
 	 * decreases the volume
 	 */
-	public static void volumeDown() {
+	public void volumeDown() {
 		if (_mediaPlayer != null) {
 			_mediaPlayer.setVolume(_mediaPlayer.getVolume() - 0.01);
 			if(_mediaPlayer.getVolume() < 0.0) _mediaPlayer.setVolume(0.0);
@@ -106,7 +106,7 @@ public class SongApp {
 	/**
 	 * changes volume by d
 	 */
-	public static void changeVolume(double d) {
+	public void changeVolume(double d) {
 		if (_mediaPlayer != null)
 			_mediaPlayer.setVolume(_mediaPlayer.getVolume() + d);
 	}
@@ -114,7 +114,7 @@ public class SongApp {
 	/**
 	 * changes speed by d
 	 */
-	public static void changeSpeed(double d) {
+	public void changeSpeed(double d) {
 		if (_mediaPlayer != null)
 			_mediaPlayer.setRate(_mediaPlayer.getRate() + d);
 	}
@@ -122,7 +122,7 @@ public class SongApp {
 	/**
 	 * raises gain on bass frequencies
 	 */
-	public static void raiseBass() {
+	public void raiseBass() {
 		if (_mediaPlayer != null){
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
@@ -137,7 +137,7 @@ public class SongApp {
 	/**
 	 * lowers gain on bass frequencies
 	 */
-	public static void lowerBass() {
+	public void lowerBass() {
 		if (_mediaPlayer != null){
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
@@ -153,7 +153,7 @@ public class SongApp {
 	/**
 	 * raises gain on mid frequencies
 	 */
-	public static void raiseMid() {
+	public void raiseMid() {
 		if (_mediaPlayer != null){
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
@@ -169,7 +169,7 @@ public class SongApp {
 	/**
 	 * lowers gain on mid frequencies
 	 */
-	public static void lowerMid() {
+	public void lowerMid() {
 		if (_mediaPlayer != null){
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
@@ -184,7 +184,7 @@ public class SongApp {
 	/**
 	 * raises gain on high frequencies
 	 */
-	public static void raiseHigh() {
+	public void raiseHigh() {
 		if (_mediaPlayer != null){
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
@@ -199,7 +199,7 @@ public class SongApp {
 	/**
 	 * lowers gain on high frequencies
 	 */
-	public static void lowerHigh() {
+	public void lowerHigh() {
 		if (_mediaPlayer != null){
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
@@ -215,7 +215,7 @@ public class SongApp {
 	 * Returns the total time of the current song as the number of milliseconds
 	 * @return
 	 */
-	public static int getTotalDuration() {
+	public int getTotalDuration() {
 		return (int) _mediaPlayer.getTotalDuration().toMillis();
 	}
 
@@ -223,7 +223,7 @@ public class SongApp {
 	 * Returns the current time of the current song in milliseconds
 	 * @return
 	 */
-	public static int getCurrentTime() {
+	public int getCurrentTime() {
 		return (int) _mediaPlayer.getCurrentTime().toMillis();
 	}
 	
@@ -231,7 +231,7 @@ public class SongApp {
 	 * Wrapper for seek method. Seeks to input milliseconds (double)
 	 * @param ms
 	 */
-	public static void seekTo(double ms){
+	public void seekTo(double ms){
 		Duration duration = new Duration(ms);
 		_mediaPlayer.seek(duration);
 	}
@@ -241,8 +241,28 @@ public class SongApp {
      * Provides public access to the rate of the song
      * @return media
      */
-    public static double getRate() {
+    public double getRate() {
         return _mediaPlayer.getRate();
+    }
+    
+    /**
+     * Provides public access to the volume of the song
+     * @return
+     */
+    public double getVolume() {
+    	return _mediaPlayer.getVolume();
+    }
+    
+    public double getLows() {
+    	return _mediaPlayer.getAudioEqualizer().getBands().get(0).getGain();
+    }
+    
+    public double getMids() {
+    	return _mediaPlayer.getAudioEqualizer().getBands().get(5).getGain();
+    }
+    
+    public double getHighs() {
+    	return _mediaPlayer.getAudioEqualizer().getBands().get(10).getGain();
     }
     
     /**
@@ -250,14 +270,14 @@ public class SongApp {
      * Sets the audio spectrum listener
      * @param asl
      */
-    public static void setAudioSpectrumListener(AudioSpectrumListener asl) {
+    public void setAudioSpectrumListener(AudioSpectrumListener asl) {
     	_mediaPlayer.setAudioSpectrumListener(asl);
     }
     
     /**
      * Sets the song to be played
      */
-    public static void setSong(File file) {
+    public void setSong(File file) {
     	try {
     		_media = new Media(file.toURI().toString());
     		_mediaPlayer = new MediaPlayer(_media);	

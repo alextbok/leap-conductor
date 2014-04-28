@@ -1,5 +1,6 @@
 package frontend;
 
+import hub.SoundController;
 import backend.FileProcessor;
 import backend.audio.SongApp;
 
@@ -16,7 +17,7 @@ public class Main {
 	FileProcessor fp = new FileProcessor();
 	fp.start();
 	//instantiate our SongApp
-	new SongApp(args[0]);
+	new SoundController(new SongApp(args[0]));
 	//instantiate our GUI
     new GUI();
   }

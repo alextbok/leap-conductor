@@ -6,11 +6,12 @@ package frontend.soundpanel;
  * @author Arun Varma
  */
 
+import hub.SoundController;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend.audio.SongApp;
 import backend.motion.HandsDownLeftGesture;
 import backend.motion.HandsDownMiddleGesture;
 import backend.motion.HandsDownRightGesture;
@@ -63,18 +64,18 @@ public class LeapListener extends Listener {
 				CircleGesture circle = new CircleGesture(g);
 				if (circle.pointable().direction().angleTo(circle.normal()) <= Math.PI/2) {
 					//clockwise circle
-					SongApp.speedUpSong();
+					SoundController.speedUpSong();
 				}
 				else {
 					//counterclockwise circle
-					SongApp.slowDownSong();
+					SoundController.slowDownSong();
 				}
 			}
 		}
 
 		// gestures to pause/play the song
 		if (HandsSeperateGesture.isDetected(controller)){
-			SongApp.stopSong();
+			SoundController.stopSong();
 			/*
 			cooldownComplete = false;
 			new Timer(1000, new ActionListener() {
@@ -86,41 +87,41 @@ public class LeapListener extends Listener {
 			 */
 		}
 		else if (HandsTogetherGesture.isDetected(controller)){
-			SongApp.playSong();
+			SoundController.playSong();
 		}
 		// gestures for volume control
 		else if (TwoHandsUpGesture.isDetected(controller)){
-			SongApp.volumeUp();
+			SoundController.volumeUp();
 		}
 		else if (TwoHandsDownGesture.isDetected(controller)){
-			SongApp.volumeDown();
+			SoundController.volumeDown();
 		}
 		// gestures for raising high/mid/bass
 		else if(HandsUpRightGesture.isDetected(controller)) {
-			SongApp.raiseHigh();
+			SoundController.raiseHigh();
 		}
 		else if (HandsUpMiddleGesture.isDetected(controller)){
-			SongApp.raiseMid();
+			SoundController.raiseMid();
 		}
 		else if(HandsUpLeftGesture.isDetected(controller)) {
-			SongApp.raiseBass();
+			SoundController.raiseBass();
 		}
 		// gestures for lowering high/mid/bass
 		else if (HandsDownRightGesture.isDetected(controller)){
-			SongApp.lowerHigh();
+			SoundController.lowerHigh();
 		}
 		else if (HandsDownMiddleGesture.isDetected(controller)){
-			SongApp.lowerMid();
+			SoundController.lowerMid();
 		}
 		else if (HandsDownLeftGesture.isDetected(controller)){
-			SongApp.lowerBass();
+			SoundController.lowerBass();
 		}
 		// Gestures for speeding up and slowing down song
 		else if (HandsRightGesture.isDetected(controller)){
-			SongApp.speedUpSong();
+			SoundController.speedUpSong();
 		}
 		else if (HandsLeftGesture.isDetected(controller)){
-			SongApp.slowDownSong();
+			SoundController.slowDownSong();
 		}
 
 

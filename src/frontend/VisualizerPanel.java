@@ -6,20 +6,26 @@ package frontend;
  * @auther Arun Varma
  */
 
-import backend.audio.*;
-import frontend.audiovisualizer.*;
-import frontend.soundpanel.LeapListener;
+import hub.SoundController;
 
-import com.leapmotion.leap.*;
-
-import javax.swing.*;
-
-import javafx.scene.media.*;
-
-import java.awt.*;
-import java.awt.geom.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import javafx.scene.media.AudioSpectrumListener;
+
+import javax.swing.JPanel;
+
+import com.leapmotion.leap.Controller;
+
+import frontend.audiovisualizer.Particle;
+import frontend.audiovisualizer.ParticleCircle;
+import frontend.audiovisualizer.ParticleField;
+import frontend.soundpanel.LeapListener;
 
 @SuppressWarnings("serial")
 public class VisualizerPanel extends JPanel {
@@ -58,7 +64,7 @@ public class VisualizerPanel extends JPanel {
           newRadius = 3 * (40 - (int) magnitudes[0]);
       }
     };
-    SongApp.setAudioSpectrumListener(audioSpectrumListener);
+    SoundController.setAudioSpectrumListener(audioSpectrumListener);
   }
 
   /**
@@ -71,7 +77,7 @@ public class VisualizerPanel extends JPanel {
     Graphics2D g2 = (Graphics2D) g;
 
     // update particle positions
-    particleField.setSpeed(SongApp.getRate());
+    particleField.setSpeed(SoundController.getRate());
     particleField.move();
 
     // change circle size according to audio, draw circle

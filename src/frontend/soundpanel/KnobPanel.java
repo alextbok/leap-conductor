@@ -1,5 +1,7 @@
 package frontend.soundpanel;
 
+import hub.SoundController;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +16,6 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-
-import backend.audio.SongApp;
 
 /**
  * KnobPanel class
@@ -110,7 +110,7 @@ public class KnobPanel extends JPanel {
 	 * Increases the angle by 5.0 degrees
 	 * The double will be converted to radians before repainting
 	 */
-	private void rotateImage(double d) {
+	public void rotateImage(double d) {
 		_angle += d;
 	     if (_angle >= 360.0)
 	       _angle = 0.0;
@@ -161,12 +161,11 @@ public class KnobPanel extends JPanel {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			double rotation = 0.5 * (_previousY - e.getY());
-			KnobPanel.this.rotateImage(rotation);
 
 			if (_text.equals("Volume"))
-				SongApp.changeVolume(rotation / 50);
+				SoundController.changeVolume(rotation / 50);
 			else if (_text.equals("Speed"))
-				SongApp.changeSpeed(rotation * 0.001);
+				SoundController.changeSpeed(rotation * 0.001);
 
 			_previousY = e.getY();
 			KnobPanel.this.repaint();

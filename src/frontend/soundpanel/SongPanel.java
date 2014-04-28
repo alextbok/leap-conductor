@@ -1,5 +1,7 @@
 package frontend.soundpanel;
 
+import hub.SoundController;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,10 +12,11 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
 import frontend.GUI;
-import backend.audio.SongApp;
 
 /**
  * JPanel with sound controls and controls to choose song
@@ -133,6 +136,23 @@ public class SongPanel extends JPanel {
 			return null;
 		}
 	}
+	
+	public static KnobPanel getKnobPanel(KnobType type) {
+		switch(type) {
+		case VOLUME:
+			return knobVolume;
+		case SPEED:
+			return knobSpeed;
+		case LOW:
+			return knobLow;
+		case MID:
+			return knobMid;
+		case HIGH:
+			return knobHigh;
+		default:
+			return null;
+		}
+	}
 
 	/**
 	 * Private class that listens for Mouse click events on the play/pause button
@@ -150,18 +170,18 @@ public class SongPanel extends JPanel {
 				File selectedSong = SongList.getCurrentlySelectedSong();
 				//if a song is currently being played and it is not the currently selected song, stop and play new song
 				if (_currentSong != null && _currentSong != selectedSong) {
-					SongApp.stopSong();
-					SongApp.setSong(selectedSong);
+					SoundController.stopSong();
+					SoundController.setSong(selectedSong);
 					_currentSong = selectedSong;
 				}
 				else {
 					_currentSong = selectedSong;
 				}
-				SongApp.playSong();
+				SoundController.playSong();
 			}
 			//if the click is on the pause button, pause the song currently playing
 			else if (isWithinRadius(x,y,(PAUSE_X + BTN_SIZE/2), (PAUSE_Y + BTN_SIZE/2), BTN_SIZE/2 )){
-				SongApp.stopSong();
+				SoundController.stopSong();
 			}
 			//if the click is on the add button, bring up file chooser and add chosen songs
 			else if (isWithinRadius(x,y,(ADD_X + BTN_SIZE/2), (ADD_Y + BTN_SIZE/2), BTN_SIZE/2 )){
@@ -169,6 +189,7 @@ public class SongPanel extends JPanel {
 				//do this in another thread so we don't lag up the visualizer
 				new Thread() {
 					
+					@Override
 					public void run() {
 						File[] files = FileChooser.getSongsFromUser();
 						for (File file: files)

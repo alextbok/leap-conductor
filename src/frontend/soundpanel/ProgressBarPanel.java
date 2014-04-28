@@ -1,9 +1,10 @@
 package frontend.soundpanel;
 
+import hub.SoundController;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -12,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import frontend.GUI;
-import backend.audio.SongApp;
 
 
 /**
@@ -95,8 +95,8 @@ public class ProgressBarPanel extends JPanel {
 		@Override
 		public void run() {
 			while (true) {
-				int totalTime = SongApp.getTotalDuration();
-				int currentTime = SongApp.getCurrentTime();
+				int totalTime = SoundController.getTotalDuration();
+				int currentTime = SoundController.getCurrentTime();
 						
 				this.setMinimum(0);
 				this.setMaximum(totalTime);
@@ -120,9 +120,9 @@ public class ProgressBarPanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			double percent_complete = (e.getX() - _progressBar.getX())/(_progressBar.getWidth() + 0.0)*100;
-			double milliseconds = percent_complete*SongApp.getTotalDuration()/100;
+			double milliseconds = percent_complete*SoundController.getTotalDuration()/100;
 			if (percent_complete < 100.0 && percent_complete > 0.0)
-				SongApp.seekTo(milliseconds);
+				SoundController.seekTo(milliseconds);
 		}
 
 		@Override

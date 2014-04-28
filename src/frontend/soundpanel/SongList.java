@@ -1,5 +1,7 @@
 package frontend.soundpanel;
 
+import hub.SoundController;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -17,8 +19,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
-
-import backend.audio.SongApp;
 
 /**
  * Maintains a list of songs that can be played (by double clicking the song name)
@@ -146,9 +146,9 @@ public class SongList {
 			public void mouseClicked(MouseEvent e) {
 				//if the user double clicks, set and play the song
 				if (e.getClickCount() == 2) {
-					SongApp.stopSong(); //stop what is currently playing
-					SongApp.setSong(musicFiles.get(list.getSelectedValue()));
-					SongApp.playSong();
+					SoundController.stopSong(); //stop what is currently playing
+					SoundController.setSong(musicFiles.get(list.getSelectedValue()));
+					SoundController.playSong();
 				}
 			}
 
