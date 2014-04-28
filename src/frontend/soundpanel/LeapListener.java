@@ -124,18 +124,18 @@ public class LeapListener extends Listener {
 		else {
 			normalGestureRecognized = false;
 		}
-		
 		if(!normalGestureRecognized && !realGestureRecognized) {
 			//if hand is flat, update the selection based on hand position
 			HandList hands = controller.frame().hands();
-			if (hands.isEmpty()){
+			if (!hands.isEmpty()){
 				Hand rightHand = hands.rightmost();
 				int numFingers = rightHand.fingers().count();
 				if(numFingers >= 3) {
-					if(rightHand.stabilizedPalmPosition().getX() > 80) {
+					float pos = rightHand.stabilizedPalmPosition().getX();
+					if(pos > 80) {
 						SoundController.updateSelection(SongPanel.getKnobPanel(KnobType.HIGH));
 					}
-					else if(rightHand.stabilizedPalmPosition().getX() < -80) {
+					else if(pos < -80) {
 						SoundController.updateSelection(SongPanel.getKnobPanel(KnobType.LOW));
 					}
 					else {
