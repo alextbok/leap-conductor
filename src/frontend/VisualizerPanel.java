@@ -77,10 +77,11 @@ public class VisualizerPanel extends JPanel {
     System.out.print("");
     particleField.move();
 
-    // change circle size according to audio
+    // change circle size according to audio, draw circle
     ParticleCircle circle = particleField.getCircle();
+    int centerRadius = circle.getRadius();
     if (sizeChange) {
-      if (newRadius > circle.getRadius())
+      if (newRadius > centerRadius)
         smaller = true;
       else
         smaller = false;
@@ -88,13 +89,15 @@ public class VisualizerPanel extends JPanel {
       sizeChange = false;
     }
     else {
-      if (circle.getRadius() < newRadius && smaller)
-        circle.setRadius(circle.getRadius() + 15);
+      if (centerRadius < newRadius && smaller)
+        circle.setRadius(centerRadius + 15);
       else if (circle.getRadius() > newRadius && (!smaller))
-        circle.setRadius(circle.getRadius() - 15);
+        circle.setRadius(centerRadius - 15);
       else
         sizeChange = true;
     }
+    g2.setColor(new Color(0.1f, 0.1f, 0.1f, 0.025f));
+    g2.fillOval((int) particleField.getCircle().getX() - centerRadius, (int) particleField.getCircle().getY() - centerRadius, centerRadius * 2, centerRadius * 2);
 
     // paint hands
     ParticleCircle leftCircle = particleField.getLeftCircle();
