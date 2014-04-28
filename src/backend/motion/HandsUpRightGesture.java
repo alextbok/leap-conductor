@@ -21,7 +21,7 @@ public class HandsUpRightGesture {
 			int numFingers = rightHand.fingers().count();
 
 			if(dif >= 3 && numFingers >= 3) {
-				if ( rightHand.stabilizedPalmPosition().getX() > 120.0 ){
+				if ( rightHand.stabilizedPalmPosition().getX() > 60.0 ){
 					return true;
 				}
 			}

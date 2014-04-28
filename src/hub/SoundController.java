@@ -17,6 +17,7 @@ public class SoundController {
 	private static KnobPanel midKnob = SongPanel.getKnobPanel(KnobType.MID);
 	private static KnobPanel highKnob = SongPanel.getKnobPanel(KnobType.HIGH);
 	private static KnobPanel selected = null;
+	private final static double scale = 10d;
 	
 	public SoundController(SongApp app) {
 		SoundController.app = app;
@@ -49,7 +50,7 @@ public class SoundController {
 			
 			Double rateChange = newRate - oldRate;
 			
-			speedKnob.rotateImage(rateChange);
+			speedKnob.rotateImage(rateChange * scale);
 		}
 		updateSelection(speedKnob);
 	}
@@ -62,7 +63,7 @@ public class SoundController {
 			
 			Double rateChange = newRate - oldRate;
 			
-			speedKnob.rotateImage(rateChange);
+			speedKnob.rotateImage(rateChange * scale);
 		}
 		updateSelection(speedKnob);
 	}
@@ -75,7 +76,7 @@ public class SoundController {
 			
 			Double volumeChange = newVolume - oldVolume;
 			
-			volumeKnob.rotateImage(volumeChange);
+			volumeKnob.rotateImage(volumeChange * scale);
 		}
 		updateSelection(volumeKnob);
 	}
@@ -88,7 +89,7 @@ public class SoundController {
 			
 			Double volumeChange = newVolume - oldVolume;
 			
-			volumeKnob.rotateImage(volumeChange);
+			volumeKnob.rotateImage(volumeChange * scale);
 		}
 		updateSelection(volumeKnob);
 	}
@@ -101,7 +102,7 @@ public class SoundController {
 			
 			Double volumeChange = newVolume - oldVolume;
 			
-			volumeKnob.rotateImage(volumeChange);
+			volumeKnob.rotateImage(volumeChange * scale);
 		}
 		updateSelection(volumeKnob);
 	}
@@ -114,7 +115,7 @@ public class SoundController {
 			
 			Double rateChange = newRate - oldRate;
 			
-			speedKnob.rotateImage(rateChange);
+			speedKnob.rotateImage(rateChange * scale);
 		}
 		updateSelection(speedKnob);
 	}
@@ -127,7 +128,7 @@ public class SoundController {
 			
 			Double change = newVal - oldVal;
 			
-			lowKnob.rotateImage(change);
+			lowKnob.rotateImage(change * scale);
 		}
 		updateSelection(lowKnob);
 	}
@@ -140,7 +141,7 @@ public class SoundController {
 			
 			Double change = newVal - oldVal;
 			
-			lowKnob.rotateImage(change);
+			lowKnob.rotateImage(change * scale);
 		}
 		updateSelection(lowKnob);
 	}
@@ -153,7 +154,7 @@ public class SoundController {
 			
 			Double change = newVal - oldVal;
 			
-			midKnob.rotateImage(change);
+			midKnob.rotateImage(change * scale);
 		}
 		updateSelection(midKnob);
 	}
@@ -166,7 +167,7 @@ public class SoundController {
 			
 			Double change = newVal - oldVal;
 			
-			midKnob.rotateImage(change);
+			midKnob.rotateImage(change * scale);
 		}
 		updateSelection(midKnob);
 	}
@@ -179,7 +180,7 @@ public class SoundController {
 			
 			Double change = newVal - oldVal;
 			
-			highKnob.rotateImage(change);
+			highKnob.rotateImage(change * scale);
 		}
 		updateSelection(highKnob);
 	}
@@ -192,7 +193,7 @@ public class SoundController {
 			
 			Double change = newVal - oldVal;
 			
-			highKnob.rotateImage(change);
+			highKnob.rotateImage(change * scale);
 		}
 		updateSelection(highKnob);
 	}

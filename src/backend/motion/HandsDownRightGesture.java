@@ -8,7 +8,6 @@ public class HandsDownRightGesture {
 
 	public static boolean isDetected(Controller controller) {
 		controller.frame().gestures();
-		
 		HandList hands = controller.frame().hands();
 		HandList prevHands = controller.frame(1).hands();
 		
@@ -21,10 +20,11 @@ public class HandsDownRightGesture {
 			int numFingers = rightHand.fingers().count();
 
 			if(dif <= -3 && numFingers >= 3) {
-				if (rightHand.stabilizedPalmPosition().getX() > 120.0){
+				if (rightHand.stabilizedPalmPosition().getX() > 60.0){
 					return true;
 				}
 			}
+
 		}
 		return false;
 	}
