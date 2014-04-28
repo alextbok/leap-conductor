@@ -5,7 +5,5 @@ out/*
 *.DS_STORE
 .classpath
 .project
-.classpath
-.project
 
 song_files.txt
