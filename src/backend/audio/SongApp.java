@@ -262,7 +262,7 @@ public class SongApp {
     }
     
     public double getHighs() {
-    	return _mediaPlayer.getAudioEqualizer().getBands().get(10).getGain();
+    	return _mediaPlayer.getAudioEqualizer().getBands().get(9).getGain();
     }
     
     /**
