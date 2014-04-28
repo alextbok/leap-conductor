@@ -47,14 +47,15 @@ public class SongPanel extends JPanel {
 	public static final int KNOB_X_OFFSET = 7;
 	public static final int KNOB_Y_OFFSET = 10;
 	private static final int BTN_SIZE = 40;
-	private static final int PLAY_X = 990;
-	private static final int PLAY_Y = 10;
-	private static final int PAUSE_X = 990;
-	private static final int PAUSE_Y = 55;
-	private static final int ADD_X = 270;
-	private static final int ADD_Y = 10;
-	private static final int REMOVE_X = 270;
-	private static final int REMOVE_Y = 55;
+
+	private static int PLAY_X = 990;
+	private static int PLAY_Y = 10;
+	private static int PAUSE_X = 990;
+	private static int PAUSE_Y = 55;
+	private static int ADD_X = 270;
+	private static int ADD_Y = 10;
+	private static int REMOVE_X = 270;
+	private static int REMOVE_Y = 55;
 	
 	/*The song currently being played*/
 	private File _currentSong;
@@ -85,11 +86,12 @@ public class SongPanel extends JPanel {
         Graphics2D brush = (Graphics2D) g;
         
         //draw buttons
+        
         brush.drawImage(playIcon, PLAY_X, PLAY_Y, null);
         brush.drawImage(pauseIcon, PAUSE_X, PAUSE_Y, null);
         brush.drawImage(addIcon, ADD_X, ADD_Y, null);
         brush.drawImage(removeIcon, REMOVE_X, REMOVE_Y, null);
-
+        
     }
     
 
