@@ -18,6 +18,7 @@ public class SoundController {
 	private static KnobPanel highKnob = SongPanel.getKnobPanel(KnobType.HIGH);
 	private static KnobPanel selected = null;
 	private final static double scale = 10d;
+	private final static double speedScale = 100d;
 	
 	public SoundController(SongApp app) {
 		SoundController.app = app;
@@ -115,7 +116,7 @@ public class SoundController {
 			
 			Double rateChange = newRate - oldRate;
 			
-			speedKnob.rotateImage(rateChange * scale);
+			speedKnob.rotateImage(rateChange * speedScale);
 		}
 		updateSelection(speedKnob);
 	}
@@ -225,7 +226,7 @@ public class SoundController {
 		return 0.0;
 	}
 		
-	private static void updateSelection(KnobPanel curr) {
+	public static void updateSelection(KnobPanel curr) {
 		if(selected != null) selected.deselect();
 		curr.select();
 		selected = curr;

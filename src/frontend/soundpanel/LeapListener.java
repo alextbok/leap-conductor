@@ -15,8 +15,6 @@ import java.util.List;
 import backend.motion.HandsDownLeftGesture;
 import backend.motion.HandsDownMiddleGesture;
 import backend.motion.HandsDownRightGesture;
-import backend.motion.HandsLeftGesture;
-import backend.motion.HandsRightGesture;
 import backend.motion.HandsSeperateGesture;
 import backend.motion.HandsTogetherGesture;
 import backend.motion.HandsUpLeftGesture;
@@ -30,6 +28,7 @@ import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.FingerList;
 import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Gesture;
+import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.HandList;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Screen;
@@ -38,7 +37,7 @@ import com.leapmotion.leap.Vector;
 public class LeapListener extends Listener {
 	private List<Point2D> handLocs;
 	private List<Point2D> fingerLocs;
-	private boolean cooldownComplete = true;
+	//private boolean cooldownComplete = true;
 
 	@Override
 	public void onConnect(Controller controller) {
@@ -59,8 +58,11 @@ public class LeapListener extends Listener {
 		 * RECOGNIZING GESTURES
 		 **********************/
 
+		boolean realGestureRecognized = false;
+		
 		for(Gesture g : controller.frame().gestures()) {
 			if(g.type() == Gesture.Type.TYPE_CIRCLE) {
+				realGestureRecognized = true;
 				CircleGesture circle = new CircleGesture(g);
 				if (circle.pointable().direction().angleTo(circle.normal()) <= Math.PI/2) {
 					//clockwise circle
@@ -70,8 +72,11 @@ public class LeapListener extends Listener {
 					//counterclockwise circle
 					SoundController.slowDownSong();
 				}
+				//TODO change song on swipe
 			}
 		}
+		
+		boolean normalGestureRecognized = true;
 
 		// gestures to pause/play the song
 		if (HandsSeperateGesture.isDetected(controller)){
@@ -116,16 +121,29 @@ public class LeapListener extends Listener {
 		else if (HandsDownLeftGesture.isDetected(controller)){
 			SoundController.lowerBass();
 		}
-		// Gestures for speeding up and slowing down song
-		else if (HandsRightGesture.isDetected(controller)){
-			SoundController.speedUpSong();
+		else {
+			normalGestureRecognized = false;
 		}
-		else if (HandsLeftGesture.isDetected(controller)){
-			SoundController.slowDownSong();
+		
+		if(!normalGestureRecognized && !realGestureRecognized) {
+			//if hand is flat, update the selection based on hand position
+			HandList hands = controller.frame().hands();
+			if (hands.isEmpty()){
+				Hand rightHand = hands.rightmost();
+				int numFingers = rightHand.fingers().count();
+				if(numFingers >= 3) {
+					if(rightHand.stabilizedPalmPosition().getX() > 80) {
+						SoundController.updateSelection(SongPanel.getKnobPanel(KnobType.HIGH));
+					}
+					else if(rightHand.stabilizedPalmPosition().getX() < -80) {
+						SoundController.updateSelection(SongPanel.getKnobPanel(KnobType.LOW));
+					}
+					else {
+						SoundController.updateSelection(SongPanel.getKnobPanel(KnobType.MID));
+					}
+				}
+			}
 		}
-
-
-
 
 		/****************
 		 * DRAWING HANDS

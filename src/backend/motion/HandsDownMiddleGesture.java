@@ -21,7 +21,7 @@ public class HandsDownMiddleGesture {
 			int numFingers = rightHand.fingers().count();
 
 			if(dif <= -3 && numFingers >= 3) {
-				if (rightHand.stabilizedPalmPosition().getX() < 120.0 && rightHand.stabilizedPalmPosition().getX() > -100.0){
+				if (rightHand.stabilizedPalmPosition().getX() < 80.0 && rightHand.stabilizedPalmPosition().getX() > -80.0){
 					return true;
 				}
 			}

@@ -17,7 +17,7 @@ public class HandsDownLeftGesture {
 			Hand prevRight = prevHands.rightmost();
 			
 			float dif = rightHand.stabilizedPalmPosition().getY() - prevRight.stabilizedPalmPosition().getY();
-						
+			
 			int numFingers = rightHand.fingers().count();
 
 			if(dif <= -3 && numFingers >= 3) {
