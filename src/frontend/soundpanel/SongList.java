@@ -37,6 +37,9 @@ public class SongList {
 	/*Keeps track of our files. Map : String (file name) -> File (associated file)*/
 	private final static HashMap<String, File> musicFiles = new HashMap<String, File>();
 	
+	/*Keeps track of the current song playing*/
+	private static File _currentSong;
+	
 	/**
 	 * Constructor - does nothing. This class is intended to be used statically
 	 */
@@ -94,7 +97,7 @@ public class SongList {
 		list.setFont(new Font("Courier", Font.BOLD, 12));
 		list.setBackground(SongPanel.BACKGROUND_COLOR);
 		list.setVisible(true);
-		
+
 		//make our scroll pane and its border
 		JScrollPane scrollPane = new JScrollPane(list,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(new Dimension(200,90));
@@ -137,6 +140,34 @@ public class SongList {
 	}
 	
 	/**
+	 * Sets the current song - called from Song Panel on play button push
+	 * @param song
+	 */
+	public static void setCurrentSong(File song) {
+		_currentSong = song;
+	}
+	
+	/**
+	 * Returns the next song in the song list - wraps
+	 * If no song is being played, return the first song in the list
+	 * @return
+	 */
+	public static File getNextSong() {
+		
+		if (_currentSong == null)
+			return musicFiles.get(listModel.elementAt(0));
+		
+		int currentIndex = listModel.indexOf(_currentSong.getName());
+		int nextIndex = (currentIndex + 1) % listModel.size();
+		list.setSelectedIndex(nextIndex);
+		
+		String songName = listModel.elementAt(nextIndex);
+		_currentSong = musicFiles.get(songName);
+		
+		return _currentSong;
+	}
+	
+	/**
 	 * Adds mouse listener to list that listens for double clicks
 	 */
 	private static void addListMouseListener() {
@@ -147,7 +178,9 @@ public class SongList {
 				//if the user double clicks, set and play the song
 				if (e.getClickCount() == 2) {
 					SoundController.stopSong(); //stop what is currently playing
-					SoundController.setSong(musicFiles.get(list.getSelectedValue()));
+					File song = musicFiles.get(list.getSelectedValue());
+					_currentSong = song;
+					SoundController.setSong(song);
 					SoundController.playSong();
 				}
 			}

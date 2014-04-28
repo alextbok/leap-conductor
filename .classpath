@@ -8,5 +8,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="leap-conductor/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/mlbok/GitHub/leap-conductor/lib/jsr113.jar"/>
+	<classpathentry kind="lib" path="/Users/mlbok/GitHub/leap-conductor/lib/jid3lib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
