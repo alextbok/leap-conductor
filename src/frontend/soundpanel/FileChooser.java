@@ -2,8 +2,10 @@ package frontend.soundpanel;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import backend.FileProcessor;
 
 /**
@@ -69,15 +71,15 @@ public class FileChooser {
 		
 		ArrayList<File> returnList = new ArrayList<File>();
 
-		for (int i = 0; i < files.length; i++) {
-			String name = files[i].getName();
+		for (File file : files) {
+			String name = file.getName();
 			//if the file name has one of the below extensions, add it to the return array
 			if (name.endsWith(".mp3") ||
 				name.endsWith(".mp4") ||
 				name.endsWith(".m4a") ||
 				name.endsWith(".wav"))
 			{
-				returnList.add(files[i]);
+				returnList.add(file);
 			}
 		}
 		return returnList.toArray(new File[returnList.size()]);

@@ -32,6 +32,24 @@ public class SongApp {
     	}
 	}
 	
+	
+	/**
+	 * resets the speed/volume/band gains 
+	 */
+	public static void resetValues() {
+		if (_mediaPlayer != null){
+			_mediaPlayer.setRate(1.0);
+			_mediaPlayer.setVolume(1.0); // this is full volumes, the default of MediaPlayer
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 0; i < 10; i ++){
+				bands.get(i).setGain(0.0);
+			}
+			
+		}
+	}
+	
+	
 	/**
 	 * plays the song and creates a new progress bar that runs in its own thread
 	 */
