@@ -6,18 +6,30 @@ package frontend.soundpanel;
  * @author Arun Varma
  */
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.ArrayList;
-
-import javax.swing.Timer;
+import java.util.List;
 
 import backend.audio.SongApp;
-import backend.motion.*;
+import backend.motion.HandsDownLeftGesture;
+import backend.motion.HandsDownMiddleGesture;
+import backend.motion.HandsDownRightGesture;
+import backend.motion.HandsLeftGesture;
+import backend.motion.HandsRightGesture;
+import backend.motion.HandsSeperateGesture;
+import backend.motion.HandsUpLeftGesture;
+import backend.motion.HandsUpMiddleGesture;
+import backend.motion.HandsUpRightGesture;
 
-import com.leapmotion.leap.*;
+import com.leapmotion.leap.CircleGesture;
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.FingerList;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Gesture;
+import com.leapmotion.leap.HandList;
+import com.leapmotion.leap.Listener;
+import com.leapmotion.leap.Screen;
+import com.leapmotion.leap.Vector;
 
 public class LeapListener extends Listener {
 	private List<Point2D> handLocs;
@@ -27,6 +39,7 @@ public class LeapListener extends Listener {
 	@Override
 	public void onConnect(Controller controller) {
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
+		controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
 	}
 
 	/**
@@ -41,6 +54,20 @@ public class LeapListener extends Listener {
 		/***********************
 		 * RECOGNIZING GESTURES
 		 **********************/
+
+		for(Gesture g : controller.frame().gestures()) {
+			if(g.type() == Gesture.Type.TYPE_CIRCLE) {
+				CircleGesture circle = new CircleGesture(g);
+				if (circle.pointable().direction().angleTo(circle.normal()) <= Math.PI/2) {
+					//clockwise circle
+					SongApp.speedUpSong();
+				}
+				else {
+					//counterclockwise circle
+					SongApp.slowDownSong();
+				}
+			}
+		}
 
 		// gesture to pause the song
 		if (cooldownComplete && HandsSeperateGesture.isDetected(controller)){
@@ -83,64 +110,64 @@ public class LeapListener extends Listener {
 			SongApp.slowDownSong();
 		}
 
-	
 
 
-	/****************
-	 * DRAWING HANDS
-	 ***************/
 
-	if (!frame.hands().isEmpty()) {
-		Screen screen = controller.locatedScreens().get(0);
+		/****************
+		 * DRAWING HANDS
+		 ***************/
 
-		if (screen != null && screen.isValid()) {
-			HandList hands = frame.hands();
-			ArrayList<Point2D> handList = new ArrayList<>();
+		if (!frame.hands().isEmpty()) {
+			Screen screen = controller.locatedScreens().get(0);
 
-			for (int i = 0; i < hands.count() && i < 2; i++) {
-				if (hands.get(i).isValid()) {
-					Vector intersect = screen.intersect(hands.get(i).palmPosition(), hands.get(i).direction(), true);
-					handList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
+			if (screen != null && screen.isValid()) {
+				HandList hands = frame.hands();
+				ArrayList<Point2D> handList = new ArrayList<>();
+
+				for (int i = 0; i < hands.count() && i < 2; i++) {
+					if (hands.get(i).isValid()) {
+						Vector intersect = screen.intersect(hands.get(i).palmPosition(), hands.get(i).direction(), true);
+						handList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
+					}
 				}
-			}
 
-			handLocs = handList;
+				handLocs = handList;
+			}
+		}
+
+		if (!frame.fingers().isEmpty()) {
+			Screen screen = controller.locatedScreens().get(0);
+
+			if (screen != null && screen.isValid()) {
+				FingerList fingers = frame.fingers();
+				ArrayList<Point2D> fingerList = new ArrayList<>();
+
+				for (int i = 0; i < fingers.count() && i < 10; i++) {
+					if (fingers.get(i).isValid()) {
+						Vector intersect = screen.intersect(fingers.get(i).stabilizedTipPosition(), fingers.get(i).direction(), true);
+						fingerList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
+					}
+				}
+
+				fingerLocs = fingerList;
+			}
 		}
 	}
 
-	if (!frame.fingers().isEmpty()) {
-		Screen screen = controller.locatedScreens().get(0);
-
-		if (screen != null && screen.isValid()) {
-			FingerList fingers = frame.fingers();
-			ArrayList<Point2D> fingerList = new ArrayList<>();
-
-			for (int i = 0; i < fingers.count() && i < 10; i++) {
-				if (fingers.get(i).isValid()) {
-					Vector intersect = screen.intersect(fingers.get(i).stabilizedTipPosition(), fingers.get(i).direction(), true);
-					fingerList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
-				}
-			}
-
-			fingerLocs = fingerList;
-		}
+	/**
+	 * getHandLocs
+	 * @return handLocs
+	 */
+	public List<Point2D> getHandLocs() {
+		return handLocs;
 	}
-}
 
-/**
- * getHandLocs
- * @return handLocs
- */
-public List<Point2D> getHandLocs() {
-	return handLocs;
-}
-
-/**
- * getFingerLocs
- * @return fingerLocs
- */
-public List<Point2D> getFingerLocs() {
-	return fingerLocs;
-}
+	/**
+	 * getFingerLocs
+	 * @return fingerLocs
+	 */
+	public List<Point2D> getFingerLocs() {
+		return fingerLocs;
+	}
 
 }
