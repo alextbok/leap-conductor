@@ -55,7 +55,7 @@ public class KnobPanel extends JPanel {
 		border.setTitleFont(new Font("Courier", Font.BOLD, 12));
 		border.setTitleColor(new Color(135,136,138));
 	   	this.setBorder(border);
-	   	
+
 	   	this.addMouseListener(new KnobMouseListener());
 	   	this.addMouseMotionListener(new KnobMouseMotionListener());
 	   	
@@ -80,6 +80,28 @@ public class KnobPanel extends JPanel {
         brush.drawImage(icon, SongPanel.KNOB_X_OFFSET, SongPanel.KNOB_Y_OFFSET, null);
         //rotate brush back
         brush.rotate(-angleVol, KnobPanel.WIDTH/2 + SongPanel.KNOB_X_OFFSET, KnobPanel.HEIGHT/2 + SongPanel.KNOB_Y_OFFSET);
+	}
+	
+	/**
+	 * Changes border color to green to show which knob is being manipulated
+	 */
+	public void select() {
+		//create border and its title font
+		TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN, 2, true), _text);
+		border.setTitleFont(new Font("Courier", Font.BOLD, 12));
+		border.setTitleColor(new Color(135,136,138));
+	   	this.setBorder(border);
+	}
+	
+	/**
+	 * Changes border color to gray to show which knob is being manipulated
+	 */
+	public void deselect() {
+		//create border and its title font
+		TitledBorder border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(192,193,194), 2, true), _text);
+		border.setTitleFont(new Font("Courier", Font.BOLD, 12));
+		border.setTitleColor(new Color(135,136,138));
+	   	this.setBorder(border);
 	}
 	
 	/*ACCESSORS*/

@@ -83,8 +83,4 @@ public class FileChooser {
 		return returnList.toArray(new File[returnList.size()]);
 	}
 	
-	
-	
-	
-	
 }

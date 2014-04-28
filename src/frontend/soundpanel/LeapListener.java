@@ -6,13 +6,9 @@ package frontend.soundpanel;
  * @author Arun Varma
  */
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.ArrayList;
-
-import javax.swing.Timer;
 
 import backend.audio.SongApp;
 import backend.motion.*;

@@ -96,7 +96,7 @@ public class FileProcessor extends Thread {
 			}
 			in.close();
 		} catch (IOException e) {
-			System.out.println("ERROR: IOException while reading file " + dir + "/src/data/song_files.txt");
+			System.out.println("ERROR: IOException while reading file " + dir + "/src/data/song_files.txt " + "FileProcessor.getSongsFromPreviousSession()");
 		}
 		return returnFiles.toArray(new File[returnFiles.size()]);
 	}
