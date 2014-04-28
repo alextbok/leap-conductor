@@ -54,7 +54,7 @@ public class GUI extends JFrame {
 		this.setSize(new Dimension(WIDTH, HEIGHT));
 	
 		// set up panels
-		_visualizerPanel = new VisualizerPanel(5000, 3);
+		_visualizerPanel = new VisualizerPanel(5000, 2);
 		_songPanel = new SongPanel();
 		_progressPanel = new ProgressBarPanel();
 		    
