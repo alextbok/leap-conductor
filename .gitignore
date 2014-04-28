@@ -6,5 +6,6 @@ out/*
 .classpath
 .project
 .classpath
-
 .project
+
+song_files.txt
