@@ -137,6 +137,11 @@ public class SongPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Provides public access to knob panels for hub.SoundController
+	 * @param type
+	 * @return
+	 */
 	public static KnobPanel getKnobPanel(KnobType type) {
 		switch(type) {
 		case VOLUME:

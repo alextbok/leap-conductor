@@ -12,7 +12,6 @@ import backend.FileProcessor;
  * An JFileChooser wrapper with leap-conductor specific functionality
  * @author abok
  */
-
 public class FileChooser {
 
 	/*Will have one file chooser associated with the program*/
@@ -60,7 +59,7 @@ public class FileChooser {
 	
 	/**
 	 * 
-	 * @return Array of all .music files in the /sounds/directory
+	 * @return Array of all music files in the /sounds/directory
 	 */
 	public static File[] getAllMusicFiles() {
 		

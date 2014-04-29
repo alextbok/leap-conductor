@@ -67,7 +67,9 @@ public class KnobPanel extends JPanel {
 		this.setVisible(true);
 	}
 	
-	
+	/**
+	 * Paints the knob icon and rotates brush as necessary
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		
@@ -84,6 +86,7 @@ public class KnobPanel extends JPanel {
 	
 	/**
 	 * Changes border color to green to show which knob is being manipulated
+	 * Called in hub.SoundController
 	 */
 	public void select() {
 		//create border and its title font
@@ -95,6 +98,7 @@ public class KnobPanel extends JPanel {
 	
 	/**
 	 * Changes border color to gray to show which knob is being manipulated
+	 * Called in hub.SoundController
 	 */
 	public void deselect() {
 		//create border and its title font
@@ -125,6 +129,9 @@ public class KnobPanel extends JPanel {
      */
 	private class KnobMouseListener implements MouseListener {
 
+		/**
+		 * Empty constructor
+		 */
 		public KnobMouseListener() {
 
 		}
@@ -132,11 +139,14 @@ public class KnobPanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {}
 
+		/**
+		 * Store the initial mouse y-coord
+		 */
 		@Override
 		public void mousePressed(MouseEvent e) {
 			_previousY = e.getY();
 		}
-
+		
 		@Override
 		public void mouseReleased(MouseEvent e) {}
 
@@ -155,9 +165,16 @@ public class KnobPanel extends JPanel {
 	 */
 	private class KnobMouseMotionListener implements MouseMotionListener {
 
+		/**
+		 * Empty constructor
+		 */
 		public KnobMouseMotionListener() {
+			
 		}
-
+		
+		/**
+		 * Changes the volume and angle of knob icon with the mouse y-coord
+		 */
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			double rotation = 0.5 * (_previousY - e.getY());
