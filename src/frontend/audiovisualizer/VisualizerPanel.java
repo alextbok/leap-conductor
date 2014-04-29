@@ -1,4 +1,4 @@
-package frontend;
+package frontend.audiovisualizer;
 
 /**
  * VisualizerPanel
@@ -6,11 +6,13 @@ package frontend;
  * @auther Arun Varma
  */
 
+import frontend.GUI;
 import hub.SoundController;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +35,7 @@ public class VisualizerPanel extends JPanel {
   private Controller leapController;
   private List<Color> colors;
   private ParticleField particleField;
-  private int trailSize, newRadius, curMin;
+  private int trailSize, particleSize, newRadius;
   private boolean sizeChange, smaller;
 
   /**
@@ -48,6 +50,7 @@ public class VisualizerPanel extends JPanel {
     leapController.addListener(leapListener);
 
     this.trailSize = trailSize;
+    particleSize = 2;
 
     // add particle field to panel
     colors = Collections.synchronizedList(new ArrayList<Color>());
@@ -114,7 +117,8 @@ public class VisualizerPanel extends JPanel {
           leftCircle.setPos(pt.getX(), pt.getY());
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
           double radius = leftCircle.getRadius();
-          g2.fillOval((int) (pt.getX() - radius), (int) (pt.getY() - radius), (int) radius * 2, (int) radius * 2);
+          Ellipse2D ellipse = new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, radius * 2, radius * 2);
+          g2.fill(ellipse);
         }
       }
       else if (hands.size() == 2) {
@@ -125,13 +129,15 @@ public class VisualizerPanel extends JPanel {
           leftCircle.setPos(pt1.getX(), pt1.getY());
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
           double radius = leftCircle.getRadius() + 10;
-          g2.fillOval((int) (pt1.getX() - radius), (int) (pt1.getY() - radius), (int) radius * 2, (int) radius * 2);
+          Ellipse2D ellipse = new Ellipse2D.Double(pt1.getX() - radius, pt1.getY() - radius, radius * 2, radius * 2);
+          g2.fill(ellipse);
         }
         if (pt2.getX() > 0 && pt2.getY() > 0) {
           rightCircle.setPos(pt2.getX(), pt2.getY());
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
           double radius = rightCircle.getRadius();
-          g2.fillOval((int) (pt2.getX() - radius), (int) (pt2.getY() - radius), (int) radius * 2, (int) radius * 2);
+          Ellipse2D ellipse = new Ellipse2D.Double(pt2.getX() - radius, pt2.getY() - radius, radius * 2, radius * 2);
+          g2.fill(ellipse);
         }
       }
     }
@@ -145,7 +151,8 @@ public class VisualizerPanel extends JPanel {
 
         if (x > 0 && y > 0) {
           g2.setColor(new Color(76, 81, 109));
-          g2.fillOval((int) finger.getX(), (int) finger.getY(), 30, 30);
+          Ellipse2D ellipse = new Ellipse2D.Double(finger.getX(), finger.getY(), 30, 30);
+          g2.fill(ellipse);
         }
       }
     }
@@ -165,36 +172,18 @@ public class VisualizerPanel extends JPanel {
           break;
         }
 
-        if (circle.isInCircle(point) || leftCircle.isInCircle(point) || rightCircle.isInCircle(point))
-          g2.fillOval((int) point.getX(), (int) point.getY(), 1, 1);
-        else
-          g2.fillOval((int) point.getX(), (int) point.getY(), 2, 2);
+        if (circle.isInCircle(point) || leftCircle.isInCircle(point) || rightCircle.isInCircle(point)) {
+          Ellipse2D ellipse = new Ellipse2D.Double(point.getX(), point.getY(), 1, 1);
+          g2.fill(ellipse);
+        }
+        else {
+          Ellipse2D ellipse = new Ellipse2D.Double(point.getX(), point.getY(), 2, SoundController.getVolume() * 2);
+          g2.fill(ellipse);
+        }
       }
     }
 
     particleField.generateParticles(num, trailSize);
     repaint();
   }
-
-  /**
-   * ConnectListener
-   */
-  /*public class ConnectListener extends Listener {
-    @Override
-    public void onConnect(Controller controller) {
-      g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-      g.setFill(Color.BROWN);
-      g.fillText("Device connected", 30, 30);
-
-      // added by ben temporarily
-      controller.enableGesture(Gesture.Type.TYPE_SWIPE);
-    }
-
-    @Override
-    public void onDisconnect(Controller controller) {
-      g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-      g.setFill(Color.BROWN);
-      g.fillText("Please connect a device", 30, 30);
-    }
-  }*/
 }

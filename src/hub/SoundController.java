@@ -198,7 +198,12 @@ public class SoundController {
 		}
 		updateSelection(highKnob);
 	}
-	
+
+    public static double getVolume() {
+        if(app != null) return app.getVolume();
+        return 0;
+    }
+
 	public static int getTotalDuration() {
 		if(app != null) return app.getTotalDuration();
 		return 0;

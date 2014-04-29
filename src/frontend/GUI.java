@@ -24,6 +24,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import frontend.audiovisualizer.VisualizerPanel;
 import frontend.soundpanel.FileChooser;
 import frontend.soundpanel.LeapConductorPopup;
 import frontend.soundpanel.ProgressBarPanel;

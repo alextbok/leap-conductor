@@ -57,9 +57,8 @@ public class SongsBySpeech {
     // match output to regex
     String responseStr = response.getResponse().toString();
     Matcher m = playSong.matcher(responseStr);
-    if (m.find()) {
+    if (m.find())
       return songDirectory.getSong(m.group(1));
-    }
 
     return songDirectory.getSong(responseStr);
   }
