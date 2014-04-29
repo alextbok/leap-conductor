@@ -41,7 +41,7 @@ public class GUI extends JFrame {
   private ProgressBarPanel _progressPanel;
 	
   
-  /*Public access to our non-resizable frame so children panels can set relative sizes*/
+  /*Public access to our frame so children panels can set relative sizes*/
   public static final int WIDTH = 1300;
   public static final int HEIGHT = 720;
   
