@@ -10,10 +10,7 @@ import javax.sound.sampled.*;
 import com.darkprograms.speech.microphone.*;
 import com.darkprograms.speech.recognizer.*;
 import org.jaudiotagger.audio.*;
-import org.jaudiotagger.tag.FieldKey;
-
 import java.util.regex.*;
-import java.util.*;
 
 public class SongsBySpeech {
   private SongDirectory songDirectory;
@@ -24,6 +21,7 @@ public class SongsBySpeech {
 
   /**
    * SongsBySpeech
+   * @param path
    */
   public SongsBySpeech(String path) {
     songDirectory = new SongDirectory(path);
@@ -37,15 +35,16 @@ public class SongsBySpeech {
   }
 
   /**
-   *
+   * findSong
+   * @return the audio file corresponding to the user's voice command
    */
-  public List<AudioFile> speechCommand() throws Exception {
-    ArrayList<AudioFile> toReturn = new ArrayList<>();
+  public AudioFile speechCommand() throws Exception {
+    // open connection with microphone
     mic.open();
 
+    // wait until user speaks; then collect their speech
     int volume;
     while ((volume = mic.getAudioVolume()) < THRESHOLD) {}
-
     mic.captureAudioToFile(file);
     while (mic.getAudioVolume() > volume - 2) {}
     mic.close();
@@ -53,18 +52,15 @@ public class SongsBySpeech {
     // recognize spoken audio
     Recognizer recognizer = new Recognizer(Recognizer.Languages.ENGLISH_US);
     GoogleResponse response = recognizer.getRecognizedDataForWave(file);
+    System.out.println(response.getResponse());
 
     // match output to regex
     String responseStr = response.getResponse().toString();
     Matcher m = playSong.matcher(responseStr);
     if (m.find()) {
-      toReturn.addAll(songDirectory.getAllSongs(m.group(1)));
-      System.out.print(toReturn.get(0).getTag().getFirst(FieldKey.TITLE) + ", " + toReturn.get(0).getTag().getFirst(FieldKey.ARTIST));
-      return toReturn;
+      return songDirectory.getSong(m.group(1));
     }
 
-    toReturn.addAll(songDirectory.getAllSongs(responseStr));
-    System.out.print(toReturn.get(0).getTag().getFirst(FieldKey.TITLE) + ", " + toReturn.get(0).getTag().getFirst(FieldKey.ARTIST));
-    return toReturn;
+    return songDirectory.getSong(responseStr);
   }
 }

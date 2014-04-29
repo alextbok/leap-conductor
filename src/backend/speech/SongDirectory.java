@@ -7,7 +7,6 @@ package backend.speech;
  */
 
 import java.io.*;
-import java.util.*;
 import org.jaudiotagger.audio.*;
 import org.jaudiotagger.audio.exceptions.*;
 import org.jaudiotagger.tag.*;
@@ -24,33 +23,36 @@ public class SongDirectory {
   }
 
   /**
-   *
-   * @return list of all songs with given song name
+   * getSong
+   * @param songName
+   * @return the song with the given name; null otherwise
    */
-  public List<AudioFile> getAllSongs(String songName) {
-    return getSongsFromPath(path, songName);
+  public AudioFile getSong(String songName) {
+    return songHelper(path, songName);
   }
 
   /**
-   * getSongs
+   * songHelper
    * @param path
-   * @return a list of songs with the given song name in the current directory
+   * @param songName
+   * @return the song with the given name; null otherwise
    */
-  private List<AudioFile> getSongsFromPath(String path, String songName) {
-      System.out.println(songName);
+  private AudioFile songHelper(String path, String songName) {
     File dir = new File(path);
     File[] listFiles = dir.listFiles();
-    ArrayList<AudioFile> toReturn = new ArrayList<>();
 
     for (File file : listFiles) {
-      if (file.isDirectory())
-        toReturn.addAll(getSongsFromPath(file.getAbsolutePath(), songName));
+      if (file.isDirectory()) {
+        AudioFile audio = songHelper(file.getAbsolutePath(), songName);
+        if (audio != null)
+          return audio;
+      }
       else if (file.isFile()) {
         try {
           AudioFile audio = AudioFileIO.read(file);
 
-          if (audio.getTag().getFirst(FieldKey.TITLE).equals(songName))
-            toReturn.add(audio);
+          if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().equals(songName.toLowerCase()))
+            return audio;
         } catch (CannotReadException e) {
           continue;
         } catch (TagException e) {
@@ -65,6 +67,6 @@ public class SongDirectory {
       }
     }
 
-    return toReturn;
+    return null;
   }
 }

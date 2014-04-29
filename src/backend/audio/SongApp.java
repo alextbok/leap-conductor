@@ -4,8 +4,8 @@ package backend.audio;
  * SongApp
  */
 
-import java.io.File;
-
+import backend.speech.*;
+import java.io.*;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.AudioEqualizer;
@@ -15,6 +15,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import org.jaudiotagger.audio.*;
+import org.jaudiotagger.tag.FieldKey;
 
 public class SongApp {
 	private  Media _media;
@@ -30,6 +32,24 @@ public class SongApp {
     	} catch (MediaException e) {
     		System.out.println("ERROR: No such file or directory " + url);
     	}
+
+        (new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        SongsBySpeech speech = new SongsBySpeech("/Users/Arun/Music/iTunes/iTunes Media/Music");
+                        AudioFile newSong = speech.speechCommand();
+                        if (newSong != null) {
+                            setSong(newSong.getFile());
+                            playSong();
+                        }
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+            }
+        }).start();
 	}
 	
 	
