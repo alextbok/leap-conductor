@@ -16,17 +16,6 @@ import java.util.List;
 
 import javax.swing.Timer;
 
-import backend.motion.HandsDownLeftGesture;
-import backend.motion.HandsDownMiddleGesture;
-import backend.motion.HandsDownRightGesture;
-import backend.motion.HandsSeperateGesture;
-import backend.motion.HandsTogetherGesture;
-import backend.motion.HandsUpLeftGesture;
-import backend.motion.HandsUpMiddleGesture;
-import backend.motion.HandsUpRightGesture;
-import backend.motion.TwoHandsDownGesture;
-import backend.motion.TwoHandsUpGesture;
-
 import com.leapmotion.leap.CircleGesture;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.FingerList;
@@ -39,10 +28,25 @@ import com.leapmotion.leap.Screen;
 import com.leapmotion.leap.SwipeGesture;
 import com.leapmotion.leap.Vector;
 
+import com.leapmotion.leap.*;
+
+
+import backend.motion.HandsDownLeftGesture;
+import backend.motion.HandsDownMiddleGesture;
+import backend.motion.HandsDownRightGesture;
+import backend.motion.HandsSeperateGesture;
+import backend.motion.HandsTogetherGesture;
+import backend.motion.HandsUpLeftGesture;
+import backend.motion.HandsUpMiddleGesture;
+import backend.motion.HandsUpRightGesture;
+import backend.motion.TwoHandsDownGesture;
+import backend.motion.TwoHandsUpGesture;
+
 public class LeapListener extends Listener {
 	private List<Point2D> handLocs;
 	private List<Point2D> fingerLocs;
 	private boolean cooldownComplete = true;
+	private double width, height;
 
 	@Override
 	public void onConnect(Controller controller) {
@@ -52,6 +56,11 @@ public class LeapListener extends Listener {
 
 		if(controller.config().setFloat("Gesture.Swipe.MinLength", 350.0f))
 			controller.config().save();
+		
+		// get leap's range of detection
+        InteractionBox box = controller.frame().interactionBox();
+        width = box.width();
+        height = box.height();
 
 	}
 
@@ -214,13 +223,15 @@ public class LeapListener extends Listener {
 				for (int i = 0; i < hands.count() && i < 2; i++) {
 					if (hands.get(i).isValid()) {
 						Vector intersect = screen.intersect(hands.get(i).palmPosition(), hands.get(i).direction(), true);
-						handList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
+						handList.add(new Point2D.Double(intersect.getX(), 1d - intersect.getY()));
 					}
 				}
 
 				handLocs = handList;
 			}
 		}
+        else
+            handLocs = null;
 
 		if (!frame.fingers().isEmpty()) {
 			Screen screen = controller.locatedScreens().get(0);
@@ -232,13 +243,15 @@ public class LeapListener extends Listener {
 				for (int i = 0; i < fingers.count() && i < 10; i++) {
 					if (fingers.get(i).isValid()) {
 						Vector intersect = screen.intersect(fingers.get(i).stabilizedTipPosition(), fingers.get(i).direction(), true);
-						fingerList.add(new Point2D.Double(screen.widthPixels() * intersect.getX(), screen.heightPixels() * (1d - intersect.getY())));
+						fingerList.add(new Point2D.Double(intersect.getX(), 1d - intersect.getY()));
 					}
 				}
 
 				fingerLocs = fingerList;
 			}
 		}
+        else
+            fingerLocs = null;
 	}
 
 	/**
@@ -256,5 +269,21 @@ public class LeapListener extends Listener {
 	public List<Point2D> getFingerLocs() {
 		return fingerLocs;
 	}
+
+    /**
+     * getBoxWidth
+     * @return width
+     */
+    public double getBoxWidth() {
+        return width;
+    }
+
+    /**
+     * getBoxHeight
+     * @return height
+     */
+    public double getBoxHeight() {
+        return height;
+    }
 
 }
