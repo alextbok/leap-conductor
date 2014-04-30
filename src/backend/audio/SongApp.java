@@ -230,7 +230,15 @@ public class SongApp {
 			}
 		}
 	}
-	
+
+    /**
+     * getMediaPlayer
+     * @return _mediaPlayer
+     */
+    public MediaPlayer getMediaPlayer() {
+        return _mediaPlayer;
+    }
+
 	/**
 	 * Returns the total time of the current song as the number of milliseconds
 	 * @return

@@ -35,7 +35,8 @@ public class VisualizerPanel extends JPanel {
   private Controller leapController;
   private List<Color> colors;
   private ParticleField particleField;
-  private int trailSize, particleSize, newRadius;
+  private int trailSize;
+  private double newRadius;
   private boolean sizeChange, smaller;
 
   /**
@@ -50,7 +51,6 @@ public class VisualizerPanel extends JPanel {
     leapController.addListener(leapListener);
 
     this.trailSize = trailSize;
-    particleSize = 2;
 
     // add particle field to panel
     colors = Collections.synchronizedList(new ArrayList<Color>());
@@ -64,7 +64,7 @@ public class VisualizerPanel extends JPanel {
       @Override
       public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         if (sizeChange)
-          newRadius = 3 * (40 - (int) magnitudes[0]);
+          newRadius = 5 * (- magnitudes[0]);
       }
     };
     SoundController.setAudioSpectrumListener(audioSpectrumListener);
@@ -85,7 +85,7 @@ public class VisualizerPanel extends JPanel {
 
     // change circle size according to audio, draw circle
     ParticleCircle circle = particleField.getCircle();
-    int centerRadius = circle.getRadius();
+    double centerRadius = circle.getRadius();
     if (sizeChange) {
       if (newRadius > centerRadius + 50)
         smaller = true;
@@ -103,7 +103,8 @@ public class VisualizerPanel extends JPanel {
         sizeChange = true;
     }
     g2.setColor(new Color(0.1f, 0.1f, 0.1f, 0.025f));
-    g2.fillOval((int) particleField.getCircle().getX() - centerRadius, (int) particleField.getCircle().getY() - centerRadius, centerRadius * 2, centerRadius * 2);
+    Ellipse2D centerEllipse = new Ellipse2D.Double(particleField.getCircle().getX() - centerRadius, particleField.getCircle().getY() - centerRadius, centerRadius * 2, centerRadius * 2);
+    g2.fill(centerEllipse);
 
     // paint hands
     ParticleCircle leftCircle = particleField.getLeftCircle();
