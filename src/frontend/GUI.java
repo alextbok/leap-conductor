@@ -47,7 +47,7 @@ public class GUI extends JFrame {
   public static final int HEIGHT = 720;
   
   /**
-   * Constructor 
+   * Constructor
    */
   public GUI() {
 		// set up frame
