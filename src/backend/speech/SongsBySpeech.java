@@ -10,6 +10,8 @@ import javax.sound.sampled.*;
 import com.darkprograms.speech.microphone.*;
 import com.darkprograms.speech.recognizer.*;
 import org.jaudiotagger.audio.*;
+
+import java.io.EOFException;
 import java.util.regex.*;
 
 public class SongsBySpeech {
@@ -51,15 +53,20 @@ public class SongsBySpeech {
 
     // recognize spoken audio
     Recognizer recognizer = new Recognizer(Recognizer.Languages.ENGLISH_US);
-    GoogleResponse response = recognizer.getRecognizedDataForWave(file);
-    System.out.println(response.getResponse());
+    try {
+      GoogleResponse response = recognizer.getRecognizedDataForWave(file);
+      if (!response.getResponse().toString().equals("null"))
+        System.out.println(response.getResponse());
 
-    // match output to regex
-    String responseStr = response.getResponse().toString();
-    Matcher m = playSong.matcher(responseStr);
-    if (m.find())
-      return songDirectory.getSong(m.group(1));
+      // match output to regex
+      String responseStr = response.getResponse().toString();
+      Matcher m = playSong.matcher(responseStr);
+      if (m.find())
+        return songDirectory.getSong(m.group(1));
 
-    return songDirectory.getSong(responseStr);
+      return songDirectory.getSong(responseStr);
+    } catch (Exception e) {
+      return null;
+    }
   }
 }

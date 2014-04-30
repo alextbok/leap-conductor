@@ -32,10 +32,12 @@ import frontend.soundpanel.LeapListener;
 @SuppressWarnings("serial")
 public class VisualizerPanel extends JPanel {
   private LeapListener leapListener;
+  private AudioSpectrumListener audioSpectrumListener;
   private Controller leapController;
   private List<Color> colors;
   private ParticleField particleField;
-  private int trailSize, particleSize, newRadius;
+  private int trailSize;
+  private double newRadius;
   private boolean sizeChange, smaller;
 
   /**
@@ -50,7 +52,6 @@ public class VisualizerPanel extends JPanel {
     leapController.addListener(leapListener);
 
     this.trailSize = trailSize;
-    particleSize = 2;
 
     // add particle field to panel
     colors = Collections.synchronizedList(new ArrayList<Color>());
@@ -60,14 +61,13 @@ public class VisualizerPanel extends JPanel {
 
     sizeChange = true;
 
-    AudioSpectrumListener audioSpectrumListener = new AudioSpectrumListener() {
+    audioSpectrumListener = new AudioSpectrumListener() {
       @Override
       public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         if (sizeChange)
-          newRadius = 3 * (40 - (int) magnitudes[0]);
+          newRadius = 7 * (magnitudes[0] + 60);
       }
     };
-    SoundController.setAudioSpectrumListener(audioSpectrumListener);
   }
 
   /**
@@ -79,15 +79,19 @@ public class VisualizerPanel extends JPanel {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
 
+    SoundController.setAudioSpectrumListener(audioSpectrumListener);
+
     // update particle positions
     particleField.setSpeed(SoundController.getRate());
     particleField.move();
 
     // change circle size according to audio, draw circle
     ParticleCircle circle = particleField.getCircle();
-    int centerRadius = circle.getRadius();
-    if (sizeChange) {
-      if (newRadius > centerRadius + 50)
+    double centerRadius = circle.getRadius();
+    if (SoundController.getMediaPlayer().getCurrentRate() == 0)
+      circle.setRadius(Math.max(centerRadius - 6, 0));
+    else if (sizeChange) {
+      if (newRadius > centerRadius)
         smaller = true;
       else
         smaller = false;
@@ -95,15 +99,16 @@ public class VisualizerPanel extends JPanel {
       sizeChange = false;
     }
     else {
-      if (centerRadius + 50 < newRadius && smaller)
+      if (centerRadius < newRadius && smaller)
         circle.setRadius(centerRadius + 15);
-      else if (centerRadius + 50 > newRadius && (!smaller))
+      else if (centerRadius > newRadius && (!smaller))
         circle.setRadius(centerRadius - 15);
       else
         sizeChange = true;
     }
     g2.setColor(new Color(0.1f, 0.1f, 0.1f, 0.025f));
-    g2.fillOval((int) particleField.getCircle().getX() - centerRadius, (int) particleField.getCircle().getY() - centerRadius, centerRadius * 2, centerRadius * 2);
+    Ellipse2D centerEllipse = new Ellipse2D.Double(particleField.getCircle().getX() - centerRadius, particleField.getCircle().getY() - centerRadius, centerRadius * 2, centerRadius * 2);
+    g2.fill(centerEllipse);
 
     // paint hands
     ParticleCircle leftCircle = particleField.getLeftCircle();

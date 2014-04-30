@@ -10,8 +10,7 @@ import java.awt.geom.Point2D;
 
 public class ParticleCircle {
   private double x, y;
-  private int radius;
-  private int upperBound;
+  private double radius;
 
   /**
    * ParticleCircle
@@ -20,7 +19,6 @@ public class ParticleCircle {
    */
   public ParticleCircle(int panelWidth, int panelHeight) {
     radius = Math.min(panelWidth, panelHeight) / 10;
-    upperBound = Math.min(panelWidth, panelHeight) / 3;
     x = panelWidth / 2;
     y = panelHeight / 2;
   }
@@ -64,7 +62,7 @@ public class ParticleCircle {
    * sets the radius to the given radius
    * @param newRadius
    */
-  public void setRadius(int newRadius) {
+  public void setRadius(double newRadius) {
     radius = newRadius;
   }
 
@@ -86,7 +84,7 @@ public class ParticleCircle {
    * getRadius
    * @return radius
    */
-  public int getRadius() {
+  public double getRadius() {
     return radius;
   }
 }

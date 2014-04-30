@@ -1,12 +1,14 @@
 package hub;
 
-import java.io.File;
+/**
+ * SoundController
+ * a static wrapper class for SongApp
+ */
 
-import javafx.scene.media.AudioSpectrumListener;
+import java.io.File;
+import javafx.scene.media.*;
 import backend.audio.SongApp;
-import frontend.soundpanel.KnobPanel;
-import frontend.soundpanel.KnobType;
-import frontend.soundpanel.SongPanel;
+import frontend.soundpanel.*;
 
 public class SoundController {
 	
@@ -198,6 +200,10 @@ public class SoundController {
 		}
 		updateSelection(highKnob);
 	}
+
+    public static MediaPlayer getMediaPlayer() {
+        return app.getMediaPlayer();
+    }
 
     public static double getVolume() {
         if(app != null) return app.getVolume();
