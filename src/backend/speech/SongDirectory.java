@@ -51,7 +51,9 @@ public class SongDirectory {
         try {
           AudioFile audio = AudioFileIO.read(file);
 
-          if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().equals(songName.toLowerCase()))
+          if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().equals(songName.toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "")))
+            return audio;
+          else if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().equals(songName.toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").replaceAll("&", "and")))
             return audio;
         } catch (CannotReadException e) {
           continue;

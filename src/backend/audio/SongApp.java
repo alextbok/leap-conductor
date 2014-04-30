@@ -16,7 +16,6 @@ import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import org.jaudiotagger.audio.*;
-import org.jaudiotagger.tag.FieldKey;
 
 public class SongApp {
 	private  Media _media;
@@ -37,6 +36,9 @@ public class SongApp {
             @Override
             public void run() {
                 while (true) {
+                    if (_mediaPlayer.getCurrentRate() > 0)
+                        continue;
+
                     try {
                         SongsBySpeech speech = new SongsBySpeech("/Users/Arun/Music/iTunes/iTunes Media/Music");
                         AudioFile newSong = speech.speechCommand();
@@ -308,7 +310,7 @@ public class SongApp {
     public void setSong(File file) {
     	try {
     		_media = new Media(file.toURI().toString());
-    		_mediaPlayer = new MediaPlayer(_media);	
+    		_mediaPlayer = new MediaPlayer(_media);
     	} catch (MediaException e) {
     		System.out.println("ERROR: No such file or directory " + file.getAbsolutePath());
     	}

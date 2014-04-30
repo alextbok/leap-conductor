@@ -32,6 +32,7 @@ import frontend.soundpanel.LeapListener;
 @SuppressWarnings("serial")
 public class VisualizerPanel extends JPanel {
   private LeapListener leapListener;
+  private AudioSpectrumListener audioSpectrumListener;
   private Controller leapController;
   private List<Color> colors;
   private ParticleField particleField;
@@ -60,14 +61,13 @@ public class VisualizerPanel extends JPanel {
 
     sizeChange = true;
 
-    AudioSpectrumListener audioSpectrumListener = new AudioSpectrumListener() {
+    audioSpectrumListener = new AudioSpectrumListener() {
       @Override
       public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         if (sizeChange)
-          newRadius = 5 * (- magnitudes[0]);
+          newRadius = 7 * (magnitudes[0] + 60);
       }
     };
-    SoundController.setAudioSpectrumListener(audioSpectrumListener);
   }
 
   /**
@@ -79,6 +79,8 @@ public class VisualizerPanel extends JPanel {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
 
+    SoundController.setAudioSpectrumListener(audioSpectrumListener);
+
     // update particle positions
     particleField.setSpeed(SoundController.getRate());
     particleField.move();
@@ -86,8 +88,10 @@ public class VisualizerPanel extends JPanel {
     // change circle size according to audio, draw circle
     ParticleCircle circle = particleField.getCircle();
     double centerRadius = circle.getRadius();
-    if (sizeChange) {
-      if (newRadius > centerRadius + 50)
+    if (SoundController.getMediaPlayer().getCurrentRate() == 0)
+      circle.setRadius(Math.max(centerRadius - 6, 0));
+    else if (sizeChange) {
+      if (newRadius > centerRadius)
         smaller = true;
       else
         smaller = false;
@@ -95,9 +99,9 @@ public class VisualizerPanel extends JPanel {
       sizeChange = false;
     }
     else {
-      if (centerRadius + 50 < newRadius && smaller)
+      if (centerRadius < newRadius && smaller)
         circle.setRadius(centerRadius + 15);
-      else if (centerRadius + 50 > newRadius && (!smaller))
+      else if (centerRadius > newRadius && (!smaller))
         circle.setRadius(centerRadius - 15);
       else
         sizeChange = true;
