@@ -8,9 +8,13 @@ package frontend.soundpanel;
 
 import hub.SoundController;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.Timer;
 
 import backend.motion.HandsDownLeftGesture;
 import backend.motion.HandsDownMiddleGesture;
@@ -32,17 +36,23 @@ import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.HandList;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Screen;
+import com.leapmotion.leap.SwipeGesture;
 import com.leapmotion.leap.Vector;
 
 public class LeapListener extends Listener {
 	private List<Point2D> handLocs;
 	private List<Point2D> fingerLocs;
-	//private boolean cooldownComplete = true;
+	private boolean cooldownComplete = true;
 
 	@Override
 	public void onConnect(Controller controller) {
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
 		controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
+		// set the swipes minimum velocity and distance
+
+		if(controller.config().setFloat("Gesture.Swipe.MinLength", 350.0f))
+			controller.config().save();
+
 	}
 
 	/**
@@ -59,23 +69,68 @@ public class LeapListener extends Listener {
 		 **********************/
 
 		boolean realGestureRecognized = false;
-		
+
 		for(Gesture g : controller.frame().gestures()) {
 			if(g.type() == Gesture.Type.TYPE_CIRCLE) {
-				realGestureRecognized = true;
-				CircleGesture circle = new CircleGesture(g);
-				if (circle.pointable().direction().angleTo(circle.normal()) <= Math.PI/2) {
-					//clockwise circle
-					SoundController.speedUpSong();
+
+				HandList h = controller.frame().hands();
+				// make sure there are hands
+				if (!h.isEmpty()){
+					// make sure there's only one hand
+					if (h.count() == 1){
+						// make sure there's only one finger
+						if (h.rightmost().fingers().count() == 1){
+
+							realGestureRecognized = true;
+							CircleGesture circle = new CircleGesture(g);
+
+
+							if (circle.pointable().direction().angleTo(circle.normal()) <= Math.PI/2) {
+								//clockwise circle
+								SoundController.speedUpSong();
+							}
+							else {
+								//counterclockwise circle
+								SoundController.slowDownSong();
+							}
+						}
+					}
 				}
-				else {
-					//counterclockwise circle
-					SoundController.slowDownSong();
+			}
+			else if (g.type() == Gesture.Type.TYPE_SWIPE){
+				if (g.state() == Gesture.State.STATE_STOP){
+					SwipeGesture swipe = new SwipeGesture(g);
+					if (cooldownComplete){
+
+						cooldownComplete = false;
+
+						if (swipe.direction().getX() > 0.5){
+							SoundController.stopSong();
+							SoundController.setSong(SongList.getNextSong());
+							SoundController.playSong();
+						}
+						else if (swipe.direction().getX() < -0.5){
+							System.out.println("LEFT");
+							//TODO: Previous song here
+						}
+
+						Timer t = new Timer(1000, new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								cooldownComplete = true;
+							}
+						});
+						t.setRepeats(false);
+						t.start();
+
+
+					}else{
+						System.out.println("Cooldown wasn't complete");
+					}
 				}
-				//TODO change song on swipe
 			}
 		}
-		
+
 		boolean normalGestureRecognized = true;
 
 		// gestures to pause/play the song
