@@ -9,9 +9,7 @@ package frontend.audiovisualizer;
 import frontend.GUI;
 import hub.SoundController;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -34,6 +32,7 @@ public class VisualizerPanel extends JPanel {
   private LeapListener leapListener;
   private AudioSpectrumListener audioSpectrumListener;
   private Controller leapController;
+  private GUI gui;
   private List<Color> colors;
   private ParticleField particleField;
   private int trailSize;
@@ -79,6 +78,8 @@ public class VisualizerPanel extends JPanel {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
 
+    particleField.setWidth(getWidth());
+    particleField.setHeight(getHeight());
     SoundController.setAudioSpectrumListener(audioSpectrumListener);
 
     // update particle positions
