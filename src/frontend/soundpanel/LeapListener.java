@@ -162,6 +162,8 @@ public class LeapListener extends Listener {
 				handLocs = handList;
 			}
 		}
+        else
+            handLocs = null;
 
 		if (!frame.fingers().isEmpty()) {
 			Screen screen = controller.locatedScreens().get(0);
@@ -180,6 +182,8 @@ public class LeapListener extends Listener {
 				fingerLocs = fingerList;
 			}
 		}
+        else
+            fingerLocs = null;
 	}
 
 	/**

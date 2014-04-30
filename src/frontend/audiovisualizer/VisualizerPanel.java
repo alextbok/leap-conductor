@@ -118,6 +118,7 @@ public class VisualizerPanel extends JPanel {
           Ellipse2D ellipse = new Ellipse2D.Double(x - radius, y - radius, radius * 2, radius * 2);
           g2.fill(ellipse);
         }
+        particleField.getRightCircle().setPos(-100, -100);
       }
       else if (hands.size() == 2) {
         Point2D pt1 = hands.get(0);
@@ -128,7 +129,7 @@ public class VisualizerPanel extends JPanel {
         if (x > 0 && y > 0 && x < getWidth() && y < getHeight()) {
           leftCircle.setPos(x, y);
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
-          double radius = leftCircle.getRadius() + 10;
+          double radius = leftCircle.getRadius();
           Ellipse2D ellipse = new Ellipse2D.Double(x - radius, y - radius, radius * 2, radius * 2);
           g2.fill(ellipse);
         }
@@ -143,6 +144,10 @@ public class VisualizerPanel extends JPanel {
           g2.fill(ellipse);
         }
       }
+    }
+    else {
+      particleField.getLeftCircle().setPos(-100, -100);
+      particleField.getRightCircle().setPos(-100, -100);
     }
 
     // paint fingers
