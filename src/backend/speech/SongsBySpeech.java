@@ -10,8 +10,6 @@ import javax.sound.sampled.*;
 import com.darkprograms.speech.microphone.*;
 import com.darkprograms.speech.recognizer.*;
 import org.jaudiotagger.audio.*;
-
-import java.io.EOFException;
 import java.util.regex.*;
 
 public class SongsBySpeech {
