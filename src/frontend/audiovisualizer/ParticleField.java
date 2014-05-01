@@ -179,6 +179,23 @@ public class ParticleField {
   }
 
   /**
+   * setWidth
+   * @param newWidth
+   */
+  public void setWidth(int newWidth) {
+    width = newWidth;
+    circle.setPos(width / 2, height / 2);
+  }
+
+  /**
+   * newHeight
+   * @param newHeight
+   */
+  public void setHeight(int newHeight) {
+    height = newHeight;
+  }
+
+  /**
    * getParticles
    * @return particles
    */

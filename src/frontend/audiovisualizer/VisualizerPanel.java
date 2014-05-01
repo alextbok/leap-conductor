@@ -6,28 +6,17 @@ package frontend.audiovisualizer;
  * @auther Arun Varma
  */
 
-import frontend.GUI;
-import hub.SoundController;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
+import frontend.*;
+import frontend.soundpanel.*;
+import hub.*;
+import java.awt.*;
+import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javafx.scene.media.AudioSpectrumListener;
-
-import javax.swing.JPanel;
-
-import com.leapmotion.leap.Controller;
-
-import frontend.audiovisualizer.Particle;
-import frontend.audiovisualizer.ParticleCircle;
-import frontend.audiovisualizer.ParticleField;
-import frontend.soundpanel.LeapListener;
+import javafx.scene.media.*;
+import javax.swing.*;
+import com.leapmotion.leap.*;
 
 @SuppressWarnings("serial")
 public class VisualizerPanel extends JPanel {
@@ -79,6 +68,8 @@ public class VisualizerPanel extends JPanel {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
 
+    particleField.setWidth(getWidth());
+    particleField.setHeight(getHeight());
     SoundController.setAudioSpectrumListener(audioSpectrumListener);
 
     // update particle positions
@@ -118,45 +109,57 @@ public class VisualizerPanel extends JPanel {
       if (hands.size() == 1) {
         Point2D pt = hands.get(0);
 
-        if (pt.getX() > 0 && pt.getY() > 0) {
-          leftCircle.setPos(pt.getX(), pt.getY());
+        double x = pt.getX() * getWidth();
+        double y = pt.getY() * getHeight();
+        if (x > 0 && y > 0 && x < getWidth() && y < getHeight()) {
+          leftCircle.setPos(x, y);
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
           double radius = leftCircle.getRadius();
-          Ellipse2D ellipse = new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, radius * 2, radius * 2);
+          Ellipse2D ellipse = new Ellipse2D.Double(x - radius, y - radius, radius * 2, radius * 2);
           g2.fill(ellipse);
         }
+        particleField.getRightCircle().setPos(-100, -100);
       }
       else if (hands.size() == 2) {
         Point2D pt1 = hands.get(0);
         Point2D pt2 = hands.get(1);
 
-        if (pt1.getX() > 0 && pt1.getY() > 0) {
-          leftCircle.setPos(pt1.getX(), pt1.getY());
+        double x = pt1.getX() * getWidth();
+        double y = pt1.getY() * getHeight();
+        if (x > 0 && y > 0 && x < getWidth() && y < getHeight()) {
+          leftCircle.setPos(x, y);
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
-          double radius = leftCircle.getRadius() + 10;
-          Ellipse2D ellipse = new Ellipse2D.Double(pt1.getX() - radius, pt1.getY() - radius, radius * 2, radius * 2);
+          double radius = leftCircle.getRadius();
+          Ellipse2D ellipse = new Ellipse2D.Double(x - radius, y - radius, radius * 2, radius * 2);
           g2.fill(ellipse);
         }
-        if (pt2.getX() > 0 && pt2.getY() > 0) {
-          rightCircle.setPos(pt2.getX(), pt2.getY());
+
+        x = pt2.getX() * getWidth();
+        y = pt2.getY() * getHeight();
+        if (x > 0 && y > 0 && x < getWidth() && y < getHeight()) {
+          rightCircle.setPos(x, y);
           g2.setColor(new Color(0.5f, 0.75f, 0.8f, 0.4f));
           double radius = rightCircle.getRadius();
-          Ellipse2D ellipse = new Ellipse2D.Double(pt2.getX() - radius, pt2.getY() - radius, radius * 2, radius * 2);
+          Ellipse2D ellipse = new Ellipse2D.Double(x - radius, y - radius, radius * 2, radius * 2);
           g2.fill(ellipse);
         }
       }
+    }
+    else {
+      particleField.getLeftCircle().setPos(-100, -100);
+      particleField.getRightCircle().setPos(-100, -100);
     }
 
     // paint fingers
     List<Point2D> fingers = leapListener.getFingerLocs();
     if (fingers != null) {
       for (Point2D finger : fingers) {
-        int x = (int) finger.getX();
-        int y = (int) finger.getY();
+        double x = finger.getX() * getWidth();
+        double y = finger.getY() * getHeight();
 
-        if (x > 0 && y > 0) {
+        if (x > 0 && y > 0 && x < getWidth() && y < getHeight()) {
           g2.setColor(new Color(76, 81, 109));
-          Ellipse2D ellipse = new Ellipse2D.Double(finger.getX(), finger.getY(), 30, 30);
+          Ellipse2D ellipse = new Ellipse2D.Double(x, y, 30, 30);
           g2.fill(ellipse);
         }
       }
