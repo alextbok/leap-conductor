@@ -116,11 +116,23 @@ public class LeapListener extends Listener {
 						if (swipe.direction().getX() > 0.5){
 							SoundController.stopSong();
 							SoundController.setSong(SongList.getNextSong());
+							SoundController.resetValues();
 							SoundController.playSong();
 						}
 						else if (swipe.direction().getX() < -0.5){
-							System.out.println("LEFT");
-							//TODO: Previous song here
+							// TODO: Changeable. The 3000 means if the song is past 3 seconds, it will
+							// go back to the start, otherwise, we'll go to the previous song.
+							if (SoundController.getCurrentTime() > 3000){
+								SoundController.seekTo(0.0);
+							}
+							// Go to previous song
+							else{
+								SoundController.stopSong();
+								SoundController.setSong(SongList.getPreviousSong());
+								SoundController.resetValues();
+								SoundController.playSong();
+							}
+							
 						}
 
 						Timer t = new Timer(1000, new ActionListener() {

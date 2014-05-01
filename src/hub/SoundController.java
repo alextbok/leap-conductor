@@ -30,7 +30,7 @@ public class SoundController {
 		if(app != null) {
 			app.resetValues();
 		}
-		//reset knobs
+		//TODO: reset knobs
 	}
 	
 	public static void playSong() {

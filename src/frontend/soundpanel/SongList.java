@@ -167,6 +167,28 @@ public class SongList {
 		return _currentSong;
 	}
 	
+	public static File getPreviousSong() {
+		// TODO: I tried to base this method off of the getNextSong method, but I have no idea if
+		// it really works, it hasn't been extensively tested, and I don't perfectly know how Alex's
+		// code works. So, somebody should look at this.
+		
+		if (_currentSong == null){
+			return musicFiles.get(listModel.elementAt(0));
+		}
+		
+		int currentIndex = listModel.indexOf(_currentSong.getName());
+		int nextIndex = (currentIndex - 1);
+		if (nextIndex == -1){
+			nextIndex = listModel.size() - 1;
+		}
+		list.setSelectedIndex(nextIndex);
+		
+		String songName = listModel.elementAt(nextIndex);
+		_currentSong = musicFiles.get(songName);
+		
+		return _currentSong;
+	}
+	
 	/**
 	 * Adds mouse listener to list that listens for double clicks
 	 */
@@ -199,5 +221,7 @@ public class SongList {
 			
 		});
 	}
+
+
 	
 }
