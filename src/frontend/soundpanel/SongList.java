@@ -1,25 +1,5 @@
 package frontend.soundpanel;
 
-import hub.SoundController;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
-
 /**
  * Maintains a list of songs that can be played (by double clicking the song name)
  * Since we only have one song list to show the user for the life of the program,
@@ -28,6 +8,19 @@ import javax.swing.border.TitledBorder;
  * @author abok
  *
  */
+
+import hub.*;
+import org.jaudiotagger.audio.*;
+import org.jaudiotagger.tag.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.*;
+import java.io.File;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+
 public class SongList {
 
 	/*Have one song list so we can use this class statically (and keep encapsulation)*/
@@ -49,13 +42,22 @@ public class SongList {
 	
 	/**
 	 * Appends songs onto the list - duplicates are ignored
-	 * @param songs, array of song titles
+	 * @param song, array of song titles
 	 */
 	public static void addSong(File song) {
-		if (!listModel.contains(song.getName())) {
-			musicFiles.put(song.getName(), song);
-			listModel.addElement(song.getName());
-			list.setModel(listModel);
+        String audioFileName;
+        try {
+            audioFileName = AudioFileIO.read(song).getTag().getFirst(FieldKey.TITLE);
+            if (audioFileName.length() == 0)
+                audioFileName = song.getName();
+        } catch (Exception e) {
+            audioFileName = song.getName();
+        }
+
+		if (!listModel.contains(audioFileName)) {
+            musicFiles.put(audioFileName, song);
+            listModel.addElement(audioFileName);
+            list.setModel(listModel);
 		}
 	}
 	
@@ -167,6 +169,28 @@ public class SongList {
 		return _currentSong;
 	}
 	
+	public static File getPreviousSong() {
+		// TODO: I tried to base this method off of the getNextSong method, but I have no idea if
+		// it really works, it hasn't been extensively tested, and I don't perfectly know how Alex's
+		// code works. So, somebody should look at this.
+		
+		if (_currentSong == null){
+			return musicFiles.get(listModel.elementAt(0));
+		}
+		
+		int currentIndex = listModel.indexOf(_currentSong.getName());
+		int nextIndex = (currentIndex - 1);
+		if (nextIndex == -1){
+			nextIndex = listModel.size() - 1;
+		}
+		list.setSelectedIndex(nextIndex);
+		
+		String songName = listModel.elementAt(nextIndex);
+		_currentSong = musicFiles.get(songName);
+		
+		return _currentSong;
+	}
+	
 	/**
 	 * Adds mouse listener to list that listens for double clicks
 	 */
@@ -199,5 +223,7 @@ public class SongList {
 			
 		});
 	}
+
+
 	
 }
