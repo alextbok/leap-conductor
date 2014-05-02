@@ -45,7 +45,6 @@ public class SongApp {
 
                     try {
                     	String pathToItunes = FileProcessor.getFolderWithMostMusicFiles().getAbsolutePath();
-                    	System.out.println(pathToItunes);
                         SongsBySpeech speech = new SongsBySpeech(pathToItunes);
                         AudioFile newSong = speech.speechCommand();
                         if (newSong != null) {
