@@ -4,8 +4,8 @@ package backend.audio;
  * SongApp
  */
 
-import backend.speech.*;
-import java.io.*;
+import java.io.File;
+
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.AudioEqualizer;
@@ -15,7 +15,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import org.jaudiotagger.audio.*;
+
+import org.jaudiotagger.audio.AudioFile;
+
+import backend.speech.SongsBySpeech;
 
 public class SongApp {
 	private  Media _media;
@@ -93,7 +96,7 @@ public class SongApp {
 	 */
 	public void speedUpSong() {
 		if (_mediaPlayer != null)
-			_mediaPlayer.setRate(_mediaPlayer.getRate() + 0.003);
+			_mediaPlayer.setRate(_mediaPlayer.getRate() + 0.01);
 	}
 	
 	/**
@@ -101,7 +104,7 @@ public class SongApp {
 	 */
 	public void slowDownSong() {
 		if (_mediaPlayer != null) {
-			_mediaPlayer.setRate(_mediaPlayer.getRate() - 0.003);
+			_mediaPlayer.setRate(_mediaPlayer.getRate() - 0.01);
 		}
 	}
 
@@ -111,7 +114,6 @@ public class SongApp {
 	public void volumeUp() {
 		if (_mediaPlayer != null) {
 			_mediaPlayer.setVolume(_mediaPlayer.getVolume() + 0.01);
-			if(_mediaPlayer.getVolume() > 1.0) _mediaPlayer.setVolume(1.0);
 		}
 	}
 	
@@ -121,7 +123,6 @@ public class SongApp {
 	public void volumeDown() {
 		if (_mediaPlayer != null) {
 			_mediaPlayer.setVolume(_mediaPlayer.getVolume() - 0.01);
-			if(_mediaPlayer.getVolume() < 0.0) _mediaPlayer.setVolume(0.0);
 		}
 	}
 	
@@ -149,9 +150,7 @@ public class SongApp {
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
 			for(int i = 0; i < 3; i ++){
-				if (bands.get(i).getGain() < EqualizerBand.MAX_GAIN){
-					bands.get(i).setGain(bands.get(i).getGain() + .5);
-				}
+				bands.get(i).setGain(bands.get(i).getGain() + .5);
 			}
 		}
 	}
@@ -164,13 +163,20 @@ public class SongApp {
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
 			for(int i = 0; i < 3; i ++){
-				if (bands.get(i).getGain() > EqualizerBand.MIN_GAIN){
-					bands.get(i).setGain(bands.get(i).getGain() - 0.5);
-				}
+				bands.get(i).setGain(bands.get(i).getGain() - 0.5);
 			}
 		}
 	}
 	
+	public void changeBass(double d) {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 0; i < 3; i ++){
+				bands.get(i).setGain(bands.get(i).getGain() + d);
+			}
+		}
+	}
 	
 	/**
 	 * raises gain on mid frequencies
@@ -180,9 +186,7 @@ public class SongApp {
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
 			for(int i = 3; i < 7; i ++){
-				if (bands.get(i).getGain() < EqualizerBand.MAX_GAIN){
-					bands.get(i).setGain(bands.get(i).getGain() + 0.5);
-				}
+				bands.get(i).setGain(bands.get(i).getGain() + 0.5);
 			}
 		}
 	}
@@ -196,9 +200,17 @@ public class SongApp {
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
 			for(int i = 3; i < 7; i ++){
-				if (bands.get(i).getGain() > EqualizerBand.MIN_GAIN){
-					bands.get(i).setGain(bands.get(i).getGain() - 0.5);
-				}
+				bands.get(i).setGain(bands.get(i).getGain() - 0.5);
+			}
+		}
+	}
+	
+	public void changeMid(double d) {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 3; i < 7; i ++){
+				bands.get(i).setGain(bands.get(i).getGain() + d);
 			}
 		}
 	}
@@ -211,9 +223,7 @@ public class SongApp {
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
 			for(int i = 7; i < 10; i ++){
-				if (bands.get(i).getGain() < EqualizerBand.MAX_GAIN){
-					bands.get(i).setGain(bands.get(i).getGain() + 0.5);
-				}
+				bands.get(i).setGain(bands.get(i).getGain() + 0.5);
 			}
 		}
 	}
@@ -226,9 +236,17 @@ public class SongApp {
 			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
 			ObservableList<EqualizerBand> bands = eq.getBands();
 			for(int i = 7; i < 10; i ++){
-				if (bands.get(i).getGain() > EqualizerBand.MIN_GAIN){
-					bands.get(i).setGain(bands.get(i).getGain() - 0.5);
-					}
+				bands.get(i).setGain(bands.get(i).getGain() - 0.5);
+			}
+		}
+	}
+	
+	public void changeHigh(double d) {
+		if (_mediaPlayer != null){
+			AudioEqualizer eq = _mediaPlayer.getAudioEqualizer();
+			ObservableList<EqualizerBand> bands = eq.getBands();
+			for(int i = 7; i < 10; i ++){
+				bands.get(i).setGain(bands.get(i).getGain() + d);
 			}
 		}
 	}

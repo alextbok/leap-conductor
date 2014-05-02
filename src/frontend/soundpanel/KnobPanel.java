@@ -72,7 +72,6 @@ public class KnobPanel extends JPanel {
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
-		
         super.paintComponent(g);
         Graphics2D brush = (Graphics2D) g;
         
@@ -111,13 +110,22 @@ public class KnobPanel extends JPanel {
 	/*ACCESSORS*/
 
 	/**
-	 * Increases the angle by 5.0 degrees
+	 * Increases the angle by d degrees
 	 * The double will be converted to radians before repainting
+	 * 
 	 */
 	public void rotateImage(double d) {
 		_angle += d;
 	     if (_angle >= 360.0)
 	       _angle = 0.0;
+	}
+	
+	/**
+	 * Sets the knob's rotation to a given angle in radians
+	 * @param d
+	 */
+	public void setRotation(double d) {
+		_angle = d;
 	}
 	
     /**
@@ -178,12 +186,16 @@ public class KnobPanel extends JPanel {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			double rotation = 0.5 * (_previousY - e.getY());
-
 			if (_text.equals("Volume"))
-				SoundController.changeVolume(rotation / 50);
+				SoundController.changeVolume(rotation / 250);
 			else if (_text.equals("Speed"))
-				SoundController.changeSpeed(rotation * 0.001);
-
+				SoundController.changeSpeed(rotation / 100);
+			else if (_text.equals("Low"))
+				SoundController.changeLow(rotation / 7);
+			else if (_text.equals("Mid"))
+				SoundController.changeMid(rotation / 7);
+			else if (_text.equals("High"))
+				SoundController.changeHigh(rotation / 7);
 			_previousY = e.getY();
 			KnobPanel.this.repaint();
 		}

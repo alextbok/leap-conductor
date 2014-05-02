@@ -6,10 +6,20 @@ package hub;
  */
 
 import java.io.File;
-import javafx.scene.media.*;
-import backend.audio.SongApp;
-import frontend.soundpanel.*;
 
+import javafx.scene.media.AudioSpectrumListener;
+import javafx.scene.media.MediaPlayer;
+import backend.audio.SongApp;
+import frontend.soundpanel.KnobPanel;
+import frontend.soundpanel.KnobType;
+import frontend.soundpanel.SongPanel;
+
+/**
+ * This class is used to control the current song playing statically. It functions largely as a wrapper for SongApp,
+ * but with some added functionality so that it also controls the knobs
+ * @author Sawyer
+ *
+ */
 public class SoundController {
 	
 	private static SongApp app;
@@ -19,18 +29,25 @@ public class SoundController {
 	private static KnobPanel midKnob = SongPanel.getKnobPanel(KnobType.MID);
 	private static KnobPanel highKnob = SongPanel.getKnobPanel(KnobType.HIGH);
 	private static KnobPanel selected = null;
-	private final static double scale = 10d;
-	private final static double speedScale = 2000d;
+	private final static double maxSpeed = 2;
+	private final static double minSpeed = 0;
+	private final static double maxVolume = 1;
+	private final static double minVolume = 0;
+	private final static double minSeg = -24;
+	private final static double maxSeg = 12;
+	
+	//private final static double minPart;
 	
 	public SoundController(SongApp app) {
 		SoundController.app = app;
+		resetValues();
 	}
 	
 	public static void resetValues() {
 		if(app != null) {
 			app.resetValues();
+			updateKnob(volumeKnob, app.getVolume(), minVolume, maxVolume);
 		}
-		//TODO: reset knobs
 	}
 	
 	public static void playSong() {
@@ -45,160 +62,133 @@ public class SoundController {
 		}
 	}
 	
+	/**
+	 * The methods below increase, decrease and set the speed, volume, bass, mid, and high values of the current song playing
+	 */
+	
 	public static void speedUpSong() {
-		if(app != null) {
-			Double oldRate = app.getRate();
-			app.speedUpSong();
-			Double newRate = app.getRate();
-			
-			Double rateChange = newRate - oldRate;
-			
-			speedKnob.rotateImage(rateChange * speedScale);
+		if(app != null && app.getRate() < maxSpeed) {
+			app.speedUpSong();			
+			updateKnob(speedKnob, app.getRate(), minSpeed, maxSpeed);			
 		}
 		updateSelection(speedKnob);
 	}
 	
 	public static void slowDownSong() {
-		if(app != null) {
-			Double oldRate = app.getRate();
+		if(app != null && app.getRate() > minSpeed) {
 			app.slowDownSong();
-			Double newRate = app.getRate();
-			
-			Double rateChange = newRate - oldRate;
-			
-			speedKnob.rotateImage(rateChange * speedScale);
+			updateKnob(speedKnob, app.getRate(), minSpeed, maxSpeed);
 		}
 		updateSelection(speedKnob);
 	}
 	
 	public static void volumeUp() {
-		if(app != null) {
-			Double oldVolume = app.getVolume();
+		if(app != null && app.getVolume() < maxVolume) {
 			app.volumeUp();
-			Double newVolume = app.getVolume();
-			
-			Double volumeChange = newVolume - oldVolume;
-			
-			volumeKnob.rotateImage(volumeChange * scale);
+			updateKnob(volumeKnob, app.getVolume(), minVolume, maxVolume);
 		}
 		updateSelection(volumeKnob);
 	}
 	
 	public static void volumeDown() {
-		if(app != null) {
-			Double oldVolume = app.getVolume();
+		if(app != null && app.getVolume() > minVolume) {
 			app.volumeDown();
-			Double newVolume = app.getVolume();
-			
-			Double volumeChange = newVolume - oldVolume;
-			
-			volumeKnob.rotateImage(volumeChange * scale);
+			updateKnob(volumeKnob, app.getVolume(), minVolume, maxVolume);			
 		}
 		updateSelection(volumeKnob);
 	}
 	
 	public static void changeVolume(double d) {
-		if(app != null) {
-			Double oldVolume = app.getVolume();
+		if(app != null && app.getVolume() + d < maxVolume && app.getVolume() + d > minVolume) {
 			app.changeVolume(d);
-			Double newVolume = app.getVolume();
-			
-			Double volumeChange = newVolume - oldVolume;
-			
-			volumeKnob.rotateImage(volumeChange * scale);
+			updateKnob(volumeKnob, app.getVolume(), minVolume, maxVolume);
 		}
 		updateSelection(volumeKnob);
 	}
 	
 	public static void changeSpeed(double d) {
-		if(app != null) {
-			Double oldRate = app.getRate();
-			app.changeSpeed(d);
-			Double newRate = app.getRate();
-			
-			Double rateChange = newRate - oldRate;
-			
-			speedKnob.rotateImage(rateChange * speedScale);
+		if(app != null && app.getRate() + d < maxSpeed && app.getRate() + d > minSpeed) {
+			app.changeSpeed(d);			
+			updateKnob(speedKnob, app.getRate(), minSpeed, maxSpeed);
 		}
 		updateSelection(speedKnob);
 	}
 	
+	public static void changeLow(double d) {
+		if(app != null && app.getLows() + d < maxSeg && app.getLows() + d > minSeg) {
+			app.changeBass(d);	
+			updateKnob(lowKnob, app.getLows(), minSeg, maxSeg);
+		}
+		updateSelection(lowKnob);
+	}
+	
+	public static void changeMid(double d) {
+		if(app != null && app.getMids() + d < maxSeg && app.getMids() + d > minSeg) {
+			app.changeMid(d);			
+			updateKnob(midKnob, app.getMids(), minSeg, maxSeg);
+		}
+		updateSelection(midKnob);
+	}
+	
+	public static void changeHigh(double d) {
+		if(app != null && app.getHighs() + d < maxSeg && app.getHighs() + d > minSeg) {
+			app.changeHigh(d);			
+			updateKnob(highKnob, app.getHighs(), minSeg, maxSeg);
+		}
+		updateSelection(lowKnob);
+	}
+
 	public static void raiseBass() {
-		if(app != null) {
-			Double oldVal = app.getLows();
+		if(app != null && app.getLows() < maxSeg) {
 			app.raiseBass();
-			Double newVal = app.getLows();
-			
-			Double change = newVal - oldVal;
-			
-			lowKnob.rotateImage(change * scale);
+			updateKnob(lowKnob, app.getLows(), minSeg, maxSeg);
 		}
 		updateSelection(lowKnob);
 	}
 	
 	public static void lowerBass() {
-		if(app != null) {
-			Double oldVal = app.getLows();
+		if(app != null && app.getLows() > minSeg) {
 			app.lowerBass();
-			Double newVal = app.getLows();
-			
-			Double change = newVal - oldVal;
-			
-			lowKnob.rotateImage(change * scale);
+			updateKnob(lowKnob, app.getLows(), minSeg, maxSeg);
 		}
 		updateSelection(lowKnob);
 	}
 	
 	public static void raiseMid() {
-		if(app != null) {
-			Double oldVal = app.getMids();
-			app.raiseMid();;
-			Double newVal = app.getMids();
-			
-			Double change = newVal - oldVal;
-			
-			midKnob.rotateImage(change * scale);
+		if(app != null && app.getMids() < maxSeg) {
+			app.raiseMid();
+			updateKnob(midKnob, app.getMids(), minSeg, maxSeg);
 		}
 		updateSelection(midKnob);
 	}
 	
 	public static void lowerMid() {
-		if(app != null) {
-			Double oldVal = app.getMids();
-			app.lowerMid();;
-			Double newVal = app.getMids();
-			
-			Double change = newVal - oldVal;
-			
-			midKnob.rotateImage(change * scale);
+		if(app != null && app.getMids() > minSeg) {
+			app.lowerMid();
+			updateKnob(midKnob, app.getMids(), minSeg, maxSeg);
 		}
 		updateSelection(midKnob);
 	}
 	
 	public static void raiseHigh() {
-		if(app != null) {
-			Double oldVal = app.getHighs();
-			app.raiseHigh();;
-			Double newVal = app.getHighs();
-			
-			Double change = newVal - oldVal;
-			
-			highKnob.rotateImage(change * scale);
+		if(app != null && app.getHighs() < maxSeg) {
+			app.raiseHigh();
+			updateKnob(highKnob, app.getHighs(), minSeg, maxSeg);
 		}
 		updateSelection(highKnob);
 	}
 	
 	public static void lowerHigh() {
-		if(app != null) {
-			Double oldVal = app.getHighs();
-			app.lowerHigh();;
-			Double newVal = app.getHighs();
-			
-			Double change = newVal - oldVal;
-			
-			highKnob.rotateImage(change * scale);
+		if(app != null && app.getHighs() > minSeg) {
+			app.lowerHigh();
+			updateKnob(highKnob, app.getHighs(), minSeg, maxSeg);
 		}
 		updateSelection(highKnob);
+	}
+	
+	private static void updateKnob(KnobPanel knob, double val, double min, double max) {
+		double rot = 224 * (min - val) / (min - max);
+		knob.setRotation(rot);
 	}
 
     public static MediaPlayer getMediaPlayer() {
