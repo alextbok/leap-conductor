@@ -52,10 +52,7 @@ public class LeapListener extends Listener {
 	public void onConnect(Controller controller) {
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
 		controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
-		// set the swipes minimum velocity and distance
 
-		if(controller.config().setFloat("Gesture.Swipe.MinLength", 350.0f))
-			controller.config().save();
 		
 		// get leap's range of detection
         InteractionBox box = controller.frame().interactionBox();
