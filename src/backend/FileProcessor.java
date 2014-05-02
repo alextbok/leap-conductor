@@ -106,6 +106,7 @@ public class FileProcessor extends Thread {
 	/**
 	 * Recursively traverses file directory starting at file and finds the
 	 * folder with the most .mp3, .m4a, .mp4, .wav files in it (ignores hidden files)
+	 * If the user has a /Music/iTunes/iTunes Media/Music directory, it is returned
 	 * @param file
 	 */
 	private void findDirectoryWithMostMusicFiles(File file) {
@@ -122,11 +123,37 @@ public class FileProcessor extends Thread {
 			//recursively look through all of the contained files
 			File[] children = file.listFiles();
 			for (File child : children) {
+				
+				if (child.getName().equals("iTunes Media")) {
+					for (File c: child.listFiles()) {
+						if (c.getName().equals("Music")) {
+							if (isItunesLibrary(c.getAbsolutePath())) {
+								_folder = c;
+								return;
+							}
+						}
+					}		
+				}
+				
 				//ignore hidden files
 				if (!child.getName().startsWith("."))
 					findDirectoryWithMostMusicFiles(child);
 			}
 		}
+	}
+	
+	/**
+	 * Returns true if the input file path is the directory of the user's iTunes library
+	 * Assumes the user's library is located at /Users/username/Music/iTunes/iTunes Media/Music
+	 */
+	private boolean isItunesLibrary(String path) {
+		
+		int indexSecondSlash = path.indexOf("/", 8);
+		
+		if (path.substring(indexSecondSlash).equals("/Music/iTunes/iTunes Media/Music"))
+			return true;
+		
+		return false;	
 	}
 	
 	/**

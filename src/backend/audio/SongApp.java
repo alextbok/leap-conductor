@@ -18,6 +18,7 @@ import javafx.util.Duration;
 
 import org.jaudiotagger.audio.AudioFile;
 
+import backend.FileProcessor;
 import backend.speech.SongsBySpeech;
 
 public class SongApp {
@@ -43,7 +44,9 @@ public class SongApp {
                         continue;
 
                     try {
-                        SongsBySpeech speech = new SongsBySpeech("/Users/Arun/Music/iTunes/iTunes Media/Music");
+                    	String pathToItunes = FileProcessor.getFolderWithMostMusicFiles().getAbsolutePath();
+                    	System.out.println(pathToItunes);
+                        SongsBySpeech speech = new SongsBySpeech(pathToItunes);
                         AudioFile newSong = speech.speechCommand();
                         if (newSong != null) {
                             setSong(newSong.getFile());
