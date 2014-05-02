@@ -8,7 +8,8 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="leap-conductor/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jaudiotagger.jar"/>
+	<classpathentry kind="lib" path="lib/flac-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/jarvis.jar"/>
+	<classpathentry kind="lib" path="lib/jaudiotagger.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
