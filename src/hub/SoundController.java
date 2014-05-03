@@ -47,6 +47,10 @@ public class SoundController {
 		if(app != null) {
 			app.resetValues();
 			updateKnob(volumeKnob, app.getVolume(), minVolume, maxVolume);
+			updateKnob(lowKnob, 0.0, minSeg, maxSeg);
+			updateKnob(midKnob, 0.0, minSeg, maxSeg);
+			updateKnob(highKnob, 0.0, minSeg, maxSeg);
+			updateKnob(speedKnob, 1.0, minSpeed, maxSpeed);
 		}
 	}
 	
@@ -189,6 +193,7 @@ public class SoundController {
 	private static void updateKnob(KnobPanel knob, double val, double min, double max) {
 		double rot = 224 * (min - val) / (min - max);
 		knob.setRotation(rot);
+		knob.updateUI();
 	}
 
     public static MediaPlayer getMediaPlayer() {

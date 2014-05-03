@@ -223,6 +223,7 @@ public class SongList {
 					File song = musicFiles.get(list.getSelectedValue());
 					_currentSong = song;
 					SoundController.setSong(song);
+					SoundController.resetValues();
 					SoundController.playSong();
 				}
 			}
