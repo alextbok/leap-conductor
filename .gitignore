@@ -6,5 +6,6 @@ out/*
 *.DS_STORE
 .classpath
 .project
+*.flac
 
 song_files.txt

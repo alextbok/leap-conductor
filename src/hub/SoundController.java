@@ -226,7 +226,22 @@ public class SoundController {
 		if(app != null) return app.getRate();
 		return 0.0;
 	}
-		
+
+    public static double getLows() {
+        if(app != null) return app.getLows();
+        return 0.0;
+    }
+
+    public static double getMids() {
+        if(app != null) return app.getMids();
+        return 0.0;
+    }
+
+    public static double getHighs() {
+        if(app != null) return app.getHighs();
+        return 0.0;
+    }
+
 	public static void updateSelection(KnobPanel curr) {
 		if(selected != null) selected.deselect();
 		curr.select();

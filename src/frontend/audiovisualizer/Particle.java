@@ -15,16 +15,18 @@ public class Particle {
   private List<Point2D> trail;
   private Color color;
   private int trailSize;
+  private int type;
 
   /**
    * Particle
-   * @param
+   * @param point
+   * @param trailSize
    */
-  public Particle(Point2D point, Color color, int trailSize) {
+  public Particle(Point2D point, int trailSize) {
     trail = new ArrayList<>();
     trail.add(point);
-    this.color = color;
     this.trailSize = trailSize;
+    type = (int) (Math.random() * 3);
   }
 
   /**
@@ -56,10 +58,26 @@ public class Particle {
   }
 
   /**
+   * setColor
+   * @param newColor
+   */
+  public void setColor(Color newColor) {
+    color = newColor;
+  }
+
+  /**
    * getColor
    * @return
    */
   public Color getColor() {
     return color;
+  }
+
+  /**
+   * getType
+   * @return type
+   */
+  public int getType() {
+    return type;
   }
 }

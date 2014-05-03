@@ -47,7 +47,7 @@ public class ParticleField {
    */
   public void generateParticles(int numParticles, int trailSize) {
     for (int i = 0; i < numParticles; i++)
-      particles.add(new Particle(randomPoint(), randomColor(), trailSize));
+      particles.add(new Particle(randomPoint(), trailSize));
   }
 
   /**
@@ -59,15 +59,6 @@ public class ParticleField {
     int y = (int) (Math.random() * height);
 
     return new Point2D.Double(x, y);
-  }
-
-  /**
-   * randomColor
-   * @return a randomly generated color
-   */
-  public Color randomColor() {
-    int rand = (int) (Math.random() * colors.size());
-    return colors.get(rand);
   }
 
   /**
@@ -141,6 +132,11 @@ public class ParticleField {
         return new Point2D.Double(point.getX() - Math.pow(particleSpeed * 1.2, 4), point.getY() + slope);
       else
         return new Point2D.Double(point.getX() + Math.pow(particleSpeed * 1.2, 4), point.getY() - slope);
+
+      /*if (Math.random() < 0.15)
+        return randomPoint();
+      else
+        return point;*/
     }
   }
 
@@ -152,6 +148,23 @@ public class ParticleField {
     for (Particle particle : particles) {
       Point2D newPos = velocityVector(particle.head());
       particle.move(newPos);
+    }
+  }
+
+  /**
+   * updateColor
+   * @param lows
+   * @param mids
+   * @param highs
+   */
+  public void updateColor(double lows, double mids, double highs) {
+    for (Particle particle : particles) {
+      if (particle.getType() == 0)
+        particle.setColor(new Color(0, 150 + (int) lows, 150));
+      else if (particle.getType() == 1)
+        particle.setColor(new Color(160 + (2 * (int) mids), 160 + (2 * (int) mids), 160 + (2 * (int) mids)));
+      else
+        particle.setColor(new Color(200 + (2 * (int) highs), 0, 0));
     }
   }
 
