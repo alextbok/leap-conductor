@@ -159,12 +159,27 @@ public class ParticleField {
    */
   public void updateColor(double lows, double mids, double highs) {
     for (Particle particle : particles) {
-      if (particle.getType() == 0)
-        particle.setColor(new Color(0, 150 + (int) lows, 150));
-      else if (particle.getType() == 1)
-        particle.setColor(new Color(160 + (2 * (int) mids), 160 + (2 * (int) mids), 160 + (2 * (int) mids)));
-      else
-        particle.setColor(new Color(200 + (2 * (int) highs), 0, 0));
+      if (particle.getType() == 0) {
+        try {
+          particle.setColor(new Color(0, 150 + (3 * (int) lows), 150));
+        } catch (IllegalArgumentException e) {
+          particle.setColor(new Color(0, 255, 150));
+        }
+      }
+      else if (particle.getType() == 1) {
+        try {
+          particle.setColor(new Color(160 + (3 * (int) mids), 160 + (3 * (int) mids), 160 + (3 * (int) mids)));
+        } catch (IllegalArgumentException e) {
+          particle.setColor(new Color(255, 255, 255));
+        }
+      }
+      else {
+        try {
+          particle.setColor(new Color(200 + (3 * (int) highs), 0, 0));
+        } catch (IllegalArgumentException e) {
+          particle.setColor(new Color(255, 0, 0));
+        }
+      }
     }
   }
 
