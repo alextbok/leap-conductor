@@ -139,7 +139,7 @@ public class SoundController {
 			app.changeHigh(d);			
 			updateKnob(highKnob, app.getHighs(), minSeg, maxSeg);
 		}
-		updateSelection(lowKnob);
+		updateSelection(highKnob);
 	}
 
 	public static void raiseBass() {
