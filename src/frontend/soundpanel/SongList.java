@@ -184,6 +184,7 @@ public class SongList {
 		int currentIndex = listModel.indexOf(toGet);
 		int nextIndex = (currentIndex + 1) % listModel.size();
 		list.setSelectedIndex(nextIndex);
+		list.ensureIndexIsVisible(nextIndex);
 		
 		String songName = listModel.elementAt(nextIndex);
 		_currentSong = musicFiles.get(songName);
@@ -215,6 +216,7 @@ public class SongList {
 
 		int currentIndex = listModel.indexOf(toGet);
 		int prevIndex = currentIndex - 1;
+		list.ensureIndexIsVisible(prevIndex);
 		
 		if (prevIndex < 0) {
 			prevIndex = listModel.size() - 1;
