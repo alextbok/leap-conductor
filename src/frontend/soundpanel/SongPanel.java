@@ -31,25 +31,25 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 
 	/*Store this in a variable so our Knobs can access same color*/
 	public static final Color BACKGROUND_COLOR = new Color(214,212,210);
-	
+
 	/*Volume control knob panel*/
 	public static final KnobPanel knobVolume = new KnobPanel("Volume");
-	
+
 	/*Speed control knob panel*/
 	public static final KnobPanel knobSpeed = new KnobPanel("Speed");
-	
+
 	/*Frequency control knob panels*/
 	public static final KnobPanel knobLow = new KnobPanel("Low");
 	public static final KnobPanel knobMid = new KnobPanel("Mid");
 	public static final KnobPanel knobHigh = new KnobPanel("High");
-	
+
 	/*Our icons to paint*/
 	private static final Image playIcon = getIcon("play");
 	private static final Image pauseIcon = getIcon("pause");
 	private static final Image addIcon = getIcon("add");
 	private static final Image removeIcon = getIcon("remove");
-	
-	
+
+
 	/*Constants that help keep track of where to paint things*/
 	public static final int KNOB_X_OFFSET = 7;
 	public static final int KNOB_Y_OFFSET = 10;
@@ -64,15 +64,15 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 	private static int ADD_Y = 10;
 	private static int REMOVE_X = 270;
 	private static int REMOVE_Y = 55;
-	
+
 	/*The song currently being played*/
 	private File _currentSong;
-	
+
 	private TutorialStage _tutorialStage = TutorialStage.FINISHED;
 	private KeyListener _tutorialListener;
-	
+
 	private LeapListener _leap;
-	
+
 	/**
 	 * Constructor - provides initial setup
 	 */
@@ -80,10 +80,10 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 
 		this.add(SongList.getScrollableList());
 		this.addKnobs();
-		
+
 		//add our button mouse listener
 		this.addMouseListener(new SoundPanelMouseListener());
-		
+
 		//get our JPanel to show the way we want
 		this.setPreferredSize(new Dimension(GUI.WIDTH, 100));
 		this.setBackground(BACKGROUND_COLOR);
@@ -93,44 +93,44 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 	/**
 	 * Paints button images and rotates as necessary
 	 */
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D brush = (Graphics2D) g;
-        
-        //set positions relative to volume knob so they are painted
-        //correctly when the frame is resized
-        PLAY_X = knobVolume.getX() + 475;
-        PLAY_Y = knobVolume.getY();
-        PAUSE_X = knobVolume.getX() + 475;
-        PAUSE_Y = knobVolume.getY() + 45;
-        ADD_X = knobVolume.getX() - 250;
-        ADD_Y = knobVolume.getY();
-        REMOVE_X = knobVolume.getX() - 250;
-        REMOVE_Y = knobVolume.getY() + 45;
-        
-        //draw buttons
-        brush.drawImage(playIcon, PLAY_X, PLAY_Y, null);
-        brush.drawImage(pauseIcon, PAUSE_X, PAUSE_Y, null);
-        brush.drawImage(addIcon, ADD_X, ADD_Y, null);
-        brush.drawImage(removeIcon, REMOVE_X, REMOVE_Y, null);
-        
-    }
-    
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D brush = (Graphics2D) g;
 
-    /**
-     * Add our knobs and their respective mouse listeners (to factor out code)
-     */
-    private void addKnobs() { 	
+		//set positions relative to volume knob so they are painted
+		//correctly when the frame is resized
+		PLAY_X = knobVolume.getX() + 475;
+		PLAY_Y = knobVolume.getY();
+		PAUSE_X = knobVolume.getX() + 475;
+		PAUSE_Y = knobVolume.getY() + 45;
+		ADD_X = knobVolume.getX() - 250;
+		ADD_Y = knobVolume.getY();
+		REMOVE_X = knobVolume.getX() - 250;
+		REMOVE_Y = knobVolume.getY() + 45;
+
+		//draw buttons
+		brush.drawImage(playIcon, PLAY_X, PLAY_Y, null);
+		brush.drawImage(pauseIcon, PAUSE_X, PAUSE_Y, null);
+		brush.drawImage(addIcon, ADD_X, ADD_Y, null);
+		brush.drawImage(removeIcon, REMOVE_X, REMOVE_Y, null);
+
+	}
+
+
+	/**
+	 * Add our knobs and their respective mouse listeners (to factor out code)
+	 */
+	private void addKnobs() { 	
 		this.add(knobVolume);
 		this.add(knobSpeed);
 		this.add(knobLow);
 		this.add(knobMid);
 		this.add(knobHigh);
-    }
-    
-    
-    
+	}
+
+
+
 	/**
 	 * Generates and returns the icon with the input string file name
 	 * Returns null and prints an error if there is an IOException
@@ -145,7 +145,7 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Provides public access to knob panels for hub.SoundController
 	 * @param type
@@ -167,7 +167,7 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Enters tutorial mode
 	 */
@@ -200,10 +200,10 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			@Override
 			public void keyReleased(KeyEvent e) {}
 		};
-		
+
 		this.addKeyListener(_tutorialListener);
 	}
-	
+
 	@Override
 	public void receiveResponse() {
 		switch(_tutorialStage) {	
@@ -263,7 +263,7 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			break;
 		}
 	}
-	
+
 	public void cleanUpTutorial() {
 		_tutorialStage = TutorialStage.FINISHED;
 		if(_tutorialListener != null) {
@@ -272,7 +272,7 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 		VisualizerPanel.overlayText = "";
 		VisualizerPanel.overlayText2 = "";
 	}
-	
+
 	public void setLeap(LeapListener leap) {
 		this._leap = leap;
 	}
@@ -292,15 +292,20 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			if (isWithinRadius(x,y,(PLAY_X + BTN_SIZE/2), (PLAY_Y + BTN_SIZE/2), BTN_SIZE/2 )) {
 				File selectedSong = SongList.getCurrentlySelectedSong();
 				//if a song is currently being played and it is not the currently selected song, stop and play new song
-				if (_currentSong != null && _currentSong != selectedSong) {
-					SoundController.stopSong();
-					SoundController.setSong(selectedSong);
-					_currentSong = selectedSong;
+
+				if (selectedSong != null){
+
+					if (_currentSong != null && _currentSong != selectedSong) {
+						SoundController.stopSong();
+						SoundController.setSong(selectedSong);
+						_currentSong = selectedSong;
+					}
+					else {
+						_currentSong = selectedSong;
+					}
+					SoundController.playSong();
 				}
-				else {
-					_currentSong = selectedSong;
-				}
-				SoundController.playSong();
+				
 			}
 			//if the click is on the pause button, pause the song currently playing
 			else if (isWithinRadius(x,y,(PAUSE_X + BTN_SIZE/2), (PAUSE_Y + BTN_SIZE/2), BTN_SIZE/2 )){
@@ -308,17 +313,17 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			}
 			//if the click is on the add button, bring up file chooser and add chosen songs
 			else if (isWithinRadius(x,y,(ADD_X + BTN_SIZE/2), (ADD_Y + BTN_SIZE/2), BTN_SIZE/2 )){
-				
+
 				//do this in another thread so we don't lag up the visualizer
 				new Thread() {
-					
+
 					@Override
 					public void run() {
 						File[] files = FileChooser.getSongsFromUser();
 						for (File file: files)
 							SongList.addSong(file);	
 					}
-		
+
 				}.start();			
 
 			}
@@ -326,9 +331,9 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			else if (isWithinRadius(x,y,(REMOVE_X + BTN_SIZE/2), (REMOVE_Y + BTN_SIZE/2), BTN_SIZE/2 )){
 				SongList.removeSelectedSongs();
 			}
-				
+
 		}
-			
+
 		@Override
 		public void mousePressed(MouseEvent e) {}
 
@@ -340,7 +345,7 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 
 		@Override
 		public void mouseExited(MouseEvent e) {}
-		
+
 		/**
 		 * Returns true if (x,y) is within or on radius of (c_x,c_y)
 		 * @param x, int, x-coordinate of point
@@ -356,5 +361,5 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			return false;
 		}
 	}//end SoundPanelMouseListener
-    
+
 }

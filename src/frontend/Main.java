@@ -20,7 +20,7 @@ public class Main {
 	fp.start();
 
 	// instantiate our SongApp
-	new SoundController(new SongApp(args[0]));
+	new SoundController(new SongApp("src/data/sounds/Atlas_Hands.mp3"));
 
 	// instantiate our GUI
     new GUI();

@@ -11,6 +11,7 @@ import hub.SoundController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -66,15 +67,15 @@ public class LeapListener extends Listener {
 		controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
 
 		// set up swipes
-		
+
 		if(controller.config().setFloat("Gesture.Swipe.MinLength", 350.0f) &&
-                controller.config().setFloat("Gesture.Swipe.MinVelocity", 1500f))
-            controller.config().save();
-		
+				controller.config().setFloat("Gesture.Swipe.MinVelocity", 1500f))
+			controller.config().save();
+
 		// get leap's range of detection
-        InteractionBox box = controller.frame().interactionBox();
-        width = box.width();
-        height = box.height();
+		InteractionBox box = controller.frame().interactionBox();
+		width = box.width();
+		height = box.height();
 
 	}
 
@@ -127,10 +128,13 @@ public class LeapListener extends Listener {
 
 						cooldownComplete.setValue(false);
 						if (swipe.direction().getX() > 0.5){
-							SoundController.stopSong();
-							SoundController.setSong(SongList.getNextSong());
-							SoundController.resetValues();
-							SoundController.playSong();
+							File nextSong = SongList.getNextSong();
+							if (nextSong != null){
+								SoundController.stopSong();
+								SoundController.setSong(nextSong);
+								SoundController.resetValues();
+								SoundController.playSong();
+							}
 						}
 						else if (swipe.direction().getX() < -0.5){
 							if (SoundController.getCurrentTime() > 3000){
@@ -138,12 +142,15 @@ public class LeapListener extends Listener {
 							}
 							// Go to previous song
 							else{
+								File previousSong = SongList.getPreviousSong();
+								if (previousSong != null){
 								SoundController.stopSong();
-								SoundController.setSong(SongList.getPreviousSong());
+								SoundController.setSong(previousSong);
 								SoundController.resetValues();
 								SoundController.playSong();
+								}
 							}
-							
+
 						}
 
 						Timer t = new Timer(1000, new ActionListener() {
@@ -162,8 +169,8 @@ public class LeapListener extends Listener {
 			else if (g.type() == Gesture.Type.TYPE_SCREEN_TAP){
 				if (g.state() == Gesture.State.STATE_STOP){
 					//TODO: Fill out audio stuff here
-					
-					
+
+
 				}
 			}
 		}
@@ -249,8 +256,8 @@ public class LeapListener extends Listener {
 				handLocs = handList;
 			}
 		}
-        else
-            handLocs = null;
+		else
+			handLocs = null;
 
 		if (!frame.fingers().isEmpty()) {
 			Screen screen = controller.locatedScreens().get(0);
@@ -269,16 +276,16 @@ public class LeapListener extends Listener {
 				fingerLocs = fingerList;
 			}
 		}
-        else
-            fingerLocs = null;
-		
-		
+		else
+			fingerLocs = null;
+
+
 		/****************************
 		 * CHECKING RESPONSE REQUESTS
 		 ****************************/
-		
+
 		HandList h = controller.frame().hands();
-		
+
 		//listen for 5-finger
 		if(fiveFingerRequest != null) {
 			if(!h.isEmpty()) {
@@ -292,7 +299,7 @@ public class LeapListener extends Listener {
 				}
 			}
 		}
-		
+
 		//listen for fist
 		if(fistRequest != null) {
 			if(!h.isEmpty()) {
@@ -306,7 +313,7 @@ public class LeapListener extends Listener {
 				}
 			}
 		}
-		
+
 		//listen for play
 		if(playRequest != null) {
 			if(HandsTogetherGesture.isDetected(controller)) {
@@ -314,7 +321,7 @@ public class LeapListener extends Listener {
 				playRequest = null;
 			}
 		}
-		
+
 		//listen for volume
 		if(volumeRequest != null) {
 			if(VDownGesture.isDetected(controller) || VUpGesture.isDetected(controller)) {
@@ -326,7 +333,7 @@ public class LeapListener extends Listener {
 				}
 			}
 		}
-		
+
 		//listen for high
 		if(highRequest != null) {
 			if(HandsUpRightGesture.isDetected(controller) || HandsDownRightGesture.isDetected(controller)) {
@@ -338,7 +345,7 @@ public class LeapListener extends Listener {
 				}
 			}
 		}
-		
+
 		//listen for speed change
 		if(speedRequest != null) {
 			for(Gesture g : controller.frame().gestures()) {
@@ -352,7 +359,7 @@ public class LeapListener extends Listener {
 				}
 			}
 		}
-		
+
 		//listen for stop
 		if(stopRequest != null) {
 			if(HandsSeperateGesture.isDetected(controller)) {
@@ -361,35 +368,35 @@ public class LeapListener extends Listener {
 			}
 		}
 	}
-	
+
 	/**
 	 * Requests to listen for various gestures
 	 */
-	
+
 	public void listenForFiveFingers(ResponseReceiver rr) {
 		this.fiveFingerRequest = rr;
 	}
-	
+
 	public void listenForFist(ResponseReceiver rr) {
 		this.fistRequest = rr;
 	}
-	
+
 	public void listenForPlay(ResponseReceiver rr) {
 		this.playRequest = rr;
 	}
-	
+
 	public void listenForVolume(ResponseReceiver rr) {
 		this.volumeRequest = rr;
 	}
-	
+
 	public void listenForHigh(ResponseReceiver rr) {
 		this.highRequest = rr;
 	}
-	
+
 	public void listenForSpeed(ResponseReceiver rr) {
 		this.speedRequest = rr;
 	}
-	
+
 	public void listenForStop(ResponseReceiver rr) {
 		this.stopRequest = rr;
 	}
@@ -410,20 +417,20 @@ public class LeapListener extends Listener {
 		return fingerLocs;
 	}
 
-    /**
-     * getBoxWidth
-     * @return width
-     */
-    public double getBoxWidth() {
-        return width;
-    }
+	/**
+	 * getBoxWidth
+	 * @return width
+	 */
+	public double getBoxWidth() {
+		return width;
+	}
 
-    /**
-     * getBoxHeight
-     * @return height
-     */
-    public double getBoxHeight() {
-        return height;
-    }
+	/**
+	 * getBoxHeight
+	 * @return height
+	 */
+	public double getBoxHeight() {
+		return height;
+	}
 
 }
