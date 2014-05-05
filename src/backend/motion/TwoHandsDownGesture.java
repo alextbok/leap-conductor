@@ -13,6 +13,7 @@ public class TwoHandsDownGesture {
 		HandList prevHands = controller.frame(1).hands();
 		
 		if (hands.count() == 2 && prevHands.count() == 2){
+			//System.out.println("1");
 			Hand rightHand = hands.rightmost();
 			Hand prevRight = prevHands.rightmost();
 			Hand leftHand = hands.leftmost();
@@ -22,8 +23,14 @@ public class TwoHandsDownGesture {
 			float leftDif = leftHand.stabilizedPalmPosition().getY() - prevLeft.stabilizedPalmPosition().getY();
 			int rightFingers = rightHand.fingers().count();
 			int leftFingers = leftHand.fingers().count();
+			
+			//if(rightFingers >= 3 && leftFingers >= 3) System.out.println("2");
+			
+			//if(leftDif <= -3) System.out.println("3");
+			//if(rightDif <= -3) System.out.println("4");
 
 			if (rightFingers >= 3 && leftFingers >= 3 && rightDif <=-3 && leftDif <=-3){
+				//System.out.println("5");
 				return true;
 			}
 		}

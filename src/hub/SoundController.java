@@ -33,16 +33,21 @@ public class SoundController {
 	private final static double minSpeed = 0;
 	private final static double maxVolume = 1;
 	private final static double minVolume = 0;
-	private final static double minSeg = -24;
-	private final static double maxSeg = 12;
+	private final static double minBand = -24;
+	private final static double maxBand = 12;
 	
-	//private final static double minPart;
-	
+	/**
+	 * Instantiates the SoundController with the app the is actually playing music
+	 * @param app
+	 */
 	public SoundController(SongApp app) {
 		SoundController.app = app;
 		resetValues();
 	}
 	
+	/**
+	 * Resets all values of the song to default, and sets the knobs to match
+	 */
 	public static void resetValues() {
 		if(app != null) {
 			app.resetValues();
@@ -50,12 +55,18 @@ public class SoundController {
 		}
 	}
 	
+	/**
+	 * Starts the song. Will do nothing if the song is already playing
+	 */
 	public static void playSong() {
 		if(app != null) {
 			app.playSong();
 		}
 	}
 	
+	/**
+	 * Pauses the song. Will do nothing if the song is already playing
+	 */
 	public static void stopSong() {
 		if(app != null) {
 			app.stopSong();
@@ -115,73 +126,73 @@ public class SoundController {
 	}
 	
 	public static void changeLow(double d) {
-		if(app != null && app.getLows() + d < maxSeg && app.getLows() + d > minSeg) {
+		if(app != null && app.getLows() + d < maxBand && app.getLows() + d > minBand) {
 			app.changeBass(d);	
-			updateKnob(lowKnob, app.getLows(), minSeg, maxSeg);
+			updateKnob(lowKnob, app.getLows(), minBand, maxBand);
 		}
 		updateSelection(lowKnob);
 	}
 	
 	public static void changeMid(double d) {
-		if(app != null && app.getMids() + d < maxSeg && app.getMids() + d > minSeg) {
+		if(app != null && app.getMids() + d < maxBand && app.getMids() + d > minBand) {
 			app.changeMid(d);			
-			updateKnob(midKnob, app.getMids(), minSeg, maxSeg);
+			updateKnob(midKnob, app.getMids(), minBand, maxBand);
 		}
 		updateSelection(midKnob);
 	}
 	
 	public static void changeHigh(double d) {
-		if(app != null && app.getHighs() + d < maxSeg && app.getHighs() + d > minSeg) {
+		if(app != null && app.getHighs() + d < maxBand && app.getHighs() + d > minBand) {
 			app.changeHigh(d);			
-			updateKnob(highKnob, app.getHighs(), minSeg, maxSeg);
+			updateKnob(highKnob, app.getHighs(), minBand, maxBand);
 		}
 		updateSelection(lowKnob);
 	}
 
 	public static void raiseBass() {
-		if(app != null && app.getLows() < maxSeg) {
+		if(app != null && app.getLows() < maxBand) {
 			app.raiseBass();
-			updateKnob(lowKnob, app.getLows(), minSeg, maxSeg);
+			updateKnob(lowKnob, app.getLows(), minBand, maxBand);
 		}
 		updateSelection(lowKnob);
 	}
 	
 	public static void lowerBass() {
-		if(app != null && app.getLows() > minSeg) {
+		if(app != null && app.getLows() > minBand) {
 			app.lowerBass();
-			updateKnob(lowKnob, app.getLows(), minSeg, maxSeg);
+			updateKnob(lowKnob, app.getLows(), minBand, maxBand);
 		}
 		updateSelection(lowKnob);
 	}
 	
 	public static void raiseMid() {
-		if(app != null && app.getMids() < maxSeg) {
+		if(app != null && app.getMids() < maxBand) {
 			app.raiseMid();
-			updateKnob(midKnob, app.getMids(), minSeg, maxSeg);
+			updateKnob(midKnob, app.getMids(), minBand, maxBand);
 		}
 		updateSelection(midKnob);
 	}
 	
 	public static void lowerMid() {
-		if(app != null && app.getMids() > minSeg) {
+		if(app != null && app.getMids() > minBand) {
 			app.lowerMid();
-			updateKnob(midKnob, app.getMids(), minSeg, maxSeg);
+			updateKnob(midKnob, app.getMids(), minBand, maxBand);
 		}
 		updateSelection(midKnob);
 	}
 	
 	public static void raiseHigh() {
-		if(app != null && app.getHighs() < maxSeg) {
+		if(app != null && app.getHighs() < maxBand) {
 			app.raiseHigh();
-			updateKnob(highKnob, app.getHighs(), minSeg, maxSeg);
+			updateKnob(highKnob, app.getHighs(), minBand, maxBand);
 		}
 		updateSelection(highKnob);
 	}
 	
 	public static void lowerHigh() {
-		if(app != null && app.getHighs() > minSeg) {
+		if(app != null && app.getHighs() > minBand) {
 			app.lowerHigh();
-			updateKnob(highKnob, app.getHighs(), minSeg, maxSeg);
+			updateKnob(highKnob, app.getHighs(), minBand, maxBand);
 		}
 		updateSelection(highKnob);
 	}
