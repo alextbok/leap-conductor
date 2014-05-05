@@ -68,6 +68,7 @@ public class SongList {
             musicFiles.put(audioFileName, song);
             listModel.addElement(audioFileName);
             list.setModel(listModel);
+            list.ensureIndexIsVisible(listModel.size() - 1);
 		}
 	}
 	
@@ -159,7 +160,7 @@ public class SongList {
 	 * @param song
 	 */
 	public static void setCurrentSong(File song) {
-		_currentSong = song;
+        _currentSong = song;
 	}
 	
 	/**
