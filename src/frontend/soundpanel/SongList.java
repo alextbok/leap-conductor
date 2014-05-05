@@ -158,8 +158,17 @@ public class SongList {
 		
 		if (_currentSong == null)
 			return musicFiles.get(listModel.elementAt(0));
-		
-		int currentIndex = listModel.indexOf(_currentSong.getName());
+
+        String toGet;
+        try {
+            toGet = AudioFileIO.read(_currentSong).getTag().getFirst(FieldKey.TITLE);
+            if (toGet.length() == 0)
+                toGet = _currentSong.getName();
+        } catch (Exception e) {
+            toGet = _currentSong.getName();
+        }
+
+		int currentIndex = listModel.indexOf(toGet);
 		int nextIndex = (currentIndex + 1) % listModel.size();
 		list.setSelectedIndex(nextIndex);
 		
@@ -177,17 +186,26 @@ public class SongList {
 		if (_currentSong == null){
 			return musicFiles.get(listModel.elementAt(0));
 		}
-		
-		int currentIndex = listModel.indexOf(_currentSong.getName());
+
+        String toGet;
+        try {
+            toGet = AudioFileIO.read(_currentSong).getTag().getFirst(FieldKey.TITLE);
+            if (toGet.length() == 0)
+                toGet = _currentSong.getName();
+        } catch (Exception e) {
+            toGet = _currentSong.getName();
+        }
+
+		int currentIndex = listModel.indexOf(toGet);
 		int nextIndex = (currentIndex - 1);
 		if (nextIndex == -1){
 			nextIndex = listModel.size() - 1;
 		}
 		list.setSelectedIndex(nextIndex);
-		
+
 		String songName = listModel.elementAt(nextIndex);
 		_currentSong = musicFiles.get(songName);
-		
+
 		return _currentSong;
 	}
 	
@@ -205,6 +223,7 @@ public class SongList {
 					File song = musicFiles.get(list.getSelectedValue());
 					_currentSong = song;
 					SoundController.setSong(song);
+					SoundController.resetValues();
 					SoundController.playSong();
 				}
 			}

@@ -152,11 +152,22 @@ public class FileProcessor extends Thread {
 	/**
 	 * Runs it in a thread so we can start looking at launch and so it doesn't lag up GUI
 	 * when the user tries to add new songs
+	 * If the user's iTunes library is in /Users/username/Music/iTunes/iTunes Media/Music
+	 * then return it set _folder to it right away, and don't look through files
 	 */
 	@Override
 	public void run() {
 		File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
-		findDirectoryWithMostMusicFiles(homeDirectory);
+		
+		File iTunesLib = new File (homeDirectory + "/Music/iTunes/iTunes Media/Music");
+		
+		if (iTunesLib.exists()) {
+			_folder = iTunesLib;
+		}
+		else {
+			findDirectoryWithMostMusicFiles(homeDirectory);
+		}
+
 	}
 	
 

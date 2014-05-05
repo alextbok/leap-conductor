@@ -52,6 +52,10 @@ public class SoundController {
 		if(app != null) {
 			app.resetValues();
 			updateKnob(volumeKnob, app.getVolume(), minVolume, maxVolume);
+			updateKnob(lowKnob, 0.0, minSeg, maxSeg);
+			updateKnob(midKnob, 0.0, minSeg, maxSeg);
+			updateKnob(highKnob, 0.0, minSeg, maxSeg);
+			updateKnob(speedKnob, 1.0, minSpeed, maxSpeed);
 		}
 	}
 	
@@ -146,7 +150,7 @@ public class SoundController {
 			app.changeHigh(d);			
 			updateKnob(highKnob, app.getHighs(), minBand, maxBand);
 		}
-		updateSelection(lowKnob);
+		updateSelection(highKnob);
 	}
 
 	public static void raiseBass() {
@@ -200,6 +204,7 @@ public class SoundController {
 	private static void updateKnob(KnobPanel knob, double val, double min, double max) {
 		double rot = 224 * (min - val) / (min - max);
 		knob.setRotation(rot);
+		knob.updateUI();
 	}
 
     public static MediaPlayer getMediaPlayer() {
@@ -237,7 +242,22 @@ public class SoundController {
 		if(app != null) return app.getRate();
 		return 0.0;
 	}
-		
+
+    public static double getLows() {
+        if(app != null) return app.getLows();
+        return 0.0;
+    }
+
+    public static double getMids() {
+        if(app != null) return app.getMids();
+        return 0.0;
+    }
+
+    public static double getHighs() {
+        if(app != null) return app.getHighs();
+        return 0.0;
+    }
+
 	public static void updateSelection(KnobPanel curr) {
 		if(selected != null) selected.deselect();
 		curr.select();

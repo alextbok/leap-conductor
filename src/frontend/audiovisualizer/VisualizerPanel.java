@@ -74,6 +74,7 @@ public class VisualizerPanel extends JPanel {
 
     // update particle positions
     particleField.setSpeed(SoundController.getRate());
+    particleField.updateColor(SoundController.getLows(), SoundController.getMids(), SoundController.getHighs());
     particleField.move();
 
     // change circle size according to audio, draw circle
