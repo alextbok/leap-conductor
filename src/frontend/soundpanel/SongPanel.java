@@ -257,6 +257,7 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 				@Override
 				public void keyReleased(KeyEvent e) {}
 			};
+			this.addKeyListener(_tutorialListener);
 			break;
 		default:
 			break;
