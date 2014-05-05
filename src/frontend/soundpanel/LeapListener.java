@@ -133,8 +133,6 @@ public class LeapListener extends Listener {
 							SoundController.playSong();
 						}
 						else if (swipe.direction().getX() < -0.5){
-							// TODO: Changeable. The 3000 means if the song is past 3 seconds, it will
-							// go back to the start, otherwise, we'll go to the previous song.
 							if (SoundController.getCurrentTime() > 3000){
 								SoundController.seekTo(0.0);
 							}
@@ -175,15 +173,6 @@ public class LeapListener extends Listener {
 		// gestures to pause/play the song
 		if (HandsSeperateGesture.isDetected(controller)){
 			SoundController.stopSong();
-			/*
-			cooldownComplete = false;
-			new Timer(1000, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					cooldownComplete = true;
-				}
-			}).start();
-			 */
 		}
 		else if (HandsTogetherGesture.isDetected(controller)){
 			SoundController.playSong();
@@ -282,6 +271,7 @@ public class LeapListener extends Listener {
 		}
         else
             fingerLocs = null;
+		
 		
 		/****************************
 		 * CHECKING RESPONSE REQUESTS
