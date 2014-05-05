@@ -43,10 +43,8 @@ public class SongsBySpeech {
     mic.open();
 
     // wait until user speaks; then collect their speech
-    int volume;
-    while ((volume = mic.getAudioVolume()) < THRESHOLD) {}
     mic.captureAudioToFile(file);
-    while (mic.getAudioVolume() > volume - 2) {}
+    Thread.sleep(4000);
     mic.close();
 
     // recognize spoken audio

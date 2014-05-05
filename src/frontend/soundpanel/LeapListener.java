@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.Timer;
 
@@ -43,7 +44,7 @@ import com.leapmotion.leap.Vector;
 public class LeapListener extends Listener {
 	private List<Point2D> handLocs;
 	private List<Point2D> fingerLocs;
-	private boolean cooldownComplete = true;
+	private SyncBoolean cooldownComplete = new SyncBoolean(true);
 	private double width, height;
 	private ResponseReceiver fiveFingerRequest = null;
 	private int fiveFingerHeld = 0;
@@ -62,11 +63,12 @@ public class LeapListener extends Listener {
 	public void onConnect(Controller controller) {
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
 		controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
+		controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
 
 		// set up swipes
 		
 		if(controller.config().setFloat("Gesture.Swipe.MinLength", 350.0f) &&
-                controller.config().setFloat("Gesture.Swipe.MinVelocity", 1000f))
+                controller.config().setFloat("Gesture.Swipe.MinVelocity", 1500f))
             controller.config().save();
 		
 		// get leap's range of detection
@@ -121,10 +123,9 @@ public class LeapListener extends Listener {
 			else if (g.type() == Gesture.Type.TYPE_SWIPE){
 				if (g.state() == Gesture.State.STATE_STOP){
 					SwipeGesture swipe = new SwipeGesture(g);
-					if (cooldownComplete){
+					if (cooldownComplete.getValue()){
 
-						cooldownComplete = false;
-						System.out.println("SWIPEEE!!!");
+						cooldownComplete.setValue(false);
 						if (swipe.direction().getX() > 0.5){
 							SoundController.stopSong();
 							SoundController.setSong(SongList.getNextSong());
@@ -150,16 +151,21 @@ public class LeapListener extends Listener {
 						Timer t = new Timer(1000, new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								cooldownComplete = true;
+								cooldownComplete.setValue(true);
 							}
 						});
 						t.setRepeats(false);
 						t.start();
 
 
-					}else{
-						System.out.println("Cooldown wasn't complete");
 					}
+				}
+			}
+			else if (g.type() == Gesture.Type.TYPE_SCREEN_TAP){
+				if (g.state() == Gesture.State.STATE_STOP){
+					//TODO: Fill out audio stuff here
+					
+					
 				}
 			}
 		}
