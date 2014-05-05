@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
@@ -17,13 +19,14 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import frontend.GUI;
+import frontend.audiovisualizer.VisualizerPanel;
 
 /**
  * JPanel with sound controls and controls to choose song
  * @author abok
  */
 @SuppressWarnings("serial")
-public class SongPanel extends JPanel {
+public class SongPanel extends JPanel implements ResponseReceiver {
 
 	/*Store this in a variable so our Knobs can access same color*/
 	public static final Color BACKGROUND_COLOR = new Color(214,212,210);
@@ -64,13 +67,18 @@ public class SongPanel extends JPanel {
 	/*The song currently being played*/
 	private File _currentSong;
 	
+	private TutorialStage _tutorialStage = TutorialStage.FINISHED;
+	private KeyListener _tutorialListener;
+	
+	private LeapListener _leap;
+	
 	/**
 	 * Constructor - provides initial setup
 	 */
 	public SongPanel() {
 
 		this.add(SongList.getScrollableList());
-		this.addKnobs();	
+		this.addKnobs();
 		
 		//add our button mouse listener
 		this.addMouseListener(new SoundPanelMouseListener());
@@ -157,6 +165,113 @@ public class SongPanel extends JPanel {
 		default:
 			return null;
 		}
+	}
+	
+	/**
+	 * Enters tutorial mode
+	 */
+	public void startTutorial() {
+		this.setFocusable(true);
+		this.requestFocusInWindow();
+		_tutorialStage = TutorialStage.INTRO_1;
+		VisualizerPanel.overlayText = "Welcome to the tutorial! Press any key to begin.";
+		_tutorialListener = new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				switch(_tutorialStage) {
+				case INTRO_1:
+					_tutorialStage = TutorialStage.INTRO_2;
+					VisualizerPanel.overlayText = "Nice job. This guide will walk you through the basics of controlling music with your Leap.";
+					break;
+				case INTRO_2:
+					_tutorialStage = TutorialStage.MOTION_INTRO;
+					VisualizerPanel.overlayText = "Hover your hand over the leap and spread out your fingers.";
+					VisualizerPanel.overlayText2 = "The circles on the screen represent your fingers and palm.";
+					SongPanel.this.removeKeyListener(_tutorialListener);
+					_leap.listenForFiveFingers(SongPanel.this);
+					break;
+				default:
+					break;
+				}
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {}
+		};
+		
+		this.addKeyListener(_tutorialListener);
+	}
+	
+	@Override
+	public void receiveResponse() {
+		switch(_tutorialStage) {	
+		case MOTION_INTRO:
+			_tutorialStage = TutorialStage.PLAY;
+			VisualizerPanel.overlayText = "Cool, right? If you want to move your hand without accidentally registering";
+			VisualizerPanel.overlayText2 = "a gesture, just make a fist. Try it out.";
+			_leap.listenForFist(this);
+			break;
+		case PLAY:
+			_tutorialStage = TutorialStage.VOLUME;
+			VisualizerPanel.overlayText = "Now we get to the fun part. Let's play some music!";
+			VisualizerPanel.overlayText2 = "Hold both hands flat and then gently bring them together to start the jams.";
+			_leap.listenForPlay(this);
+			break;
+		case VOLUME:
+			_tutorialStage = TutorialStage.BAND_CONTROL;
+			VisualizerPanel.overlayText = "You can even control the volume with your hands.";
+			VisualizerPanel.overlayText2 = "Make a V with two fingers, and then move them up or down";
+			_leap.listenForVolume(this);
+			break;
+		case BAND_CONTROL:
+			_tutorialStage = TutorialStage.SPEED;
+			VisualizerPanel.overlayText = "To change up the low, mid, or high sounds of a song, raise or lower one hand to the left,";
+			VisualizerPanel.overlayText2 = "in the middle, or on the right. Remember to make a fist when you don't want movements recognized!";
+			_leap.listenForHigh(this);
+			break;
+		case SPEED:
+			_tutorialStage = TutorialStage.STOP;
+			VisualizerPanel.overlayText = "Move your finger in a circle clockwise to speed up the music,";
+			VisualizerPanel.overlayText2 = "or counterclockwise to slow it down. Try one now.";
+			_leap.listenForSpeed(this);
+			break;
+		case STOP:
+			_tutorialStage = TutorialStage.FINISHED;
+			VisualizerPanel.overlayText = "Finally, hold your hands flat and together and gently spread them apart";
+			VisualizerPanel.overlayText2 = "to stop the song.";
+			_leap.listenForStop(this);
+			break;
+		case FINISHED:
+			VisualizerPanel.overlayText = "Nice job! You can also load in your own music by clicking the plus button. Enjoy!";
+			VisualizerPanel.overlayText2 = "(Press any key to exit tutorial)";
+			_tutorialListener = new KeyListener() {
+				@Override
+				public void keyTyped(KeyEvent e) {
+					cleanUpTutorial();
+				}
+				@Override
+				public void keyPressed(KeyEvent e) {}
+				@Override
+				public void keyReleased(KeyEvent e) {}
+			};
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public void cleanUpTutorial() {
+		_tutorialStage = TutorialStage.FINISHED;
+		if(_tutorialListener != null) {
+			this.removeKeyListener(_tutorialListener);
+		}
+		VisualizerPanel.overlayText = "";
+		VisualizerPanel.overlayText2 = "";
+	}
+	
+	public void setLeap(LeapListener leap) {
+		this._leap = leap;
 	}
 
 	/**

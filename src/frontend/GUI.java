@@ -24,13 +24,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import backend.FileProcessor;
 import frontend.audiovisualizer.VisualizerPanel;
 import frontend.soundpanel.FileChooser;
 import frontend.soundpanel.LeapConductorPopup;
 import frontend.soundpanel.ProgressBarPanel;
 import frontend.soundpanel.SongList;
 import frontend.soundpanel.SongPanel;
-import backend.FileProcessor;
 
 
 @SuppressWarnings("serial")
@@ -55,9 +55,10 @@ public class GUI extends JFrame {
 		this.setSize(new Dimension(WIDTH, HEIGHT));
 	
 		// set up panels
-		_visualizerPanel = new VisualizerPanel(5000, 2);
 		_songPanel = new SongPanel();
+		_visualizerPanel = new VisualizerPanel(5000, 2, _songPanel);
 		_progressPanel = new ProgressBarPanel();
+		_songPanel.startTutorial();
 		    
 		// add components
 		this.add(_visualizerPanel, BorderLayout.CENTER);
@@ -114,6 +115,11 @@ public class GUI extends JFrame {
 			menuItemControls.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
 			addMenuItemActionListener(menuItemControls);
 			menu.add(menuItemControls);
+			
+			JMenuItem menuItemTutorial = new JMenuItem("Start Tutorial");
+			menuItemTutorial.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
+			addMenuItemActionListener(menuItemTutorial);
+			menu.add(menuItemTutorial);
 		}
 	  
 		/**
@@ -131,6 +137,9 @@ public class GUI extends JFrame {
 					//if the user clicks "Controls", show the appropriate popup
 					else if (action.equals("Controls")) {
 						new LeapConductorPopup(FileProcessor.CONTROLS_FILENAME, "Controls");
+					}
+					else if (action.equals("Start Tutorial")) {
+						GUI.this._songPanel.startTutorial();
 					}
 				}	  
 			});

@@ -6,17 +6,28 @@ package frontend.audiovisualizer;
  * @auther Arun Varma
  */
 
-import frontend.*;
-import frontend.soundpanel.*;
-import hub.*;
-import java.awt.*;
-import java.awt.geom.*;
+import hub.SoundController;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javafx.scene.media.*;
-import javax.swing.*;
-import com.leapmotion.leap.*;
+
+import javafx.scene.media.AudioSpectrumListener;
+
+import javax.swing.JPanel;
+
+import com.leapmotion.leap.Controller;
+
+import frontend.GUI;
+import frontend.soundpanel.LeapListener;
+import frontend.soundpanel.SongPanel;
 
 @SuppressWarnings("serial")
 public class VisualizerPanel extends JPanel {
@@ -28,17 +39,21 @@ public class VisualizerPanel extends JPanel {
   private int trailSize;
   private double newRadius;
   private boolean sizeChange, smaller;
+  public static String overlayText = "";
+  public static String overlayText2 = "";
 
   /**
    * VisualizerPanel
    */
-  public VisualizerPanel(int particles, int trailSize) {
+  public VisualizerPanel(int particles, int trailSize, SongPanel sp) {
     setBackground(Color.DARK_GRAY);
 
     // set up controller and listener
     leapController = new Controller();
     leapListener = new LeapListener();
     leapController.addListener(leapListener);
+    
+    sp.setLeap(leapListener);
 
     this.trailSize = trailSize;
 
@@ -191,8 +206,14 @@ public class VisualizerPanel extends JPanel {
         }
       }
     }
-
+    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     particleField.generateParticles(num, trailSize);
+    g2.setColor(Color.WHITE);
+    g2.setFont(new Font("SansSerif", Font.BOLD, 24));
+    int xpos = GUI.WIDTH / 2 - g2.getFontMetrics(g2.getFont()).stringWidth(overlayText) / 2;
+    g2.drawString(overlayText, xpos, 50);
+    int xpos2 = GUI.WIDTH / 2 - g2.getFontMetrics(g2.getFont()).stringWidth(overlayText2) / 2;
+    g2.drawString(overlayText2, xpos2, 100);
     repaint();
   }
 }
