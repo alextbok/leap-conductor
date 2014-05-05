@@ -12,6 +12,7 @@ import javafx.scene.media.MediaPlayer;
 import backend.audio.SongApp;
 import frontend.soundpanel.KnobPanel;
 import frontend.soundpanel.KnobType;
+import frontend.soundpanel.SongList;
 import frontend.soundpanel.SongPanel;
 
 /**

@@ -174,6 +174,8 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 	public void startTutorial() {
 		this.setFocusable(true);
 		this.requestFocusInWindow();
+		SoundController.resetValues();
+		SoundController.stopSong();
 		_tutorialStage = TutorialStage.INTRO_1;
 		VisualizerPanel.overlayText = "Welcome to the tutorial! Press any key to begin.";
 		_tutorialListener = new KeyListener() {
@@ -181,8 +183,10 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			public void keyTyped(KeyEvent e) {
 				switch(_tutorialStage) {
 				case INTRO_1:
+					SoundController.setSong(SongList.getCurrentlySelectedSong());
 					_tutorialStage = TutorialStage.INTRO_2;
 					VisualizerPanel.overlayText = "Nice job. This guide will walk you through the basics of controlling music with your Leap.";
+					VisualizerPanel.overlayText2 = "Press any key to continue.";
 					break;
 				case INTRO_2:
 					_tutorialStage = TutorialStage.MOTION_INTRO;
@@ -239,10 +243,18 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			break;
 		case STOP:
 			_tutorialStage = TutorialStage.FINISHED;
-			VisualizerPanel.overlayText = "Finally, hold your hands flat and together and gently spread them apart";
+			VisualizerPanel.overlayText = "Hold your hands flat and together and gently spread them apart";
 			VisualizerPanel.overlayText2 = "to stop the song.";
 			_leap.listenForStop(this);
 			break;
+/*
+		case SWIPE:
+			_tutorialStage = TutorialStage.FINISHED;
+			VisualizerPanel.overlayText = "Finally, swipe a single hand from left to right to skip to the next song";
+			VisualizerPanel.overlayText2 = "or swipe right to left to go back to the previous song.";
+			_leap.listenForSwipe(this);
+			break;
+*/
 		case FINISHED:
 			FileProcessor.completeTutorial();
 			VisualizerPanel.overlayText = "Nice job! You can also load in your own music by clicking the plus button. Enjoy!";

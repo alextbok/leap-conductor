@@ -15,6 +15,7 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.Timer;
 import backend.motion.*;
 import com.leapmotion.leap.*;
@@ -38,6 +39,7 @@ public class LeapListener extends Listener {
 	private ResponseReceiver speedRequest = null;
 	private int speedHeld = 0;
 	private ResponseReceiver stopRequest = null;
+	private ResponseReceiver swipeRequest = null;
 
 	@Override
 	public void onConnect(Controller controller) {
@@ -326,6 +328,7 @@ public class LeapListener extends Listener {
 		//listen for play
 		if(playRequest != null) {
 			if(HandsTogetherGesture.isDetected(controller)) {
+				SongList.setCurrentSong(SongList.getCurrentlySelectedSong());
 				playRequest.receiveResponse();
 				playRequest = null;
 			}
@@ -364,11 +367,30 @@ public class LeapListener extends Listener {
 						speedRequest.receiveResponse();
 						speedRequest = null;
 						speedHeld = 0;
+						
 					}
 				}
 			}
 		}
+/*
+		//listen for swipe
+		if(swipeRequest != null) {
+			for(Gesture g : controller.frame().gestures()) {
+				if(g.type().equals(Gesture.Type.TYPE_SWIPE)) {
 
+					SwipeGesture swipe = new SwipeGesture(g);
+					
+					if (g.state() == Gesture.State.STATE_STOP){
+						if (Math.abs( swipe.direction().getX() ) > 0.5 ){
+							swipeRequest.receiveResponse();
+							swipeRequest = null;
+						}
+					}
+					
+				}
+			}
+		}
+*/
 		//listen for stop
 		if(stopRequest != null) {
 			if(HandsSeperateGesture.isDetected(controller)) {
@@ -408,6 +430,9 @@ public class LeapListener extends Listener {
 
 	public void listenForStop(ResponseReceiver rr) {
 		this.stopRequest = rr;
+	}
+	public void listenForSwipe(ResponseReceiver rr) {
+		this.swipeRequest = rr;
 	}
 
 	/**
