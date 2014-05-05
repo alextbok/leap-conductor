@@ -32,6 +32,23 @@ public class SongDirectory {
   public AudioFile getSong(String songName) {
     AudioFile toReturn = songHelper(path, songName);
 
+    final String toSet;
+    if (toReturn == null)
+      toSet = "Could not find song";
+    else
+      toSet = toReturn.getTag().getFirst(FieldKey.TITLE);
+
+    (new Thread() {
+      public void run() {
+        VisualizerPanel.overlayText = toSet;
+        try {
+          Thread.sleep(3000);
+        } catch (Exception e) {}
+
+        VisualizerPanel.overlayText = "";
+      }
+    }).start();
+
     return toReturn;
   }
 
@@ -55,36 +72,10 @@ public class SongDirectory {
         try {
           AudioFile audio = AudioFileIO.read(file);
 
-          if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").trim().equals(songName.toLowerCase())) {
-            final String toSet = audio.getTag().getFirst(FieldKey.TITLE);
-            (new Thread() {
-              public void run() {
-                VisualizerPanel.overlayText = toSet;
-                try {
-                  Thread.sleep(3000);
-                } catch (Exception e) {}
-
-                VisualizerPanel.overlayText = "";
-              }
-            }).start();
-
+          if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").trim().equals(songName.toLowerCase()))
             return audio;
-          }
-          else if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").replaceAll("&", "and").trim().equals(songName.toLowerCase())) {
-            final String toSet = audio.getTag().getFirst(FieldKey.TITLE);
-            (new Thread() {
-              public void run() {
-                VisualizerPanel.overlayText = toSet;
-                try {
-                  Thread.sleep(3000);
-                } catch (Exception e) {}
-
-                VisualizerPanel.overlayText = "";
-              }
-            }).start();
-
+          else if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").replaceAll("&", "and").trim().equals(songName.toLowerCase()))
             return audio;
-          }
         } catch (CannotReadException e) {
           continue;
         } catch (TagException e) {

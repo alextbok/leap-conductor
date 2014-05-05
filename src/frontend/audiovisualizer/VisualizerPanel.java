@@ -15,8 +15,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javafx.scene.media.AudioSpectrumListener;
@@ -39,6 +37,7 @@ public class VisualizerPanel extends JPanel {
   private int trailSize;
   private double newRadius;
   private boolean sizeChange, smaller;
+  private Font font;
   public static String overlayText = "";
   public static String overlayText2 = "";
 
@@ -52,16 +51,15 @@ public class VisualizerPanel extends JPanel {
     leapController = new Controller();
     leapListener = new LeapListener();
     leapController.addListener(leapListener);
-    
+
     sp.setLeap(leapListener);
 
     this.trailSize = trailSize;
 
     // add particle field to panel
-    colors = Collections.synchronizedList(new ArrayList<Color>());
-    colors.add(Color.RED);
-    colors.add(Color.WHITE);
-    particleField = new ParticleField(colors, particles, trailSize, GUI.WIDTH, GUI.HEIGHT - 120);
+    particleField = new ParticleField(particles, trailSize, GUI.WIDTH, GUI.HEIGHT - 120);
+
+    font = new Font("SansSerif", Font.BOLD, 24);
 
     sizeChange = true;
 
@@ -211,7 +209,7 @@ public class VisualizerPanel extends JPanel {
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     particleField.generateParticles(num, trailSize);
     g2.setColor(Color.WHITE);
-    g2.setFont(new Font("SansSerif", Font.BOLD, 24));
+    g2.setFont(font);
     int xpos = GUI.WIDTH / 2 - g2.getFontMetrics(g2.getFont()).stringWidth(overlayText) / 2;
     g2.drawString(overlayText, xpos, 50);
     int xpos2 = GUI.WIDTH / 2 - g2.getFontMetrics(g2.getFont()).stringWidth(overlayText2) / 2;
