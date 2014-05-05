@@ -130,8 +130,11 @@ public class SongList {
 	 */
 	public static File getCurrentlySelectedSong() {
 		if (list.getSelectedValue() == null) {
+			if (listModel.size() == 0){
+				return null;
+			}
 			list.setSelectedIndex(0);
-			return musicFiles.get( listModel.get(0) );
+			return musicFiles.get(listModel.get(0));
 		}
 		return musicFiles.get(list.getSelectedValue());
 	}
@@ -162,9 +165,13 @@ public class SongList {
 	/**
 	 * Returns the next song in the song list - wraps
 	 * If no song is being played, return the first song in the list
+	 * If there are no songs in the list, returns null
 	 * @return
 	 */
 	public static File getNextSong() {
+		
+		if (listModel.getSize() == 0) return null;
+		
 		
 		if (_currentSong == null) {
 			_currentSong = musicFiles.get(listModel.elementAt(0));
@@ -195,10 +202,13 @@ public class SongList {
 	/**
 	 * Returns the previous song in the song list - wraps
 	 * If no song is being played, return the last song in the list
+	 * If there are no songs in the list, returns null
 	 * @return
 	 */
 	public static File getPreviousSong() {
 
+		if (listModel.getSize() == 0) return null;
+		
 		if (_currentSong == null){
 			_currentSong = musicFiles.get(listModel.elementAt(listModel.size() - 1) );
 			list.setSelectedIndex(listModel.size() - 1);

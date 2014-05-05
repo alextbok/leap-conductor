@@ -28,6 +28,7 @@ public class SongApp {
 	
 	public SongApp(String url) {
 		new JFXPanel();
+		
 		_url = url;
     	try {
     		_media = new Media(new File(_url).toURI().toString());
@@ -35,6 +36,7 @@ public class SongApp {
     	} catch (MediaException e) {
     		System.out.println("ERROR: No such file or directory " + url);
     	}
+    	
 
         (new Thread() {
             @Override
@@ -57,6 +59,7 @@ public class SongApp {
                 }
             }
         }).start();
+        
 	}
 	
 	
