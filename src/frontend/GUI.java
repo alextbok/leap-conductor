@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -72,11 +73,11 @@ public class GUI extends JFrame {
 		
 		//add menu bar
 		this.setJMenuBar(new LeapConductorMenuBar());
-		    
+		
 		this.setMinimumSize(new Dimension(775,500));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-		    
+		
 		//gets the default music files (those is /src/sounds and from previous session)
 		File[] defaultSongs = FileChooser.getAllMusicFiles();
 		for (File song: defaultSongs) {
@@ -97,7 +98,6 @@ public class GUI extends JFrame {
   	 */
 	private class LeapConductorMenuBar extends JMenuBar {
 	  
-		
 		public LeapConductorMenuBar() {
 		  
 			this.setBackground(SongPanel.BACKGROUND_COLOR);

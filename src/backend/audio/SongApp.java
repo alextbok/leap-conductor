@@ -28,6 +28,7 @@ public class SongApp {
 	
 	public SongApp(String url) {
 		new JFXPanel();
+		
 		_url = url;
     	try {
     		_media = new Media(new File(_url).toURI().toString());
