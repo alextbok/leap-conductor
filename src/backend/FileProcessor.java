@@ -2,8 +2,11 @@ package backend;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import javax.swing.filechooser.FileSystemView;
@@ -26,7 +29,11 @@ public class FileProcessor extends Thread {
 	/*Folder with most mp3's - default is /src/sounds*/
 	private static File _folder = new File(System.getProperty("user.dir") + "/src/data/sounds");
 	
+	/*Current maximum number of songs*/
 	private int _numMp3Files = numberOfMusicFiles(_folder);
+	
+	/*String to determine if user has completed tutorial*/
+	public static final String TUTORIAL_COMPLETE = "Tutorial Complete";
 	
 	/**
 	 * Empty constructor - needed so we can start thread
@@ -71,6 +78,51 @@ public class FileProcessor extends Thread {
 	public static File getFolderWithMostMusicFiles() {
 		return _folder;
 	}
+	
+	/**
+	 * Keeps track of whether or not the user has completed the tutorial
+	 */
+	public static void completeTutorial() {
+		try {
+			String dir = System.getProperty("user.dir");
+    		PrintWriter writer = new PrintWriter(dir + "/src/data/tutorial_complete.txt", "UTF-8");
+    		writer.println(TUTORIAL_COMPLETE);
+    		writer.close();
+		} catch (FileNotFoundException e1) {
+			/*ignore and do nothing*/
+		} catch (UnsupportedEncodingException e1) {
+			/*Ignore and do nothing*/
+		}
+	}
+	
+	/**
+	 * Determines whether or not the user has completed the tutorial
+	 */
+	public static boolean hasCompletedTutorial() {
+
+		boolean hasCompleted = false;
+		String dir = System.getProperty("user.dir");
+		
+		try {
+			
+			BufferedReader in = new BufferedReader(new FileReader(new File(dir + "/src/data/tutorial_complete.txt")));
+			String line = in.readLine();
+			
+			while (line != null) {
+				
+				if ( line.equals(TUTORIAL_COMPLETE) )
+					hasCompleted = true;
+
+				line = in.readLine();
+			}
+			in.close();
+		} catch (IOException e) {
+			/*Do nothing. If the file does not exist, an empty array will be returned*/
+		}
+		return hasCompleted;
+		
+	}
+	
 	
 	/**
 	 * Retrieves song files from previous sessions and handles File exceptions

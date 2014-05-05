@@ -58,7 +58,10 @@ public class GUI extends JFrame {
 		_songPanel = new SongPanel();
 		_visualizerPanel = new VisualizerPanel(5000, 2, _songPanel);
 		_progressPanel = new ProgressBarPanel();
-		_songPanel.startTutorial();
+		
+		//start the tutorial if the user hasn't already completed it
+		if (!FileProcessor.hasCompletedTutorial())
+			_songPanel.startTutorial();
 		    
 		// add components
 		this.add(_visualizerPanel, BorderLayout.CENTER);
