@@ -95,8 +95,10 @@ public class VisualizerPanel extends JPanel {
     // change circle size according to audio, draw circle
     ParticleCircle circle = particleField.getCircle();
     double centerRadius = circle.getRadius();
-    if (SoundController.getMediaPlayer().getCurrentRate() == 0)
-      circle.setRadius(Math.max(centerRadius - 6, 0));
+    if (SoundController.isMute())
+      circle.setRadius(Math.min(centerRadius + 40, 700));
+    else if (SoundController.getMediaPlayer().getCurrentRate() == 0)
+      circle.setRadius(Math.max(centerRadius - 10, 0));
     else if (sizeChange) {
       if (newRadius > centerRadius)
         smaller = true;

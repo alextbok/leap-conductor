@@ -6,7 +6,6 @@ package backend.speech;
  * gets songs in user's library according to speech commands
  */
 
-import frontend.audiovisualizer.*;
 import javax.sound.sampled.*;
 import com.darkprograms.speech.microphone.*;
 import com.darkprograms.speech.recognizer.*;
@@ -55,21 +54,8 @@ public class SongsBySpeech {
       // match output to regex
       String responseStr = response.getResponse().toString();
       Matcher m = playSong.matcher(responseStr);
-      if (m.find()) {
-          final String toSet = m.group(1);
-          (new Thread() {
-            public void run() {
-              VisualizerPanel.overlayText = toSet;
-              try {
-                Thread.sleep(3000);
-              } catch (Exception e) {}
-
-              VisualizerPanel.overlayText = "";
-            }
-          }).start();
-
-        return songDirectory.getSong(toSet);
-      }
+      if (m.find())
+        return songDirectory.getSong(m.group(1));
 
       return null;
     } catch (Exception e) {

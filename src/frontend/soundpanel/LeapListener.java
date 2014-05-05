@@ -171,6 +171,9 @@ public class LeapListener extends Listener {
                                 // attempt speech recognition
                                 AudioFile newSong = speech.speechCommand();
                                 if (newSong != null) {
+                                    SongList.addSong(newSong.getFile());
+                                    SongList.setCurrentSong(newSong.getFile());
+                                    SoundController.stopSong();
                                     SoundController.setSong(newSong.getFile());
                                     SoundController.playSong();
                                 }

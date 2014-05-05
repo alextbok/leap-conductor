@@ -129,6 +129,11 @@ public class SoundController {
         if (app != null) app.getMediaPlayer().setMute(false);
     }
 
+    public static boolean isMute() {
+        if (app != null) return app.getMediaPlayer().isMute();
+        else return false;
+    }
+
 	public static void changeSpeed(double d) {
 		if(app != null && app.getRate() + d < maxSpeed && app.getRate() + d > minSpeed) {
 			app.changeSpeed(d);			

@@ -55,10 +55,36 @@ public class SongDirectory {
         try {
           AudioFile audio = AudioFileIO.read(file);
 
-          if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").trim().equals(songName.toLowerCase()))
+          if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").trim().equals(songName.toLowerCase())) {
+            final String toSet = audio.getTag().getFirst(FieldKey.TITLE);
+            (new Thread() {
+              public void run() {
+                VisualizerPanel.overlayText = toSet;
+                try {
+                  Thread.sleep(3000);
+                } catch (Exception e) {}
+
+                VisualizerPanel.overlayText = "";
+              }
+            }).start();
+
             return audio;
-          else if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").replaceAll("&", "and").trim().equals(songName.toLowerCase()))
+          }
+          else if (audio.getTag().getFirst(FieldKey.TITLE).toLowerCase().replaceAll("\\([^\\(]*\\)", "").replaceAll("[^A-Za-z0-9 ]", "").replaceAll("&", "and").trim().equals(songName.toLowerCase())) {
+            final String toSet = audio.getTag().getFirst(FieldKey.TITLE);
+            (new Thread() {
+              public void run() {
+                VisualizerPanel.overlayText = toSet;
+                try {
+                  Thread.sleep(3000);
+                } catch (Exception e) {}
+
+                VisualizerPanel.overlayText = "";
+              }
+            }).start();
+
             return audio;
+          }
         } catch (CannotReadException e) {
           continue;
         } catch (TagException e) {
