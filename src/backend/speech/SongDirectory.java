@@ -7,6 +7,8 @@ package backend.speech;
  */
 
 import java.io.*;
+
+import frontend.audiovisualizer.VisualizerPanel;
 import org.jaudiotagger.audio.*;
 import org.jaudiotagger.audio.exceptions.*;
 import org.jaudiotagger.tag.*;
@@ -28,7 +30,26 @@ public class SongDirectory {
    * @return the song with the given name; null otherwise
    */
   public AudioFile getSong(String songName) {
-    return songHelper(path, songName);
+    AudioFile toReturn = songHelper(path, songName);
+
+    final String toSet;
+    if (toReturn == null)
+      toSet = "Could not find song";
+    else
+      toSet = toReturn.getTag().getFirst(FieldKey.TITLE);
+
+    (new Thread() {
+      public void run() {
+        VisualizerPanel.overlayText = toSet;
+        try {
+          Thread.sleep(3000);
+        } catch (Exception e) {}
+
+        VisualizerPanel.overlayText = "";
+      }
+    }).start();
+
+    return toReturn;
   }
 
   /**

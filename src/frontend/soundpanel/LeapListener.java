@@ -6,8 +6,9 @@ package frontend.soundpanel;
  * @author Arun Varma
  */
 
+import backend.*;
+import backend.speech.*;
 import hub.SoundController;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -16,32 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Timer;
-
-import backend.motion.HandsDownLeftGesture;
-import backend.motion.HandsDownMiddleGesture;
-import backend.motion.HandsDownRightGesture;
-import backend.motion.HandsSeperateGesture;
-import backend.motion.HandsTogetherGesture;
-import backend.motion.HandsUpLeftGesture;
-import backend.motion.HandsUpMiddleGesture;
-import backend.motion.HandsUpRightGesture;
-import backend.motion.VDownGesture;
-import backend.motion.VUpGesture;
-
-import com.leapmotion.leap.CircleGesture;
-import com.leapmotion.leap.Controller;
-import com.leapmotion.leap.FingerList;
-import com.leapmotion.leap.Frame;
-import com.leapmotion.leap.Gesture;
-import com.leapmotion.leap.Hand;
-import com.leapmotion.leap.HandList;
-import com.leapmotion.leap.InteractionBox;
-import com.leapmotion.leap.Listener;
-import com.leapmotion.leap.Screen;
-import com.leapmotion.leap.SwipeGesture;
-import com.leapmotion.leap.Vector;
+import backend.motion.*;
+import com.leapmotion.leap.*;
+import org.jaudiotagger.audio.AudioFile;
 
 public class LeapListener extends Listener {
+    private SongsBySpeech speech;
 	private List<Point2D> handLocs;
 	private List<Point2D> fingerLocs;
 	private SyncBoolean cooldownComplete = new SyncBoolean(true);
@@ -62,6 +43,9 @@ public class LeapListener extends Listener {
 
 	@Override
 	public void onConnect(Controller controller) {
+        String pathToItunes = FileProcessor.getFolderWithMostMusicFiles().getAbsolutePath();
+        speech = new SongsBySpeech(pathToItunes);
+
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
 		controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
 		controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
@@ -166,14 +150,41 @@ public class LeapListener extends Listener {
 					}
 				}
 			}
+
+            // screen tap for speech recognition
 			else if (g.type() == Gesture.Type.TYPE_SCREEN_TAP){
 				if (g.state() == Gesture.State.STATE_STOP){
-					//TODO: Fill out audio stuff here
+                    (new Thread() {
+                        public void run() {
+                            // mute for duration
+                            SoundController.mute();
+                            try {
+                                Thread.sleep(4000);
+                            } catch (Exception e) {}
 
+                            // unmute
+                            SoundController.unmute();
+		    		    }
+			        }).start();
 
-				}
-			}
-		}
+                    (new Thread() {
+                        public void run() {
+                            try {
+                                // attempt speech recognition
+                                AudioFile newSong = speech.speechCommand();
+                                if (newSong != null) {
+                                    SongList.addSong(newSong.getFile());
+                                    SongList.setCurrentSong(newSong.getFile());
+                                    SoundController.stopSong();
+                                    SoundController.setSong(newSong.getFile());
+                                    SoundController.playSong();
+                                }
+                            } catch (Exception e) {}
+                        }
+                    }).start();
+                }
+		    }
+        }
 
 		boolean normalGestureRecognized = true;
 

@@ -12,22 +12,19 @@ import java.util.*;
 
 public class ParticleField {
   private List<Particle> particles;
-  private List<Color> colors;
   private int width, height;
   private double particleSpeed;
   private ParticleCircle circle, leftCircle, rightCircle;
 
   /**
    * ParticleField
-   * @param colors
    * @param initParticles
    * @param initTrailSize
    * @param width
    * @param height
    */
-  public ParticleField(List<Color> colors, int initParticles, int initTrailSize, int width, int height) {
+  public ParticleField(int initParticles, int initTrailSize, int width, int height) {
     particles = new ArrayList<>();
-    this.colors = colors;
     this.width = width;
     this.height = height;
     circle = new ParticleCircle(width, height);

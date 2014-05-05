@@ -43,15 +43,13 @@ public class SongsBySpeech {
 
     // wait until user speaks; then collect their speech
     mic.captureAudioToFile(file);
-    Thread.sleep(4000);
+    Thread.sleep(3000);
     mic.close();
 
     // recognize spoken audio
     Recognizer recognizer = new Recognizer(Recognizer.Languages.ENGLISH_US);
     try {
       GoogleResponse response = recognizer.getRecognizedDataForWave(file);
-      if (!response.getResponse().toString().equals("null"))
-        System.out.println(response.getResponse());
 
       // match output to regex
       String responseStr = response.getResponse().toString();
@@ -59,7 +57,7 @@ public class SongsBySpeech {
       if (m.find())
         return songDirectory.getSong(m.group(1));
 
-      return songDirectory.getSong(responseStr);
+      return null;
     } catch (Exception e) {
       return null;
     }
