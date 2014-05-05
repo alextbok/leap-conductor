@@ -52,9 +52,9 @@ public class SoundController {
 		if(app != null) {
 			app.resetValues();
 			updateKnob(volumeKnob, app.getVolume(), minVolume, maxVolume);
-			updateKnob(lowKnob, 0.0, minSeg, maxSeg);
-			updateKnob(midKnob, 0.0, minSeg, maxSeg);
-			updateKnob(highKnob, 0.0, minSeg, maxSeg);
+			updateKnob(lowKnob, 0.0, minBand, maxBand);
+			updateKnob(midKnob, 0.0, minBand, maxBand);
+			updateKnob(highKnob, 0.0, minBand, maxBand);
 			updateKnob(speedKnob, 1.0, minSpeed, maxSpeed);
 		}
 	}
