@@ -16,20 +16,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
-import com.leapmotion.leap.CircleGesture;
-import com.leapmotion.leap.Controller;
-import com.leapmotion.leap.FingerList;
-import com.leapmotion.leap.Frame;
-import com.leapmotion.leap.Gesture;
-import com.leapmotion.leap.Hand;
-import com.leapmotion.leap.HandList;
-import com.leapmotion.leap.Listener;
-import com.leapmotion.leap.Screen;
-import com.leapmotion.leap.SwipeGesture;
-import com.leapmotion.leap.Vector;
-
 import com.leapmotion.leap.*;
-
 
 import backend.motion.HandsDownLeftGesture;
 import backend.motion.HandsDownMiddleGesture;
@@ -41,6 +28,8 @@ import backend.motion.HandsUpMiddleGesture;
 import backend.motion.HandsUpRightGesture;
 import backend.motion.TwoHandsDownGesture;
 import backend.motion.TwoHandsUpGesture;
+import backend.motion.VDownGesture;
+import backend.motion.VUpGesture;
 
 public class LeapListener extends Listener {
 	private List<Point2D> handLocs;
@@ -53,6 +42,11 @@ public class LeapListener extends Listener {
 		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
 		controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
 
+		// set up swipes
+		
+		if(controller.config().setFloat("Gesture.Swipe.MinLength", 350.0f) &&
+                controller.config().setFloat("Gesture.Swipe.MinVelocity", 1000f))
+            controller.config().save();
 		
 		// get leap's range of detection
         InteractionBox box = controller.frame().interactionBox();
@@ -109,7 +103,7 @@ public class LeapListener extends Listener {
 					if (cooldownComplete){
 
 						cooldownComplete = false;
-
+						System.out.println("SWIPEEE!!!");
 						if (swipe.direction().getX() > 0.5){
 							SoundController.stopSong();
 							SoundController.setSong(SongList.getNextSong());
@@ -168,10 +162,10 @@ public class LeapListener extends Listener {
 			SoundController.playSong();
 		}
 		// gestures for volume control
-		else if (TwoHandsUpGesture.isDetected(controller)){
+		else if (VUpGesture.isDetected(controller)){
 			SoundController.volumeUp();
 		}
-		else if (TwoHandsDownGesture.isDetected(controller)){
+		else if (VDownGesture.isDetected(controller)){
 			SoundController.volumeDown();
 		}
 		// gestures for raising high/mid/bass
