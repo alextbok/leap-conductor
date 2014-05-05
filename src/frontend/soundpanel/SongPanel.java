@@ -18,6 +18,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import backend.FileProcessor;
 import frontend.GUI;
 import frontend.audiovisualizer.VisualizerPanel;
 
@@ -243,6 +244,7 @@ public class SongPanel extends JPanel implements ResponseReceiver {
 			_leap.listenForStop(this);
 			break;
 		case FINISHED:
+			FileProcessor.completeTutorial();
 			VisualizerPanel.overlayText = "Nice job! You can also load in your own music by clicking the plus button. Enjoy!";
 			VisualizerPanel.overlayText2 = "(Press any key to exit tutorial)";
 			_tutorialListener = new KeyListener() {
