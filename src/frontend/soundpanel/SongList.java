@@ -10,15 +10,25 @@ package frontend.soundpanel;
  */
 
 import hub.*;
+
 import org.jaudiotagger.audio.*;
 import org.jaudiotagger.tag.*;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.File;
-import java.util.*;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 public class SongList {
@@ -156,8 +166,11 @@ public class SongList {
 	 */
 	public static File getNextSong() {
 		
-		if (_currentSong == null)
-			return musicFiles.get(listModel.elementAt(0));
+		if (_currentSong == null) {
+			_currentSong = musicFiles.get(listModel.elementAt(0));
+			list.setSelectedIndex(0);
+			return _currentSong;
+		}
 
         String toGet;
         try {
@@ -178,13 +191,17 @@ public class SongList {
 		return _currentSong;
 	}
 	
+	/**
+	 * Returns the previous song in the song list - wraps
+	 * If no song is being played, return the last song in the list
+	 * @return
+	 */
 	public static File getPreviousSong() {
-		// TODO: I tried to base this method off of the getNextSong method, but I have no idea if
-		// it really works, it hasn't been extensively tested, and I don't perfectly know how Alex's
-		// code works. So, somebody should look at this.
-		
+
 		if (_currentSong == null){
-			return musicFiles.get(listModel.elementAt(0));
+			_currentSong = musicFiles.get(listModel.elementAt(listModel.size() - 1) );
+			list.setSelectedIndex(listModel.size() - 1);
+			return _currentSong;
 		}
 
         String toGet;
@@ -197,13 +214,15 @@ public class SongList {
         }
 
 		int currentIndex = listModel.indexOf(toGet);
-		int nextIndex = (currentIndex - 1);
-		if (nextIndex == -1){
-			nextIndex = listModel.size() - 1;
+		int prevIndex = currentIndex - 1;
+		
+		if (prevIndex < 0) {
+			prevIndex = listModel.size() - 1;
 		}
-		list.setSelectedIndex(nextIndex);
-
-		String songName = listModel.elementAt(nextIndex);
+		
+		list.setSelectedIndex(prevIndex);
+        
+		String songName = listModel.elementAt(prevIndex);
 		_currentSong = musicFiles.get(songName);
 
 		return _currentSong;
