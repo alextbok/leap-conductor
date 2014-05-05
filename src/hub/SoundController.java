@@ -120,7 +120,15 @@ public class SoundController {
 		}
 		updateSelection(volumeKnob);
 	}
-	
+
+    public static void mute() {
+        if(app != null) app.getMediaPlayer().setMute(true);
+    }
+
+    public static void unmute() {
+        if (app != null) app.getMediaPlayer().setMute(false);
+    }
+
 	public static void changeSpeed(double d) {
 		if(app != null && app.getRate() + d < maxSpeed && app.getRate() + d > minSpeed) {
 			app.changeSpeed(d);			

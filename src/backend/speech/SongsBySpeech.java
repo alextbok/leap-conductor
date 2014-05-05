@@ -6,6 +6,7 @@ package backend.speech;
  * gets songs in user's library according to speech commands
  */
 
+import frontend.audiovisualizer.*;
 import javax.sound.sampled.*;
 import com.darkprograms.speech.microphone.*;
 import com.darkprograms.speech.recognizer.*;
@@ -43,23 +44,34 @@ public class SongsBySpeech {
 
     // wait until user speaks; then collect their speech
     mic.captureAudioToFile(file);
-    Thread.sleep(4000);
+    Thread.sleep(3000);
     mic.close();
 
     // recognize spoken audio
     Recognizer recognizer = new Recognizer(Recognizer.Languages.ENGLISH_US);
     try {
       GoogleResponse response = recognizer.getRecognizedDataForWave(file);
-      if (!response.getResponse().toString().equals("null"))
-        System.out.println(response.getResponse());
 
       // match output to regex
       String responseStr = response.getResponse().toString();
       Matcher m = playSong.matcher(responseStr);
-      if (m.find())
-        return songDirectory.getSong(m.group(1));
+      if (m.find()) {
+          final String toSet = m.group(1);
+          (new Thread() {
+            public void run() {
+              VisualizerPanel.overlayText = toSet;
+              try {
+                Thread.sleep(3000);
+              } catch (Exception e) {}
 
-      return songDirectory.getSong(responseStr);
+              VisualizerPanel.overlayText = "";
+            }
+          }).start();
+
+        return songDirectory.getSong(toSet);
+      }
+
+      return null;
     } catch (Exception e) {
       return null;
     }

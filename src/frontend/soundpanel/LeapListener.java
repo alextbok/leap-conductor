@@ -148,24 +148,34 @@ public class LeapListener extends Listener {
             // screen tap for speech recognition
 			else if (g.type() == Gesture.Type.TYPE_SCREEN_TAP){
 				if (g.state() == Gesture.State.STATE_STOP){
-                    // mute for duration
-                    double initVol = SoundController.getVolume();
-                    SoundController.changeVolume(0);
+                    (new Thread() {
+                        public void run() {
+                            // mute for duration
+                            SoundController.mute();
+                            try {
+                                Thread.sleep(4000);
+                            } catch (Exception e) {}
 
-                    try {
-                        // attempt speech recognition
-                        AudioFile newSong = speech.speechCommand();
-                        if (newSong != null) {
-                            SoundController.setSong(newSong.getFile());
-                            SoundController.playSong();
+                            // unmute
+                            SoundController.unmute();
+		    		    }
+			        }).start();
+
+                    (new Thread() {
+                        public void run() {
+                            try {
+                                // attempt speech recognition
+                                AudioFile newSong = speech.speechCommand();
+                                if (newSong != null) {
+                                    SoundController.setSong(newSong.getFile());
+                                    SoundController.playSong();
+                                }
+                            } catch (Exception e) {}
                         }
-                    } catch (Exception e) {}
-
-                    // unmute
-                    SoundController.changeVolume(initVol);
-				}
-			}
-		}
+                    }).start();
+                }
+		    }
+        }
 
 		boolean normalGestureRecognized = true;
 

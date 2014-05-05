@@ -35,28 +35,6 @@ public class SongApp {
     	} catch (MediaException e) {
     		System.out.println("ERROR: No such file or directory " + url);
     	}
-
-        (new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (_mediaPlayer.getCurrentRate() > 0)
-                        continue;
-
-                    try {
-                    	String pathToItunes = FileProcessor.getFolderWithMostMusicFiles().getAbsolutePath();
-                        SongsBySpeech speech = new SongsBySpeech(pathToItunes);
-                        AudioFile newSong = speech.speechCommand();
-                        if (newSong != null) {
-                            setSong(newSong.getFile());
-                            playSong();
-                        }
-                    } catch (Exception e) {
-                        continue;
-                    }
-                }
-            }
-        }).start();
 	}
 	
 	
