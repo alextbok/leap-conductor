@@ -17,7 +17,6 @@ public class SongsBySpeech {
   private MicrophoneAnalyzer mic;
   private Pattern playSong;
   private String file;
-  private final int THRESHOLD = 40;
 
   /**
    * SongsBySpeech
