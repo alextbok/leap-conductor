@@ -12,18 +12,18 @@ the music using hand gestures via the Leap Motion hardware and developer API.
 ## Features:
   Import any song on in your file system into the application (songs will be saved between sessions)
   
+  Audio visualizer that responds directly to hand movements as well as indirectly (colors scale with audio properties)
+  
+  All effects from hand gestures can be replicated with the mouse
+  
+  Play a song with voice recognition (use the tap gesture and say "Play <songname>")
+  
   Ability to change the following audio properties with your hands:
   *  Volume
   *  Speed
   *  Low
   *  Mid
   *  High
-    
-  Audio visualizer that responds directly to hand movements as well as indirectly (colors scale with audio properties)
-  
-  All effects from hand gestures can be replicated with the mouse
-  
-  Play a song with voice recognition (use the tap gesture and say "Play <songname>")
   
 ## Group members:
   *  Alexander Bok
